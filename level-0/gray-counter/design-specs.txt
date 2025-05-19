@@ -1,0 +1,26 @@
+Design Name: gray_counter8
+Module Name:
+- gray_counter8
+
+Inputs:
+- clk         // Clock signal
+- rst         // Synchronous active-high reset
+
+Outputs:
+- count[7:0]  // Output: Gray code sequence
+
+Design Signature:
+
+module gray_counter8(
+    input clk,
+    input rst,
+    output [7:0] count
+);
+
+Design Notes:
+- Use an internal binary counter.
+- Convert binary to Gray code using:
+
+  gray = binary ^ (binary >> 1)
+
+- Ensure glitch-free Gray code sequence and reliable reset behavior.

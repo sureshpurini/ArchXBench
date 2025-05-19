@@ -1,0 +1,17 @@
+Title: 8-bit Binary Up Counter
+
+Objective:
+Design an 8-bit binary up counter that counts from 0 to 255 with each clock cycle.
+
+Background:
+Binary counters are sequential building blocks used for counting events, timing generation, and state control. They increment their count value on each clock edge.
+
+Design Constraints:
+- The counter must be synchronous, triggered on the rising edge of a clock.
+- Must support synchronous active-high reset.
+
+Performance Expectation:
+The counter should be resource-efficient and reset correctly.
+
+Deliverables:
+- A Verilog module for the 8-bit binary up counter.

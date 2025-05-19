@@ -1,0 +1,17 @@
+Design Name: decoder3to8
+Module Name:
+- decoder3to8
+
+Inputs:
+- in[2:0]  // 3-bit binary input
+- en       // Enable signal
+
+Outputs:
+- out[7:0] // One-hot output
+
+Design Signature:
+module decoder3to8(input [2:0] in, input en, output [7:0] out);
+
+Design Notes:
+- Use two 2-to-4 decoders and enable logic for MSB selection.
+- Avoid behavioral code; implement structurally for clarity.

@@ -1,0 +1,25 @@
+Title:
+- Bit Manipulation Unit (rotate, mask, pack, unpack)
+
+Objective:
+- The goal is to design and implement a bit manipulation unit that performs various bit-level operations including rotation, masking, packing, and unpacking.
+- The module should be capable of processing a data word by rotating its bits, applying a specified mask, combining multiple smaller data fields into a larger word (pack), and splitting a packed word into separate fields (unpack).
+
+Background:
+- Bit manipulation operations are essential in many digital systems for tasks such as data compression, encryption, and low-level data processing.
+- Units that perform these operations contribute to efficient hardware implementations by reducing the number of clock cycles needed for common data transformations.
+- This component is important for processors, network processors, and multimedia applications where manipulation of data at the bit level can directly impact performance and resource utilization.
+
+Design Constraints:
+- The design should be parameterizable in terms of input data width and allow flexibility in handling different operational modes.
+- It must support at least four operations: rotation (both left and right if desired), bit masking, packing (concatenation of two or more fields), and unpacking (splitting a packed word into multiple outputs).
+- The implementation can be either purely combinational or pipelined; however, clear timing constraints and control signals must be defined to integrate seamlessly with larger systems.
+- The unit should include a control interface (e.g., via an op-code) to select the specific bit manipulation operation at runtime.
+
+Performance Expectation:
+- The design should provide high-speed performance, ensuring that bit manipulation operations are executed within a single clock cycle for combinational implementations or minimal cycles for pipelined designs.
+- Trade-offs between area, power, and speed must be balanced; the additional functionality should not excessively increase complexity or resource usage.
+- The accuracy of the bit-level transformations must be maintained, ensuring error-free data manipulation under all supported modes.
+
+Deliverables:
+- A synthesizable HDL module (Verilog/VHDL) implementing the Bit Manipulation Unit.

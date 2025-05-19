@@ -1,0 +1,17 @@
+Title: 4-to-2 Priority Encoder
+
+Objective:
+Design a 4-to-2 priority encoder that outputs the binary index of the highest-priority active input along with a valid signal indicating whether any input is active.
+
+Background:
+Priority encoders add logic to select the highest-priority '1' among multiple active inputs. This makes them more robust and useful in practical applications like interrupt controllers, where multiple requests may be active simultaneously and priority resolution is required.
+
+Design Constraints:
+- The priority encoder must handle multiple simultaneous high inputs and resolve to the highest-priority one.
+- The design should be purely combinational.
+
+Performance Expectation:
+While introducing slightly more logic to resolve priorities, the priority encoder remains a low-latency component suitable for real-time systems.
+
+Deliverables:
+- A Verilog module for the priority encoder.

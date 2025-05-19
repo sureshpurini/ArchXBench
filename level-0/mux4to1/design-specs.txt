@@ -1,0 +1,32 @@
+Design Name: mux_4to1_using_mux2to1
+Module Name:
+- mux4to1
+
+Inputs:
+- a      // 1-bit input (input 0)
+- b      // 1-bit input (input 1)
+- c      // 1-bit input (input 2)
+- d      // 1-bit input (input 3)
+- sel    // 2-bit select signal
+
+Outputs:
+- y      // 1-bit output (selected value)
+
+Design Signature:
+
+// 4-to-1 Multiplexer using mux2to1
+module mux4to1 (
+    input  a,
+    input  b,
+    input  c,
+    input  d,
+    input  [1:0] sel,
+    output y
+);
+
+Design Notes:
+- The 4-to-1 MUX must be constructed using three instances of the mux2to1 module:
+    • First level: two mux2to1 units select between (a,b) and (c,d)
+    • Second level: one mux2to1 selects between the outputs of the first level
+- Ensure signal names are clearly connected between levels.
+- Avoid using behavioral constructs (e.g., `assign y = (sel == 2'b00) ? ...`) — stick to structural composition using mux2to1 instances.

@@ -1,0 +1,27 @@
+Design Name: down_counter8
+Module Name:
+- down_counter8
+
+Inputs:
+- clk         // Clock signal
+- rst         // Synchronous active-high reset
+- load        // Load enable (active high)
+- din[7:0]    // 8-bit input to load initial count
+
+Outputs:
+- count[7:0]  // Output: decremented value every clock cycle
+
+Design Signature:
+
+module down_counter8(
+    input clk,
+    input rst,
+    input load,
+    input [7:0] din,
+    output [7:0] count
+);
+
+Design Notes:
+- If `load` is asserted, load `din`.
+- Otherwise, decrement the count on each clock cycle.
+- Ensure glitch-free operation and reliable reset behavior.

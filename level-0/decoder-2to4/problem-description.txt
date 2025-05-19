@@ -1,0 +1,17 @@
+Title: 2-to-4 Decoder
+
+Objective:
+Design a 2-to-4 decoder that activates one of four outputs based on a 2-bit input.
+
+Background:
+Decoders are combinational logic circuits that convert binary-encoded inputs into one-hot outputs. They are commonly used in address decoding, instruction decoding, and enabling circuits.
+
+Design Constraints:
+- The 2-to-4 decoder must be built from basic gates.
+- The design must be purely combinational.
+
+Performance Expectation:
+Minimal propagation delay and regular structure.
+
+Deliverables:
+- A Verilog module for the 2-to-4 decoder.

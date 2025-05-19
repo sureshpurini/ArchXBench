@@ -1,0 +1,19 @@
+Title: Clock Divider
+
+Objective:
+Design a clock divider module that takes a system clock as input and produces an output clock signal with a user-configurable divide ratio. The output clock frequency should be an integer division of the input clock frequency.
+
+Background:
+Clock dividers are widely used in digital systems to generate lower-frequency clocks for timers, UARTs, PWM generators, and synchronization between different subsystems. A typical implementation uses a counter to toggle the output clock after a certain number of input clock cycles.
+
+Design Constraints:
+- The divider must be synchronous and operate on the rising edge of the input clock.
+- The divide value should be configurable at runtime through an input port.
+- The output clock should have a 50% duty cycle when the divide value is even.
+- Implement a synchronous active-high reset.
+
+Performance Expectation:
+The output clock should be glitch-free and switch with predictable timing. The divider should support a wide range of divide values and toggle cleanly across different ratios.
+
+Deliverables:
+- A synthesizable Verilog module. 

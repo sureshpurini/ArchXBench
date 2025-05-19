@@ -1,0 +1,18 @@
+Title: 8-bit Parallel-In Serial-Out (PISO) Shift Register
+
+Objective:
+Design an 8-bit PISO shift register that loads data in parallel and shifts it out serially.
+
+Background:
+PISO shift registers are used for serializing parallel data for transmission or storage in serial communication protocols.
+
+Design Constraints:
+- The design must be synchronous and triggered on the rising edge of a clock.
+- Support for synchronous reset is required.
+- Must include a `load` control signal for parallel data loading.
+
+Performance Expectation:
+The register should correctly load parallel data and shift it out serially, maintaining correct bit ordering.
+
+Deliverables:
+- A Verilog module for the 8-bit PISO shift register.

@@ -1,0 +1,17 @@
+Title: 8-bit Serial-In Parallel-Out (SIPO) Shift Register
+
+Objective:
+Design an 8-bit SIPO shift register that shifts data in serially and allows parallel reading of all bits.
+
+Background:
+SIPO shift registers are used to expand serial data into parallel form, enabling wider data processing or storage after serial reception.
+
+Design Constraints:
+- The design must be synchronous and triggered on the rising edge of a clock.
+- Support for synchronous reset is required.
+
+Performance Expectation:
+The register should allow correct serial-to-parallel conversion with stable parallel outputs after shifting.
+
+Deliverables:
+- A Verilog module for the 8-bit SIPO shift register.

@@ -1,0 +1,18 @@
+Title: 8-bit Gray Code Counter
+
+Objective:
+Design an 8-bit Gray code counter that generates a sequence of 8-bit Gray codes where only one bit changes between consecutive values.
+
+Background:
+Gray code counters are useful in low-power and asynchronous designs due to minimal bit transitions. They ensure that only a single bit changes at a time, reducing switching noise and power consumption.
+
+Design Constraints:
+- The counter must be synchronous, triggered on the rising edge of a clock.
+- Must support synchronous active-high reset.
+- Must ensure correct bit transitions following Gray encoding.
+
+Performance Expectation:
+The counter should follow a valid Gray code sequence without glitches.
+
+Deliverables:
+- A Verilog module for the 8-bit Gray code counter.

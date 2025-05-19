@@ -1,0 +1,22 @@
+Design Name: up_counter8
+Module Name:
+- up_counter8
+
+Inputs:
+- clk         // Clock signal
+- rst         // Synchronous active-high reset
+
+Outputs:
+- count[7:0]  // Output: incremented value every clock cycle
+
+Design Signature:
+
+module up_counter8(
+    input clk,
+    input rst,
+    output [7:0] count
+);
+
+Design Notes:
+- Implement as a synchronous incrementer with reset to zero.
+- Ensure glitch-free operation and reliable reset behavior.

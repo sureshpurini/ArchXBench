@@ -1,0 +1,17 @@
+Title: 8-bit Comparator using Two 4-bit Comparators
+
+Objective:
+Build an 8-bit comparator hierarchically using two 4-bit comparators to compare 8-bit inputs.
+
+Background:
+Comparators are used widely in digital systems — for conditional branching, sorting, prioritization, and more. A modular comparator design demonstrates how smaller components can be composed to compare larger values.
+
+Design Constraints:
+- The 8-bit comparator must re-use the 4-bit comparator as a subcomponent.
+- All logic must be purely combinational.
+
+Performance Expectation:
+The 8-bit comparator will exhibit slightly longer delay due to hierarchical evaluation but should still be suitable for single-cycle comparison in most systems.
+
+Deliverables:
+- A Verilog module for the 8-bit comparator built using two 4-bit comparators.

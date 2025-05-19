@@ -1,0 +1,25 @@
+Design Name: ring_counter4
+Module Name:
+- ring_counter4
+
+Inputs:
+- clk        // Clock input
+- rst        // Synchronous reset (active high)
+
+Outputs:
+- q[3:0]     // Output vector representing internal state
+
+Design Signature:
+
+module ring_counter4 (
+    input clk,
+    input rst,
+    output [3:0] q
+);
+
+Design Notes:
+- Initialize `q` to 4'b0001.
+- On each clock edge, shift the register left and wrap around the MSB to LSB.
+- State sequence: 0001 → 0010 → 0100 → 1000 → 0001 …
+- Loop indefinitely through this sequence.
+- Suitable for timing or stepwise control logic with simple decoding.

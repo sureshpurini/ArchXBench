@@ -1,0 +1,17 @@
+Title: 8-bit Serial-In Serial-Out (SISO) Shift Register
+
+Objective:
+Design an 8-bit SISO shift register that shifts data serially in and out.
+
+Background:
+Shift registers are essential sequential circuits used for data storage, delay elements, and serial data processing in communication systems.
+
+Design Constraints:
+- The design must be synchronous and triggered on the rising edge of a clock.
+- Support for synchronous reset is required.
+
+Performance Expectation:
+The register should correctly shift data in and out serially, maintaining bit order and timing alignment.
+
+Deliverables:
+- A Verilog module for the 8-bit SISO shift register.

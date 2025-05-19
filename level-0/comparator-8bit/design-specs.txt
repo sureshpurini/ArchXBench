@@ -1,0 +1,22 @@
+Design Name: comparator_8bit
+Module Name:
+- comparator_8bit
+
+Inputs:
+- a[7:0]  // First 8-bit input
+- b[7:0]  // Second 8-bit input
+
+Outputs:
+- gt     // '1' if a > b
+- eq     // '1' if a == b
+- lt     // '1' if a < b
+
+Design Signature:
+module comparator_8bit(input [7:0] a, input [7:0] b, output gt, eq, lt);
+
+Design Notes:
+- comparator_8bit should first compare the upper 4 bits (a[7:4], b[7:4]):
+    • If unequal, use the result directly.
+    • If equal, compare the lower 4 bits (a[3:0], b[3:0]).
+- Use two comparator_4bit instances: one for MSBs, one for LSBs.
+- Ensure outputs are mutually exclusive.

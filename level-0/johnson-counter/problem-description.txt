@@ -1,0 +1,18 @@
+Title: 4-bit Johnson Counter (Twisted Ring Counter)
+
+Objective:
+Design a 4-bit Johnson counter where a shift register with feedback from the inverted output of the last flip-flop to the first generates a reflected binary pattern.
+
+Background:
+Johnson counters are used in FSM sequencing, timing circuits, and control signal generation. They provide twice the number of unique states compared to ring counters, making them more efficient in state usage but requiring careful feedback handling.
+
+Design Constraints:
+- The counter must be synchronous and operate on the rising clock edge.
+- Implement using D flip-flops with synchronous reset.
+- The counter should cycle through 8 unique states.
+
+Performance Expectation:
+The design should demonstrate low switching activity and deterministic cycling.
+
+Deliverables:
+- A Verilog module for the 4-bit Johnson counter.

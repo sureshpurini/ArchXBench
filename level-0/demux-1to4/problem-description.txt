@@ -1,0 +1,17 @@
+Title: 1-to-4 Demultiplexer using 1-to-2 Demultiplexers
+
+Objective:
+Extend the 1-to-2 demultiplexer design to construct a 1-to-4 demultiplexer using only 1-to-2 demultiplexers.
+
+Background:
+Demultiplexers (DEMUX) are used to route a single data line to one of several outputs, under control of select signals. Implementing larger demultiplexers using smaller ones encourages modular design and teaches hierarchical composition.
+
+Design Constraints:
+- The 1-to-4 DEMUX must be constructed entirely from three 1-to-2 DEMUX instances.
+- The design must be purely combinational.
+
+Performance Expectation:
+The design should be minimal in logic depth and area. Timing is expected to be a function of the depth of demux levels (log₂N).
+
+Deliverables:
+- A Verilog module for the 1-to-4 demultiplexer built using 1-to-2 demultiplexers.

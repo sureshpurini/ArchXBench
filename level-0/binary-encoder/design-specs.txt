@@ -1,0 +1,21 @@
+Design Name: binary_encoder_8to3
+Module Name:
+- binary_encoder_8to3
+
+Inputs:
+- in[7:0]  // One-hot 8-bit input
+
+Outputs:
+- out[2:0] // 3-bit binary output
+
+Design Signature:
+
+module binary_encoder_8to3 (
+    input  [7:0] in,
+    output [2:0] out
+);
+
+Design Notes:
+- Assumes exactly one input is high.
+- Outputs the corresponding binary index.
+- Use purely combinational logic.

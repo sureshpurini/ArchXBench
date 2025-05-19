@@ -1,0 +1,18 @@
+Title: 4-bit Ring Counter
+
+Objective:
+Design a 4-bit ring counter where a single '1' bit circulates through a shift register, producing a one-hot output pattern over time.
+
+Background:
+Ring counters are often used in FSM sequencing, timing circuits, and control signal generation due to their regular, predictable, and glitch-free output patterns. They require fewer decoding resources than binary counters for certain applications.
+
+Design Constraints:
+- The counter must be synchronous and operate on the rising clock edge.
+- Implement using D flip-flops with synchronous reset.
+- The counter should cycle through exactly 4 unique one-hot states.
+
+Performance Expectation:
+The design should demonstrate low switching activity and deterministic cycling.
+
+Deliverables:
+- A Verilog module for the 4-bit ring counter.

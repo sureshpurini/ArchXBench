@@ -1,0 +1,27 @@
+Design Name: piso_8bit
+Module Name:
+- piso_8bit
+
+Inputs:
+- clk      // Clock input
+- rst      // Synchronous reset (active high)
+- load     // Load enable signal (active high)
+- pin[7:0] // Parallel input
+
+Outputs:
+- sout     // Serial output
+
+Design Signature:
+
+module piso_8bit(
+    input clk,
+    input rst,
+    input load,
+    input [7:0] pin,
+    output sout
+);
+
+Design Notes:
+- Load parallel data into the shift register when `load` is active.
+- Shift out data serially on subsequent clock cycles.
+- Support synchronous reset to clear the register.

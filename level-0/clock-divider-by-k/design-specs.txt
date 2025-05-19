@@ -1,0 +1,27 @@
+Design Name: clock_divider
+Module Name: clock_divider
+
+Inputs:
+- clk           // System clock input
+- rst           // Synchronous active-high reset
+- div_val[N-1:0] // Divider value (must be ≥ 2)
+
+Outputs:
+- clk_out       // Divided output clock signal
+
+Design Signature:
+
+module clock_divider (
+    input clk,
+    input rst,
+    input [N-1:0] div_val,
+    output clk_out
+);
+
+Design Notes:
+- Use a counter that increments on every rising clock edge.
+- When the counter reaches (div_val / 2) - 1, toggle the `clk_out` and reset the counter.
+- This produces a square wave with approximately 50% duty cycle.
+- The module should be parameterized with respect to N (bit-width of divider).
+- Ensure correct behavior when `div_val` is changed dynamically during runtime.
+- Reset should asynchronously reset the counter and `clk_out` to 0.

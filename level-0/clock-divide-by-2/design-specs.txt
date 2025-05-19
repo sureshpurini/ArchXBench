@@ -1,0 +1,23 @@
+Design Name: clock_div2
+Module Name: clock_div2
+
+Inputs:
+- clk      // System clock input
+- rst      // Synchronous active-high reset
+
+Outputs:
+- clk_out  // Output clock, toggles every rising edge of input clock
+
+Design Signature:
+
+module clock_div2 (
+    input clk,
+    input rst,
+    output clk_out
+);
+
+Design Notes:
+- Use a T flip-flop or D flip-flop with feedback to toggle `clk_out` on each rising edge.
+- Reset should clear the output to 0.
+- On every positive edge of `clk`, `clk_out` toggles.
+- Output waveform should maintain a 50% duty cycle with respect to the input clock.

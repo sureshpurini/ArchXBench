@@ -1,0 +1,17 @@
+Title: 4-to-1 Multiplexer using 2-to-1 Multiplexers
+
+Objective:
+Design a 4-to-1 multiplexer by hierarchically using only 2-to-1 multiplexers. The objective is to understand modularity and hierarchical construction in logic design.
+
+Background:
+Larger multiplexers (e.g., 4-to-1) can be built using smaller ones like 2-to-1 MUXes, which demonstrates hierarchical and reusable design principles — a key concept in digital hardware architecture.
+
+Design Constraints:
+- The 4-to-1 MUX must be built entirely using multiple instances of the 2-to-1 MUX (no direct logic expressions).
+- The design must be combinational (no clocking or memory elements).
+
+Performance Expectation:
+The 4-to-1 multiplexer demonstrates how design modularity scales while maintaining low area and delay.
+
+Deliverables:
+- A Verilog module for 4-to-1 MUX built using 2-to-1 MUXes.

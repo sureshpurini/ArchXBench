@@ -1,0 +1,23 @@
+Design Name: priority_encoder_4to2
+Module Name:
+- priority_encoder_4to2
+
+Inputs:
+- in[3:0]   // 4-bit input vector
+
+Outputs:
+- out[1:0]  // 2-bit binary output indicating highest-priority active input
+- valid     // Output high if any input is active
+
+Design Signature:
+
+module priority_encoder_4to2 (
+    input  [3:0] in,
+    output [1:0] out,
+    output       valid
+);
+
+Design Notes:
+- Outputs the index of the highest-priority '1' among multiple active inputs.
+- Outputs valid = 1 if any input is active, 0 otherwise.
+- Implement using combinational logic with cascading OR conditions.

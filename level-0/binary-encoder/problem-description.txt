@@ -1,0 +1,17 @@
+Title: 8-to-3 Binary Encoder
+
+Objective:
+Design an 8-to-3 binary encoder that outputs the binary representation of the index of the highest active input, assuming one-hot input.
+
+Background:
+Binary encoders are combinational circuits that reduce multiple input lines to a binary representation. A binary encoder is simple but assumes that only one input is active (one-hot input). This makes it suitable for controlled environments where inputs are guaranteed to be mutually exclusive.
+
+Design Constraints:
+- The binary encoder assumes only one input is high at a time.
+- The design should be purely combinational.
+
+Performance Expectation:
+The binary encoder is a minimal-delay, low-area component due to its simple logic structure.
+
+Deliverables:
+- A Verilog module for the binary encoder.

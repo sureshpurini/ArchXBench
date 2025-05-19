@@ -1,0 +1,17 @@
+Title: 2-to-1 Multiplexer
+
+Objective:
+Design a 2-to-1 multiplexer that selects one of two 1-bit input signals based on a 1-bit select signal.
+
+Background:
+Multiplexers are fundamental combinational logic elements that perform data selection. A 2-to-1 multiplexer chooses between two inputs using a single select line. This is one of the simplest forms of multiplexers and forms the building block for larger selection circuits.
+
+Design Constraints:
+- The 2-to-1 MUX must be implemented using basic gates (AND, OR, NOT).
+- The design must be combinational (no clocking or memory elements).
+
+Performance Expectation:
+The 2-to-1 multiplexer is a small, low-latency combinational block and should synthesize to minimal area and delay.
+
+Deliverables:
+- A Verilog module for 2-to-1 MUX.

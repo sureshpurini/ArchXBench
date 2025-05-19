@@ -1,0 +1,18 @@
+Title: 8-bit Loadable Down Counter
+
+Objective:
+Design an 8-bit loadable down counter that loads an 8-bit value and counts down to zero on each clock cycle.
+
+Background:
+Down counters are commonly used in timing and control applications where a countdown from a specified value is needed.
+
+Design Constraints:
+- The counter must be synchronous, triggered on the rising edge of a clock.
+- Must support synchronous active-high reset.
+- Must have a `load` control signal and `din` input for loading the starting value.
+
+Performance Expectation:
+The counter should be resource-efficient and reset correctly, supporting load and countdown operations.
+
+Deliverables:
+- A Verilog module for the 8-bit loadable down counter.

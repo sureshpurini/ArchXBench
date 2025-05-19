@@ -1,0 +1,26 @@
+Design Name: sipo_8bit
+Module Name:
+- sipo_8bit
+
+Inputs:
+- clk      // Clock input
+- rst      // Synchronous reset (active high)
+- sin      // Serial input
+
+Outputs:
+- pout[7:0] // Parallel output
+
+Design Signature:
+
+module sipo_8bit(
+    input clk,
+    input rst,
+    input sin,
+    output [7:0] pout
+);
+
+Design Notes:
+- Implement using an 8-bit shift register.
+- Shift data serially and store all bits in the register.
+- Output the full 8-bit register contents in parallel.
+- Support synchronous reset to clear the register.

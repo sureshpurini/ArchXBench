@@ -1,0 +1,17 @@
+Title: 4-bit Comparator
+
+Objective:
+Design a 4-bit comparator that determines whether one 4-bit input is greater than, equal to, or less than the other.
+
+Background:
+Comparators are used widely in digital systems — for conditional branching, sorting, prioritization, and more. A modular comparator design demonstrates how smaller components can be composed to compare larger values.
+
+Design Constraints:
+- The 4-bit comparator must output three mutually exclusive status signals: greater than, equal, less than.
+- All logic must be purely combinational.
+
+Performance Expectation:
+The 4-bit comparator should be small and fast.
+
+Deliverables:
+- A Verilog module for the 4-bit comparator.

@@ -1,0 +1,19 @@
+Design Name: comparator_4bit
+Module Name:
+- comparator_4bit
+
+Inputs:
+- a[3:0]  // First 4-bit input
+- b[3:0]  // Second 4-bit input
+
+Outputs:
+- gt     // '1' if a > b
+- eq     // '1' if a == b
+- lt     // '1' if a < b
+
+Design Signature:
+module comparator_4bit(input [3:0] a, input [3:0] b, output gt, eq, lt);
+
+Design Notes:
+- comparator_4bit compares a and b directly using logic expressions or case structure.
+- Ensure outputs are mutually exclusive.

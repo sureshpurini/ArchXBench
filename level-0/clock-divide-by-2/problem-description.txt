@@ -1,0 +1,19 @@
+Title: Clock Divider (Fixed Divide-by-2)
+
+Objective:
+Design a simple synchronous clock divider that divides the input clock frequency by 2. This is a fixed-ratio divider with no runtime configuration and is commonly used in generating timing signals or reducing clock rates for slower components.
+
+Background:
+Divide-by-2 circuits are the simplest form of clock division and are often implemented using a T flip-flop or a D flip-flop with toggle logic. They are essential for basic frequency scaling in synchronous digital systems.
+
+Design Constraints:
+- Divide ratio is fixed at 2:1 (output frequency = input frequency ÷ 2).
+- Must use synchronous logic, triggered on the rising edge of the input clock.
+- Synchronous active-high reset must be supported.
+- Output waveform must be a clean square wave with 50% duty cycle.
+
+Performance Expectation:
+Ultra-low resource usage and minimal logic delay. The module should act as a clean toggle flip-flop.
+
+Deliverables:
+- A Verilog  module for divide-by-2 clock.

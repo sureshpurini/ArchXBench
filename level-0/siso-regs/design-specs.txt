@@ -1,0 +1,26 @@
+Design Name: siso_8bit
+Module Name:
+- siso_8bit
+
+Inputs:
+- clk      // Clock input
+- rst      // Synchronous reset (active high)
+- sin      // Serial input
+
+Outputs:
+- sout     // Serial output
+
+Design Signature:
+
+module siso_8bit(
+    input clk,
+    input rst,
+    input sin,
+    output sout
+);
+
+Design Notes:
+- Implement using an 8-bit shift register.
+- Shift data serially on each clock cycle.
+- Output the serial bit (LSB or MSB as defined by shift direction).
+- Support synchronous reset to clear the register.

@@ -1,0 +1,33 @@
+Design Name: demux_1to4
+Module Name:
+- demux_1to4
+
+Inputs:
+- din     // 1-bit data input
+- sel     // 2-bit select input
+
+Outputs:
+- out0    // Output active when sel = 2'b00
+- out1    // Output active when sel = 2'b01
+- out2    // Output active when sel = 2'b10
+- out3    // Output active when sel = 2'b11
+
+Design Signature:
+
+// 1-to-4 Demultiplexer using 1-to-2 instances
+module demux_1to4 (
+    input  din,
+    input  [1:0] sel,
+    output out0,
+    output out1,
+    output out2,
+    output out3
+);
+
+Design Notes:
+- Use two stages of demux_1to2:
+    • First demux splits din based on sel[1]
+    • Second stage consists of two demux_1to2 blocks for sel[0]
+    • Route outputs of stage 1 into stage 2, producing 4 total outputs
+- Ensure proper wiring of select signals for correct hierarchical demultiplexing.
+- Maintain structural design (no behavioral case/select constructs).
