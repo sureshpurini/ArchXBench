@@ -1,0 +1,25 @@
+Title: Shift-and-Add Integer Multiplier
+
+Objective:
+Design a hardware module that multiplies two unsigned integers using the **shift-and-add** algorithm. The multiplier should use a **sequential datapath**, computing the result bit by bit over multiple cycles. This design trades off performance for area, serving as a reference for performance-optimized multipliers such as Wallace Tree or Booth multipliers.
+
+Background:
+The shift-and-add algorithm multiplies the multiplicand `A` by each bit of the multiplier `B`, conditionally adding `A` to the result if the bit is 1, and then shifting `A` left and `B` right in each iteration. This technique is also known as a **bit-serial multiplier** and is fundamental in teaching datapath design and control FSM integration.
+
+Design Constraints:
+- Inputs: two `N`-bit unsigned integers `A` and `B`
+- Output: `2N`-bit product
+- Use a sequential design: 1 bit processed per clock cycle
+- Use internal registers for `A`, `B`, `Product`, and `Counter`
+- Latency = `N` cycles
+- Support start signal, valid signal, and done flag
+
+Performance Expectation:
+Latency = N cycles (e.g., 16 for 16-bit, 32 for 32-bit)  
+Throughput = 1 result per N cycles  
+Very small area; ideal for area-constrained designs
+
+Deliverables:
+- Verilog implementation of shift-and-add multiplier
+- FSM controller to sequence iterations
+- Testbench for functional and edge-case verification

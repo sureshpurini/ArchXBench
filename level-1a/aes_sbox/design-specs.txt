@@ -1,0 +1,20 @@
+Design Name: aes_sbox  
+Module Name: aes_sbox
+
+Inputs:
+- byte_in[7:0]                 // Input byte
+
+Outputs:
+- byte_out[7:0]                // AES S-Box substituted output
+
+Parameters:
+- IMPL = "LUT"                 // "LUT" or "LOGIC" for implementation mode
+
+Design Signature:
+
+module aes_sbox #(
+    parameter IMPL = "LUT"
+) (
+    input [7:0] byte_in,
+    output [7:0] byte_out
+);

@@ -1,0 +1,22 @@
+Design Name: gf256_multiplier_aes  
+Module Name: gf256_mult
+
+Inputs:
+- a[7:0]                      // Byte operand in GF(2⁸)
+- b[7:0]                      // Constant multiplier in GF(2⁸) (0x01–0x0e)
+
+Outputs:
+- result[7:0]                 // Result of a × b mod 0x11B in GF(2⁸)
+
+Parameters:
+- MODE = "GENERIC"            // "GENERIC" (general mult) or "AES_CONST" (optimized for 0x02, 0x03, etc.)
+
+Design Signature:
+
+module gf256_mult #(
+    parameter MODE = "GENERIC"
+) (
+    input [7:0] a,
+    input [7:0] b,
+    output [7:0] result
+);

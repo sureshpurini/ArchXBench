@@ -1,0 +1,26 @@
+Title: GF(2⁸) Field Multiplier for AES MixColumns Operation
+
+Objective:
+Design a hardware module that performs multiplication of two elements in the **Galois Field GF(2⁸)** using an irreducible polynomial specified by the AES standard. The multiplier must support constant multipliers such as 0x01, 0x02, 0x03, 0x09, 0x0b, 0x0d, and 0x0e used in the **AES MixColumns matrix multiplication**. The result must be reduced modulo the AES irreducible polynomial:
+\[
+m(x) = x^8 + x^4 + x^3 + x + 1 \quad \text{(0x11B)}
+\]
+
+Background:
+In the AES MixColumns step, each byte of the state matrix is multiplied by a fixed polynomial matrix over GF(2⁸). Multiplication is defined as bitwise modular polynomial multiplication over the field defined by the irreducible polynomial \( m(x) \). This module is often optimized for the common constants used in MixColumns.
+
+Design Constraints:
+- Operand A: variable byte input (multiplicand)
+- Operand B: constant byte multiplier (e.g., 0x02, 0x03, etc.)
+- Multiplication performed using modular polynomial arithmetic
+- Support for synthesis-friendly, constant-time logic
+- No table lookup (unless explicitly allowed)
+- Optional: parameterized version for general multiplication in GF(2⁸)
+
+Performance Expectation:
+Fully combinational implementation is preferred for integration into round logic. Latency = 1 cycle. Area-efficient design optimized for constants used in AES is encouraged.
+
+Deliverables:
+- Verilog implementation of GF(2⁸) multiplier with AES reduction
+- Constant multiplier versions for 0x02 and 0x03 (used in AES encryption)
+- Testbench comparing results against software/lookup implementations

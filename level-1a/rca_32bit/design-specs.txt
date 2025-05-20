@@ -1,0 +1,27 @@
+Design Name: rca_32bit
+Module Name: rca_32bit
+
+Inputs:
+- a[31:0]   // First 32-bit operand
+- b[31:0]   // Second 32-bit operand
+- cin       // Carry-in bit (1-bit)
+
+Outputs:
+- sum[31:0] // 32-bit sum output
+- cout      // Carry-out bit (1-bit)
+
+Design Signature:
+    module rca_32bit (
+        input  [31:0] a,
+        input  [31:0] b,
+        input         cin,
+        output [31:0] sum,
+        output        cout
+    );
+
+Design Notes:
+- The design should instantiate 32 full adder units (or their logic equivalent).
+- The carry-out of each adder must feed into the next stage in order.
+- Final carry-out should be connected to the output port `cout`.
+- All logic should be synthesizable and suitable for FPGA or ASIC mapping.
+

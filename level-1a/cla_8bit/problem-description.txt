@@ -1,0 +1,27 @@
+Title: 8-bit Carry Look-Ahead Adder (CLA)
+
+Objective:
+Design an **8-bit Carry Look-Ahead Adder** that computes the sum and carry-out of two 8-bit unsigned integers and an optional carry-in. The design must implement **generate** and **propagate** signals to compute all carry bits in parallel, thereby minimizing addition delay compared to Ripple Carry Adders.
+
+Background:
+CLA improves on RCA by eliminating the need for sequential carry propagation. It uses:
+- **Generate**: \( G_i = A_i \cdot B_i \)
+- **Propagate**: \( P_i = A_i \oplus B_i \)
+- **Carry equations** for all bits in terms of \( G \) and \( P \) and carry-in.
+
+This design demonstrates **parallel prefix carry logic**, which is foundational for more advanced adders like Brent-Kung and Kogge-Stone.
+
+Design Constraints:
+- Input operands: 8-bit unsigned integers `A` and `B`
+- Optional carry-in input `cin`
+- Outputs: 8-bit sum and final carry-out
+- Must compute all carries using look-ahead logic (no rippling)
+- Combinational design with minimal delay
+
+Performance Expectation:
+Latency: 2–3 logic levels for carry computation  
+Throughput: 1 result per clock cycle if registered at output
+
+Deliverables:
+- Verilog implementation of 8-bit CLA using generate/propagate logic
+- Testbench covering edge cases like carry-in, all 1s, alternating bit patterns

@@ -1,0 +1,30 @@
+Design Name:
+- barrel_shifter
+
+Module Name:
+- barrel_shifter
+
+Inputs:
+- data [n-1:0]: The input data word to be shifted (n-bit width).
+- shamt [m-1:0]: The shift amount control signal, where m = ceil(log2(n)); determines how many bit positions to shift.
+- dir: Direction control signal; typically 0 indicates a left shift and 1 indicates a right shift.
+- (Optional) arith: (1-bit) When performing a right shift, this signal indicates whether the shift should be arithmetic (if set) or logical (if not set).
+
+Outputs:
+- out [n-1:0]: The shifted output data, preserving the bit-width of the input.
+
+Design Signature:
+module barrel_shifter(
+    input [n-1:0] data,
+    input [m-1:0] shamt,
+    input dir,
+    input arith, // Optional: used when performing right arithmetic shifts
+    output [n-1:0] out
+);
+
+Design Notes:
+- The design should be implemented as a combinational circuit to allow for a single-cycle shift operation.
+- Use a series of multiplexers arranged in a logarithmic structure to enable the selection of shifted bits based on the value of shamt.
+- For a left shift, the vacant positions are typically filled with zeros; for a right shift, the fill pattern depends on the shift type: zeros for logical shift or sign extension for arithmetic shift.
+- The module should be fully parameterized to handle different data widths and corresponding shift amounts, allowing for reuse in various applications.
+- Consideration should be given to optimizing for low propagation delay, ensuring high-speed operation in critical paths.

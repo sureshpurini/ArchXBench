@@ -1,0 +1,27 @@
+Title:
+- Barrel Shifter
+
+Objective:
+- The goal is to design and implement a Barrel Shifter module capable of shifting an input data word by an arbitrary number of positions in a single operation.
+- The module should compute the shifted output for either left or right shift directions (and optionally support arithmetic right shifting), based on a control signal.
+
+Background:
+- Barrel shifters are key components in digital systems and ALUs where fast data manipulation is required.
+- They allow for efficient computation of shifts without the multiple clock cycles that sequential shifting might need.
+- The ability to perform a single-cycle shift operation makes barrel shifters indispensable in high-performance systems, including processors and signal processing units.
+
+Design Constraints:
+- The design should be parameterizable in terms of data bit-width and the shift amount control width.
+- It must support both shift directions (left and right), with an optional mode for arithmetic right shifting if signed operations are required.
+- The implementation is expected to be combinational to achieve single-cycle operation, though a sequential version may be considered if resource constraints necessitate.
+- Architectural restrictions include minimal propagation delay and efficient hardware utilization for high-speed operation.
+
+Performance Expectation:
+- The design should ensure fast, combinational operation, achieving single-cycle performance with minimal logic delay.
+- Trade-offs between area (resource usage) and speed must be considered, ensuring the module meets timing requirements in high-frequency designs.
+- Power consumption should be minimized by optimizing the logic for low-switching activity.
+
+Deliverables:
+- A synthesizable HDL module (Verilog/VHDL) that implements the Barrel Shifter.
+- A comprehensive testbench that validates the functionality across various scenarios, including edge cases.
+- Simulation and synthesis reports documenting performance metrics (timing, area, and power consumption).

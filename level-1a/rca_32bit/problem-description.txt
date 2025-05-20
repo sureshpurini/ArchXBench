@@ -1,0 +1,21 @@
+Title: 32-bit Ripple Carry Adder (RCA)
+
+Objective:
+Design a 32-bit Ripple Carry Adder that takes two 32-bit binary numbers and a carry-in as input, and produces a 32-bit sum and a carry-out as output. The design should be fully combinational, and demonstrate how carries are propagated sequentially from the least significant bit (LSB) to the most significant bit (MSB).
+
+Background:
+The Ripple Carry Adder is one of the simplest forms of binary addition circuits. It consists of a chain of full adders, where each full adder computes one bit of the result and passes its carry to the next stage. Despite its simplicity, it suffers from linear carry propagation delay, which limits its performance for wider bit-widths.
+
+Design Constraints:
+- No pipelining or clocking; purely combinational logic.
+- All carry propagation must follow a ripple model — no lookahead logic.
+- Sum and carry-out must be computed in a single evaluation pass.
+
+Performance Expectation:
+Due to its linear nature, this design is not optimal in terms of speed, but serves as a baseline implementation for area and logical simplicity in comparison with other adders like CLA or Kogge-Stone.
+
+Deliverables:
+- Verilog or VHDL implementation of the adder.
+- Testbench with sample inputs.
+- Synthesis report (if available).
+

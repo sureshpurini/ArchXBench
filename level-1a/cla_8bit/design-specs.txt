@@ -1,0 +1,31 @@
+Design Name:
+  cla_8bit
+
+Module Name:
+  cla_8bit
+
+Inputs:
+  - A [7:0]: 8-bit operand A.
+  - B [7:0]: 8-bit operand B.
+  - Cin (1-bit): Initial carry-in input for the least significant bit.
+
+Outputs:
+  - Sum [7:0]: 8-bit sum output of A + B + Cin.
+  - Cout (1-bit): Final carry-out after the addition.
+
+Design Signature:
+  module cla_8bit (
+      input  [7:0] A,
+      input  [7:0] B,
+      input        Cin,
+      output [7:0] Sum,
+      output       Cout
+  );
+
+Design Notes:
+  - The design uses a carry look-ahead logic approach to accelerate carry generation and reduce delay.
+  - It precomputes carry signals using generate (G) and propagate (P) terms for each bit position.
+  - Carry signals (C1 to C7) are derived using Boolean expressions based on G and P values, reducing carry propagation delay.
+  - The CLA logic can be implemented either hierarchically (e.g., with a 4-bit CLA unit) or as a flat 8-bit unit.
+  - No clocking or sequential logic is used — the design is fully combinational.
+  - Improves performance over ripple carry adder at the cost of increased logic complexity and area.
