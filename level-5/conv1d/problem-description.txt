@@ -1,0 +1,23 @@
+Title: 1D Convolution (e.g., Gaussian / Edge-Detect) — Streaming Filter Pipeline
+
+Objective:
+Design a parameterizable streaming hardware accelerator to perform 1-D convolution on serial data such as audio, sensor streams, or video scan-lines. The filter must support fixed or programmable kernels (e.g., 1×3, 1×5, 1×7 Gaussian or derivative masks) and deliver one output sample per clock after pipeline fill, using a shift-register stencil window.
+
+Background:
+Convolution is a fundamental building block in digital signal processing. 1-D kernels are widely used for smoothing, differentiation, and feature extraction in time-series data. A hardware pipeline exploits temporal locality by re-using samples already stored in shift registers, enabling high-throughput and low-latency operation.
+
+Design Constraints:
+- Input: serial 1-D vector stream (one sample per clock).
+- Kernel: fixed or programmable; odd length from 3 – 7 taps.
+- Arithmetic: fixed-point (configurable width) with optional floating-point mode.
+- Throughput: 1 sample/clock once the pipeline is full.
+- Edge handling: selectable zero-padding, mirror-padding, or wrap-around.
+- Coefficients may be hard-coded or loaded at run-time through a config port.
+
+Performance Expectation:
+After an initial latency of `(KERNEL_SIZE-1)` cycles, the accelerator must present one filtered sample every clock. Latency and resource usage scale with kernel size and datapath width.
+
+Deliverables:
+- Verilog (or HLS) implementation of the conv1d module.
+- Separate, reusable shift-register window generator if practical.
+- Self-checking testbench with synthetic inputs (impulse, step, sine, pseudorandom noise).

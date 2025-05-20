@@ -1,0 +1,42 @@
+Design Name: conv2d_streaming
+Module Name: conv2d
+
+Inputs:
+- clk                         // Clock signal
+- rst                         // Synchronous reset (active-high)
+- valid_in                    // Input-pixel valid
+- pixel_in[DATA_W-1:0]        // Serial image pixel stream (raster order)
+
+Outputs:
+- valid_out                   // Output-pixel valid
+- pixel_out[DATA_W+GAIN_W-1:0]// Convolved pixel (extended width)
+
+Parameters:
+- DATA_W      = 8                       // Bit width of input pixel
+- IMG_WIDTH   = 64                      // Image line length (pixels)
+- KERNEL_SIZE = 3                       // Odd kernel dimension (3–7)
+- GAIN_W      = 4                       // Bit growth to avoid overflow
+- COEFFS[KERNEL_SIZE*KERNEL_SIZE]       // Flattened 2-D kernel coefficients
+
+Design Signature:
+
+module conv2d #(
+    parameter DATA_W      = 8,
+    parameter IMG_WIDTH   = 64,
+    parameter KERNEL_SIZE = 3,
+    parameter GAIN_W      = 4
+) (
+    input                       clk,
+    input                       rst,
+    input                       valid_in,
+    input      [DATA_W-1:0]     pixel_in,
+    output                      valid_out,
+    output     [DATA_W+GAIN_W-1:0] pixel_out
+);
+
+Design Notes:
+- Use **(KERNEL_SIZE-1) line buffers** (single-port RAM or shift-register FIFO) plus a pixel shift register to assemble the 2-D window.
+- Implement the convolution as a **matrix-vector dot product** every cycle once the window is valid.
+- Accumulate in a register of width `DATA_W+GAIN_W+⌈log2(KERNEL_SIZE²)⌉` before optional rounding.
+- Provide **image-width parameterization** to support arbitrary resolutions; wrap or stall logic maintains correct line-buffer addressing.
+- Padding handled by injecting zeros or replicated border pixels during the first/last `(KERNEL_SIZE-1)/2` lines and columns.

@@ -1,0 +1,39 @@
+Design Name: conv1d_streaming
+Module Name: conv1d
+
+Inputs:
+- clk                         // Clock signal
+- rst                         // Synchronous reset (active-high)
+- valid_in                    // Input-sample valid
+- data_in[DATA_W-1:0]         // Serial input sample stream
+
+Outputs:
+- valid_out                   // Output-sample valid
+- data_out[DATA_W+GAIN_W-1:0] // Convolved sample (extended width)
+
+Parameters:
+- DATA_W      = 8                     // Bit width of input sample
+- KERNEL_SIZE = 3                     // Odd kernel length (3–7)
+- GAIN_W      = 4                     // Bit growth to avoid overflow
+- COEFFS[KERNEL_SIZE]                 // 1-D kernel coefficients
+
+Design Signature:
+
+module conv1d #(
+    parameter DATA_W      = 8,
+    parameter KERNEL_SIZE = 5,
+    parameter GAIN_W      = 4
+) (
+    input                       clk,
+    input                       rst,
+    input                       valid_in,
+    input      [DATA_W-1:0]     data_in,
+    output                      valid_out,
+    output     [DATA_W+GAIN_W-1:0] data_out
+);
+
+Design Notes:
+- Employ a **shift-register tap chain** of length `KERNEL_SIZE` to form the sliding window.
+- Multiply–accumulate with **sign-extended** coefficients; accumulate in `DATA_W+GAIN_W+⌈log2(KERNEL_SIZE)⌉` bits, then truncate/round.
+- Optional runtime coefficient loading via a separate configuration interface.
+- Provide an enable signal for power gating during idle periods.
