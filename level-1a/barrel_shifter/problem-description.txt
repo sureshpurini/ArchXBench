@@ -23,5 +23,3 @@ Performance Expectation:
 
 Deliverables:
 - A synthesizable HDL module (Verilog/VHDL) that implements the Barrel Shifter.
-- A comprehensive testbench that validates the functionality across various scenarios, including edge cases.
-- Simulation and synthesis reports documenting performance metrics (timing, area, and power consumption).

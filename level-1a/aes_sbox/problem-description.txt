@@ -22,5 +22,3 @@ Logic-optimized version: may use 2–3 cycles or pipelined stages, but reduced a
 Deliverables:
 - Verilog implementation of S-Box:
   • LUT version using case or ROM
-  • Optional logic-optimized version
-- Testbench that checks all 256 S-Box values

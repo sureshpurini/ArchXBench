@@ -21,5 +21,3 @@ Very small area; ideal for area-constrained designs
 
 Deliverables:
 - Verilog implementation of shift-and-add multiplier
-- FSM controller to sequence iterations
-- Testbench for functional and edge-case verification

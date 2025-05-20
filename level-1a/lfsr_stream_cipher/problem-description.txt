@@ -23,5 +23,3 @@ Performance Expectation:
 
 Deliverables:
 - A synthesizable HDL module (Verilog/VHDL) implementing the LFSR for stream cipher primitives.
-- A comprehensive testbench covering initialization, normal operation, and edge cases (such as all-zero input states).
-- Simulation and synthesis reports detailing timing, area, power consumption, and quality of pseudorandom output.

@@ -24,4 +24,3 @@ Throughput: 1 result per clock cycle if registered at output
 
 Deliverables:
 - Verilog implementation of 8-bit CLA using generate/propagate logic
-- Testbench covering edge cases like carry-in, all 1s, alternating bit patterns

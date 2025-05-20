@@ -16,6 +16,4 @@ Due to its linear nature, this design is not optimal in terms of speed, but serv
 
 Deliverables:
 - Verilog or VHDL implementation of the adder.
-- Testbench with sample inputs.
-- Synthesis report (if available).
 

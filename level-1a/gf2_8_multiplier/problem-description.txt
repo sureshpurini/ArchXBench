@@ -23,4 +23,3 @@ Fully combinational implementation is preferred for integration into round logic
 Deliverables:
 - Verilog implementation of GF(2⁸) multiplier with AES reduction
 - Constant multiplier versions for 0x02 and 0x03 (used in AES encryption)
-- Testbench comparing results against software/lookup implementations
