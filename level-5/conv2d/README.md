@@ -6,7 +6,7 @@
 
 ![conv2d](scripts/resources/Figure_1.png)
 
-The input image is of dimensions `64x64`. A `3x3` kernel is applied on the image with zero-padding. The kernel used is $\begin{bmatrix} 1 & 2 & 1 \\ 2 & 4 & 2 \\ 1& 2& 1\end{bmatrix}$.
+The input image is of dimensions `64x64`. A `3x3` kernel is applied on the image with zero-padding. The kernel used is $`\begin{bmatrix} 1 & 2 & 1 \\ 2 & 4 & 2 \\ 1 & 2 & 1 \end{bmatrix}`$.
 
 ## Comparing outputs
 
