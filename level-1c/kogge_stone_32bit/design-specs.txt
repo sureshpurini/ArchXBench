@@ -1,0 +1,32 @@
+Design Name:
+  ksa_32bit
+
+Module Name:
+  ksa_32bit
+
+Inputs:
+  - A [31:0]: 32-bit operand A.
+  - B [31:0]: 32-bit operand B.
+  - Cin (1-bit): Initial carry-in signal (typically set to 0).
+
+Outputs:
+  - Sum [31:0]: 32-bit sum output of A + B + Cin.
+  - Cout (1-bit): Final carry-out after the addition.
+
+Design Signature:
+  module ksa_32bit (
+      input  [31:0] A,
+      input  [31:0] B,
+      input         Cin,
+      output [31:0] Sum,
+      output        Cout
+  );
+
+Design Notes:
+  - Implements a parallel prefix adder based on the Kogge-Stone architecture.
+  - Uses generate (G) and propagate (P) terms to compute carries in logarithmic time.
+  - Organized in log2(N) stages with increasing group sizes for fast carry computation.
+  - Each stage performs prefix operations using black and gray cells to propagate carry.
+  - Very high-speed design suitable for timing-critical arithmetic units, though more complex and area-intensive.
+  - The initial stage computes bitwise G and P; intermediate stages perform prefix operations; final stage computes sum bits.
+  - Fully combinational and synthesizable; no clock signals involved.

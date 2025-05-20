@@ -1,0 +1,44 @@
+Title: Configurable Parallel Shift-and-Add Integer Multiplier
+
+Objective:
+Design a hardware module that performs multiplication of two integers using a **parallel shift-and-add method**, where the degree of parallelism is parameterizable. The design should support processing multiple bits per cycle through parallel shift-add operations, allowing designers to trade off between hardware resources and computation speed.
+
+Background:
+The traditional shift-and-add algorithm processes one bit of the multiplier per cycle. This design extends the concept by processing multiple bits simultaneously, reducing the total number of cycles required for multiplication. Key features:
+- Process PARALLEL_OPS bits of the multiplier per cycle
+- Each parallel operation performs conditional addition based on its corresponding multiplier bit
+- Accumulator width and shifting logic scale with the parallelism parameter
+
+Design Constraints:
+- Inputs: two operands `A` and `B`, with configurable bit width
+- Control: multiplication begins on `start` signal and completes after `WIDTH/PARALLEL_OPS` cycles
+- Parameterized parallelism: `PARALLEL_OPS` controls how many bits are processed per cycle
+- Supports both **unsigned** and **signed** operation (via control signal or parameter)
+- FSM-based controller to sequence the computation
+- Multiple parallel adders and shift logic for concurrent operations
+
+Key Parameters:
+- `WIDTH`: Bit width of input operands (e.g., 8, 16, 32)
+- `PARALLEL_OPS`: Number of shift-add operations performed per cycle (must be power of 2)
+- `SIGNED`: Support for signed arithmetic (0=unsigned, 1=signed)
+
+Performance Characteristics:
+- Latency = WIDTH/PARALLEL_OPS cycles
+- Throughput = 1 result per (WIDTH/PARALLEL_OPS) cycles
+- Area scales with PARALLEL_OPS (more adders and logic for higher parallelism)
+- Critical path length increases with PARALLEL_OPS due to cascaded additions
+
+Design Trade-offs:
+- PARALLEL_OPS = 1: Minimum area, maximum latency (serial operation)
+- PARALLEL_OPS = 2: 2x area, 2x speedup
+- PARALLEL_OPS = 4: 4x area, 4x speedup
+- PARALLEL_OPS = WIDTH: Maximum area, minimum latency (fully parallel)
+
+Implementation Requirements:
+- Conditional logic to handle different PARALLEL_OPS values
+- Efficient accumulator design that supports parallel additions
+- Proper handling of carry propagation across parallel operations
+- Sign extension logic for signed multiplication mode
+
+Deliverables:
+- Verilog implementation of the configurable parallel shift-and-add multiplier

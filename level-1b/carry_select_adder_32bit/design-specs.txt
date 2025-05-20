@@ -1,0 +1,30 @@
+Design Name:
+- carry_select_adder_32bit
+
+Module Name:
+- carry_select_adder_32bit
+
+Inputs:
+- A [31:0]: The first 32-bit input operand.
+- B [31:0]: The second 32-bit input operand.
+- cin: A 1-bit initial carry input to the adder.
+
+Outputs:
+- sum [31:0]: The 32-bit result of the addition.
+- cout: A 1-bit final carry-out from the last 4-bit block.
+
+Design Signature:
+module carry_select_adder_32bit(
+    input [31:0] A,
+    input [31:0] B,
+    input cin,
+    output [31:0] sum,
+    output cout
+);
+
+Design Notes:
+- The overall 32-bit adder is divided into eight 4-bit blocks. Each block precomputes two possible outcomes—one with carry-in assumed as 0 and one with carry-in assumed as 1.
+- A multiplexer is used in each block to select the correct sum and carry-out based on the actual carry input generated from the preceding block.
+- The design must optimize the selection path to reduce overall propagation delay, ensuring that the precomputed values are available in time to support high-speed operation.
+- Parameterization is recommended to allow for potential modifications such as adjusting the block size for different performance or area requirements.
+- Special attention should be given to proper interfacing of the first block (using the external cin) and the final carry output (cout), ensuring robust and error-free operation across all possible input combinations.

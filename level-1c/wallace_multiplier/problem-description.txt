@@ -1,0 +1,28 @@
+Title: Wallace Tree Multiplier
+
+Objective:
+Design a **Wallace Tree multiplier** to multiply two `N`-bit unsigned integers. The multiplier must:
+- Generate all partial products in parallel
+- Reduce them using layers of **carry-save adders (CSAs)**
+- Complete the operation with a **final carry-propagate adder (CPA)**
+
+This design should be fully combinational and optimized for speed by minimizing the critical path using a tree-like reduction structure.
+
+Background:
+The Wallace Tree multiplier improves multiplication speed by reducing partial products as early as possible in a parallel fashion. It differs from the array multiplier in that it uses **logarithmic levels of CSA reductions**, which reduces the critical path and increases performance.
+
+Design Constraints:
+- Input operands: two `N`-bit unsigned integers
+- Output: 2N-bit product
+- Fully combinational datapath (no sequential elements)
+- Use layers of full and half adders to reduce bit-columns
+- Final CPA (e.g., ripple carry or carry lookahead) to sum the last two rows
+
+Performance Expectation:
+Latency: ~log₃(N) stages of CSA + CPA delay  
+Throughput: 1 result per cycle in a pipelined wrapper  
+Area: more than shift-and-add but significantly faster
+
+Deliverables:
+- Verilog implementation of Wallace Tree multiplier
+- Internal modular structure for partial product generation, CSA stages, and CPA

@@ -1,0 +1,34 @@
+Design Name:
+  bka_32bit
+
+Module Name:
+  bka_32bit
+
+Inputs:
+  - A [31:0]: 32-bit operand A.
+  - B [31:0]: 32-bit operand B.
+  - Cin (1-bit): Initial carry-in input (typically 0).
+
+Outputs:
+  - Sum [31:0]: 32-bit sum output of A + B + Cin.
+  - Cout (1-bit): Final carry-out of the addition.
+
+Design Signature:
+  module bka_32bit (
+      input  [31:0] A,
+      input  [31:0] B,
+      input         Cin,
+      output [31:0] Sum,
+      output        Cout
+  );
+
+Design Notes:
+  - This design implements a parallel prefix adder using the Brent-Kung topology.
+  - The Brent-Kung Adder is a type of logarithmic-time adder that uses a balanced approach to carry computation.
+  - Uses generate (G) and propagate (P) signals for each bit to calculate carry bits in a tree-structured network.
+  - Brent-Kung offers a good trade-off between performance (O(log₂N) delay) and resource usage (fewer logic gates than Kogge-Stone).
+  - Comprises three stages: 
+    1. Preprocessing (computes G and P for each bit),
+    2. Prefix tree (propagates carries efficiently),
+    3. Postprocessing (computes sum).
+  - Fully combinational, synthesizable SystemVerilog design with no clocking logic.

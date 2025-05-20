@@ -1,0 +1,25 @@
+Title:
+- 32-bit Carry Skip Adder with 4-bit Carry Skip Blocks
+
+Objective:
+- The goal is to design and implement a 32-bit adder that utilizes carry skip architecture by dividing the overall addition into eight 4-bit blocks.
+- Each block employs carry-skip logic to quickly propagate the carry when all bits within the block indicate a propagation condition, thereby reducing overall delay.
+
+Background:
+- Carry Skip Adders are designed to improve on the propagation delay of simple ripple carry adders by allowing the carry signal to bypass entire blocks of bits when the propagate condition is met.
+- This approach balances performance and hardware complexity by avoiding the full overhead of carry-lookahead logic while still achieving faster computation than a basic ripple carry structure.
+- Such adders find applications in high-speed arithmetic units where moderate design complexity and improved speed are desired.
+
+Design Constraints:
+- The design must partition the 32-bit addition into eight 4-bit blocks, with each block capable of generating a propagate signal indicating that a carry input will directly appear at its output.
+- The internal skip logic should decide whether to pass the incoming carry to the next block directly, based on the collective propagate condition of the block.
+- The circuit can be implemented as a combinational design, though timing constraints between blocks must be carefully managed to ensure minimal delay.
+- The design should document any assumptions regarding propagation conditions, wire delays, and gate-level implementation details.
+
+Performance Expectation:
+- The combined use of 4-bit carry skip blocks is expected to offer reduced propagation delay compared to a simple ripple carry adder.
+- Performance should be optimized for speed, while maintaining acceptable area and power consumption.
+- The design should reliably produce correct results for all 32-bit input combinations, with timing characteristics that validate its high-speed operation in target applications.
+
+Deliverables:
+- A synthesizable HDL module (Verilog/VHDL) implementing a 32-bit Carry Skip Adder with integrated 4-bit carry skip blocks.

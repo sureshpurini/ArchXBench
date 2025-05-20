@@ -1,0 +1,40 @@
+Title: Constant Divider via Multiplication
+
+Objective:
+Design a hardware module that performs **division by a constant** using **multiplication by a precomputed reciprocal**, followed by bit-shifting and rounding to obtain the correct quotient. The divider must be optimized for speed and should not include general-purpose division logic.
+
+Background:
+When dividing by a constant `D`, instead of computing:
+\[
+Q = \left\lfloor \frac{N}{D} \right\rfloor
+\]
+we use:
+\[
+Q = \left\lfloor \frac{N \cdot M}{2^k} \right\rfloor
+\]
+where `M` and `k` are computed offline such that:
+\[
+\frac{M}{2^k} \approx \frac{1}{D}
+\]
+This avoids division entirely, using only **multiplication and shifting**.
+
+This method is suitable for applications like:
+- Fixed-point DSP processing
+- Graphics pipelines
+- Address or index scaling in loop optimizations
+
+Design Constraints:
+- The divisor `D` is constant and known at synthesis time
+- Use precomputed values of multiplier `M` and shift amount `k`
+- Inputs: unsigned `N`-bit numerator
+- Output: quotient as integer division result
+- Fully combinational or 1-cycle pipelined implementation
+
+Performance Expectation:
+Latency: 1 cycle (combinational)  
+Throughput: 1 quotient per cycle  
+Area: one multiplier + shift logic
+
+Deliverables:
+- Verilog implementation of constant divider via multiplication
+- Parameters: `DIVISOR`, `MUL_CONST`, `SHIFT_CONST`

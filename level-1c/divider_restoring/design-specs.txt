@@ -1,0 +1,36 @@
+Design Name: restoring_divider  
+Module Name: restoring_div
+
+Inputs:
+- clk                           // Clock signal
+- rst                           // Active-high reset
+- start                         // Start division
+- dividend[WIDTH-1:0]           // Dividend input
+- divisor[WIDTH-1:0]            // Divisor input
+- valid_in                      // Input valid signal
+
+Outputs:
+- quotient[WIDTH-1:0]           // Quotient output
+- remainder[WIDTH-1:0]          // Remainder output
+- valid_out                     // Output valid
+- done                          // Division complete
+
+Parameters:
+- WIDTH = 16                    // Bit width of inputs
+
+Design Signature:
+
+module restoring_div #(
+    parameter WIDTH = 16
+) (
+    input clk,
+    input rst,
+    input start,
+    input valid_in,
+    input [WIDTH-1:0] dividend,
+    input [WIDTH-1:0] divisor,
+    output [WIDTH-1:0] quotient,
+    output [WIDTH-1:0] remainder,
+    output valid_out,
+    output done
+);

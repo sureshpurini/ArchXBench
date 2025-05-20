@@ -1,0 +1,31 @@
+Design Name:
+- carry_skip_adder_32bit
+
+Module Name:
+- carry_skip_adder_32bit
+
+Inputs:
+- A [31:0]: The first 32-bit operand for the addition.
+- B [31:0]: The second 32-bit operand for the addition.
+- cin: A 1-bit initial carry input to start the addition operation.
+
+Outputs:
+- sum [31:0]: The 32-bit result of the addition.
+- cout: A 1-bit carry-out signal produced by the final 4-bit carry skip block.
+
+Design Signature:
+module carry_skip_adder_32bit(
+    input [31:0] A,
+    input [31:0] B,
+    input cin,
+    output [31:0] sum,
+    output cout
+);
+
+Design Notes:
+- The 32-bit adder is divided into eight 4-bit blocks. Each block computes a 4-bit sum and generates a propagate signal based on the bit-level addition.
+- The propagate signal for each block is used to determine if the incoming carry can be skipped (bypassed) to the next block without waiting for the internal ripple propagation.
+- The skip logic is implemented such that when all bits within a 4-bit block indicate propagation, the block outputs the carry directly to the following stage.
+- Careful design of the skip mechanism is essential to balance the delay across blocks, ensuring that the overall propagation delay is minimized.
+- This design is intended to be combinational; however, the implementation may include additional pipelining if required by the application.
+- Parameterization should be considered to allow adjustment of block sizes or integration of additional features without substantial redesign.

@@ -1,0 +1,26 @@
+Design Name: const_div_mult  
+Module Name: const_div
+
+Inputs:
+- numerator[WIDTH-1:0]          // Numerator input
+
+Outputs:
+- quotient[WIDTH-1:0]           // Quotient output (integer division)
+
+Parameters:
+- WIDTH = 16                    // Bit-width of input
+- DIVISOR = 10                  // Constant divisor
+- MUL_CONST = 6554              // Precomputed multiplier (floor(2^k / D))
+- SHIFT_CONST = 16              // Right shift after multiplication
+
+Design Signature:
+
+module const_div #(
+    parameter WIDTH = 16,
+    parameter DIVISOR = 10,
+    parameter MUL_CONST = 6554,     // e.g., for 2^16 / 10
+    parameter SHIFT_CONST = 16
+) (
+    input  [WIDTH-1:0] numerator,
+    output [WIDTH-1:0] quotient
+);

@@ -1,0 +1,25 @@
+Title:
+- Booth Multiplier
+
+Objective:
+- The goal is to design and implement a Booth multiplier module capable of performing signed multiplication operations.
+- The module should compute the product of two input operands using Booth's algorithm, thereby reducing the number of partial products and overall arithmetic operations.
+
+Background:
+- Booth’s algorithm is an efficient technique for multiplying binary numbers, particularly effective for signed arithmetic.
+- By recoding the multiplier bits and combining similar operations, the algorithm minimizes the number of addition/subtraction cycles required.
+- Multipliers of this type are essential in digital signal processing (DSP) units, microprocessors, and other integrated circuit designs where performance and power efficiency are critical.
+
+Design Constraints:
+- The design should support configurable bit-widths (e.g., 8-bit, 16-bit, etc.) for both operands.
+- It must handle signed arithmetic correctly, including appropriate sign extension.
+- The implementation may be either combinational or sequential; if sequential, it should include a control finite state machine (FSM) to manage the iterative processing steps.
+- Clocking assumptions, timing constraints, and reset behavior must be clearly defined and adhered to for proper integration into larger systems.
+
+Performance Expectation:
+- The design should balance between speed, area, and power consumption.
+- A sequential implementation may target a reduced gate count and lower power at the cost of increased latency, whereas a combinational approach should meet stringent timing requirements.
+- The multiplier must produce correct and precise outputs while optimizing the number of operations through efficient partial product reduction.
+
+Deliverables:
+- A synthesizable HDL module (Verilog/VHDL) implementing the Booth multiplier.

@@ -1,0 +1,62 @@
+Design Name: Dadda Multiplier
+Module Name: dadda_mult
+
+Inputs:
+- A[7:0]                   // First 8-bit operand
+- B[7:0]                   // Second 8-bit operand
+
+Outputs:
+- Y[15:0]                  // 16-bit product result
+
+Parameters:
+None (fixed 8-bit implementation)
+
+Design Signature:
+
+module dadda_mult(
+    input [7:0] A,
+    input [7:0] B,
+    output [15:0] Y
+);
+
+Submodules:
+1. Half Adder (HA)
+   module HA(
+       input a, b,
+       output Sum, Cout
+   );
+
+2. Carry Save Adder (CSA)
+   module csa(
+       input A, B, Cin,
+       output Y, Cout
+   );
+
+Internal Structure:
+- Partial Product Generation: 64 partial products (8×8 matrix)
+- Wire Declarations:
+  - Stage 1: s1[5:0], c1[5:0] (reducing from 8 to 6 rows)
+  - Stage 2: s2[13:0], c2[13:0] (reducing from 6 to 4 rows)
+  - Stage 3: s3[9:0], c3[9:0] (reducing from 4 to 3 rows)
+  - Stage 4: s4[11:0], c4[11:0] (reducing from 3 to 2 rows)
+  - Stage 5: c5[13:0] (final carries for 2 to 1 reduction)
+
+Key Implementation Details:
+1. Partial Product Generation: Computed using bitwise AND operations
+2. Reduction Strategy:
+   - Strategic placement of half adders and carry-save adders
+   - Five-stage reduction following Dadda's height sequence (8→6→4→3→2→1)
+3. Final Output Formation:
+   - LSB (Y[0]) directly assigned from first partial product
+   - Bits Y[1] through Y[14] computed through the reduction stages
+   - MSB (Y[15]) assigned from the final carry
+
+Verification Strategy:
+- Comprehensive testbench covering:
+  - Corner cases (zeros, ones)
+  - Powers of 2
+  - Maximum values (255×255)
+  - Random values
+  - Sequential values
+  - Prime numbers
+- Self-checking with automatic result verification

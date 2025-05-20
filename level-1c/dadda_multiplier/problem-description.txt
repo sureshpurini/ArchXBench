@@ -1,0 +1,39 @@
+Title: 8-bit Dadda Multiplier
+
+Objective:
+Design a Dadda Multiplier that multiplies two 8-bit unsigned integers using:
+- Full parallel partial product generation
+- Five-stage reduction based on Dadda's column-height schedule
+- Final addition to generate a 16-bit product
+
+The goal is to implement an efficient multiplier that minimizes the number of adders while achieving high performance through structured reduction stages.
+
+Background:
+The Dadda multiplier reduces the partial product matrix using a specific column-height reduction sequence (8→6→4→3→2→1 for an 8-bit implementation). It strategically places half adders and full adders to compress the matrix with fewer components than Wallace Tree multipliers, optimizing for both area and speed.
+
+Design Constraints:
+- Input: Two 8-bit unsigned integers (A, B)
+- Output: 16-bit product (Y)
+- Components: 
+  - Half adders (HA) for 2-bit reduction without carry-in
+  - Carry-save adders (CSA) as full adders for 3-bit reduction
+- Structure:
+  - Five reduction stages following Dadda height sequence
+  - Direct assignment for bits that don't require compression
+  - Fully combinational, synthesizable design
+
+Performance Characteristics:
+- Latency: Five reduction stages + final addition
+- Area: Optimized number of adders (8 half adders + 46 full adders)
+- Throughput: One multiplication per clock cycle
+
+Implementation Schedule:
+1. Stage 1: Reduce from 8 to 6 rows (3 HAs + 3 FAs)
+2. Stage 2: Reduce from 6 to 4 rows (2 HAs + 12 FAs)
+3. Stage 3: Reduce from 4 to 3 rows (1 HA + 9 FAs)
+4. Stage 4: Reduce from 3 to 2 rows (1 HA + 11 FAs)
+5. Stage 5: Final reduction from 2 to 1 row (1 HA + 13 FAs)
+
+Deliverables:
+- Verilog implementation of 8-bit Dadda multiplier 
+- Comprehensive testbench covering corner cases and random values 

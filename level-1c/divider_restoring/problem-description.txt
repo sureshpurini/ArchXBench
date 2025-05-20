@@ -1,0 +1,26 @@
+Title: Restoring Integer Divider
+
+Objective:
+Design a hardware module that performs **unsigned integer division** using the **restoring division algorithm**. Given a dividend `A` and divisor `B`, the module must compute the **quotient** and **remainder** using a bit-serial approach over multiple cycles. This benchmark highlights the use of arithmetic shifts and conditional subtraction with a fixed iteration count.
+
+Background:
+The restoring division algorithm is iterative and follows this logic:
+1. Left shift the partial remainder and bring down the next bit of the dividend
+2. Subtract the divisor from the partial remainder
+3. If the result is negative, **restore** the previous value and write a quotient bit of `0`; else, keep the result and write a `1`
+
+Design Constraints:
+- Operands: two `N`-bit unsigned integers (`dividend`, `divisor`)
+- Outputs: `N`-bit quotient and `N`-bit remainder
+- Use internal registers for remainder, quotient, counter
+- Fixed latency: `N` cycles
+- Must include FSM controller for sequencing operations
+
+Performance Expectation:
+Latency = N cycles  
+Throughput = 1 result every N cycles  
+Fully sequential logic, area-efficient
+
+Deliverables:
+- Verilog implementation of restoring divider
+- Clean separation of control (FSM) and datapath

@@ -1,0 +1,28 @@
+Title: 32-bit Brent-Kung Adder (BKA)
+
+Objective:
+Design a **32-bit Brent-Kung Adder** to compute the sum and carry-out of two 32-bit unsigned integers using a **parallel prefix tree** based on the Brent-Kung structure. The adder must optimize trade-offs between delay and area by reducing the number of interconnects compared to more aggressive designs like Kogge-Stone.
+
+Background:
+The Brent-Kung adder builds a carry-lookahead tree with:
+- **Generate (G) and Propagate (P)** signals per bit
+- A **prefix network** with depth log₂(N) + 1 stages
+- Fewer wires and lower fanout per gate, making it ideal for VLSI
+
+Its fanout and area complexity are lower than Kogge-Stone, with slightly increased logic depth—making it a practical high-performance adder.
+
+Design Constraints:
+- Operands: Two 32-bit unsigned integers, plus an optional carry-in
+- Outputs: 32-bit sum and final carry-out
+- Use explicit prefix tree for carry generation
+- Fully combinational design
+- Preferably modular and clean prefix cell logic (black/gray cells)
+
+Performance Expectation:
+Logical depth: ~2·log₂(N) – 1  
+Latency: 6–7 logic levels  
+Throughput: 1 result per cycle if registered at output
+
+Deliverables:
+- Verilog implementation of 32-bit Brent-Kung Adder
+- Modular prefix cells for tree construction

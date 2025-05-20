@@ -1,0 +1,28 @@
+Title: 32-bit Kogge-Stone Adder (KSA)
+
+Objective:
+Design a **32-bit Kogge-Stone Adder** that adds two 32-bit unsigned integers along with a carry-in. The adder must compute all carry bits using a **logarithmic-depth prefix tree**, enabling faster carry propagation than ripple or look-ahead methods. KSA must generate the **sum** and **carry-out** in a fully combinational and pipelined-friendly manner.
+
+Background:
+The Kogge-Stone Adder is a parallel prefix form of carry-lookahead adder that uses:
+- **Generate (G) and Propagate (P)** signals per bit
+- **Prefix computation tree** to compute carries in log₂(N) stages
+- Fast, regular structure suitable for pipelining and layout
+
+KSA has more area and wiring complexity than Brent-Kung but achieves the shortest critical path among prefix adders.
+
+Design Constraints:
+- Input operands: two 32-bit unsigned integers `A` and `B`, and optional `cin`
+- Outputs: 32-bit `sum` and `cout`
+- Must compute carry using prefix tree (no rippling)
+- Fully combinational and synthesizable
+- Tree structure should be explicit and modular
+
+Performance Expectation:
+Logical depth: O(log₂N)  
+Latency: 4–6 stages (depending on implementation)  
+Throughput: 1 sum/cycle if pipelined after prefix levels
+
+Deliverables:
+- Verilog implementation of 32-bit KSA
+- Modular prefix blocks (black and gray cells)

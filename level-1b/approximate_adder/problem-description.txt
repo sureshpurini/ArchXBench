@@ -1,0 +1,23 @@
+Title: Approximate Adder (e.g., Lower-Part OR Adder)
+
+Objective:
+Design a hardware module that implements an **approximate integer adder**, specifically the **Lower-Part OR Adder (LOA)**. The LOA splits the input operands into two parts: an accurate upper part and an approximate lower part. The **lower bits** are computed using **bitwise OR** instead of full addition, significantly reducing logic complexity. This benchmark should support parameterization of operand width and number of approximate bits.
+
+Background:
+Approximate computing reduces power, area, and delay by relaxing exact computation constraints in parts of the circuit. In LOA:
+- The **lower K bits** are added using bitwise OR
+- The **upper (N−K) bits** are added with a regular ripple carry adder
+- No carry propagation from lower to upper part → faster, simpler logic
+
+Design Constraints:
+- Operand bit width `N` and approximation width `K` must be parameterizable
+- Lower `K` bits: computed using OR gates (`a[i] | b[i]`)
+- Upper `N−K` bits: computed using full adder logic, **ignoring carry from lower part**
+- Should support unsigned operands (extension to signed optional)
+
+Performance Expectation:
+Latency = 1 cycle (fully combinational)
+Area is significantly smaller than full adder for large `K`. Delay reduced due to no carry propagation from lower part.
+
+Deliverables:
+- Verilog implementation of parameterized LOA
