@@ -1,0 +1,69 @@
+Design Name: quantized_gemm_with_internal_quantization
+Module Name: qgemm
+
+Overview:
+This module performs quantized matrix multiplication by taking floating-point input matrices A and B, applying quantization internally using learned scale and zero-point parameters, computing the integer GEMM in the quantized domain, and then dequantizing the result to return a floating-point output matrix.
+
+Functional Specification:
+
+Inputs:
+- clk                                 // Clock signal
+- rst                                 // Synchronous reset
+- A_fp[VLEN*K*FP_W-1:0]               // Flattened input matrix A (M×K), in FP32 format
+- B_fp[K*VLEN*FP_W-1:0]               // Flattened input matrix B (K×N), in FP32 format
+- scale_A[SCALE_W-1:0]                // Fixed-point scale for A (Q15)
+- scale_B[SCALE_W-1:0]                // Fixed-point scale for B (Q15)
+- zp_A[QBW-1:0]                       // Zero-point for A
+- zp_B[QBW-1:0]                       // Zero-point for B
+- start                               // Start signal
+
+Outputs:
+- C_fp[VLEN*VLEN*FP_W-1:0]            // Output matrix C (M×N), dequantized back to FP32
+- done                                // Done signal asserted when output is valid
+
+Parameters:
+- VLEN = 8                            // Tile size: M = N = VLEN
+- K = 64                              // Common inner dimension of matrix multiplication
+- FP_W = 32                           // Bit width for floating-point representation
+- QBW = 8                             // Bit width for quantized representation (INT8 or INT4)
+- ACC_W = 32                          // Width for accumulator (INT32)
+- SCALE_W = 16                        // Width for fixed-point scale (Q15)
+- SCALE_Q = 15                        // Number of fractional bits in scale (Q15 format)
+
+Design Behavior:
+1. **Quantization:**
+   - Convert input floating-point values to quantized integers:
+     \[
+     A_q[i][k] = \text{round}\left(\frac{A_{\text{fp}}[i][k]}{\text{scale}_A}\right) + \text{zp}_A
+     \]
+     \[
+     B_q[k][j] = \text{round}\left(\frac{B_{\text{fp}}[k][j]}{\text{scale}_B}\right) + \text{zp}_B
+     \]
+
+2. **Quantized GEMM (integer domain):**
+   - Subtract zero-points and perform dot-product:
+     \[
+     C_{\text{acc}}[i][j] = \sum_{k=0}^{K-1} (A_q[i][k] - \text{zp}_A) \cdot (B_q[k][j] - \text{zp}_B)
+     \]
+
+3. **Dequantization (back to FP32):**
+   - Use combined scaling to convert accumulator to float:
+     \[
+     C_{\text{fp}}[i][j] = \text{scale}_A \cdot \text{scale}_B \cdot C_{\text{acc}}[i][j]
+     \]
+
+Design Notes:
+- Floating-point input values are packed as 32-bit IEEE-754 values.
+- Quantization is done internally using provided scale and zero-point.
+- Fixed-point scale inputs use Q15 format; hardware must convert to float before applying.
+- The output is a dequantized floating-point matrix in FP32 format.
+
+Recommended Extensions:
+- Add support for per-channel scale and zero-point.
+- Add ReLU or clamp as post-processing stages.
+- Enable selection of INT4 as an alternate quantization mode.
+- Support streaming or tiled input matrices via AXI or local SRAM interface.
+
+Testbench and Validation:
+- Provide testbench that applies floating-point values.
+- Compare against a reference Python model that performs float → quantize → GEMM → dequantize.

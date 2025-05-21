@@ -1,0 +1,44 @@
+Title: Quantized Matrix Multiplication with Internal Quantization
+
+Objective:
+Design a matrix multiplication unit that accepts floating-point input matrices A and B, internally quantizes them using learned scale and zero-point values, performs matrix multiplication in the integer domain, and returns a dequantized floating-point output. This pipeline enables power-efficient and memory-efficient computation while maintaining compatibility with pre-trained quantized models.
+
+Background:
+Quantized GEMM is the foundational operation behind efficient deep learning inference on edge devices. Instead of performing costly floating-point operations, inputs are quantized to lower-bitwidth integer representations (e.g., INT8 or INT4), allowing for smaller memory footprint and lower power usage.
+
+This design takes as input floating-point matrices and applies quantization internally:
+
+1. **Quantization:**
+   \[
+   A_q = \text{round}(A_{\text{fp}} / \text{scale}_A) + \text{zp}_A,\quad
+   B_q = \text{round}(B_{\text{fp}} / \text{scale}_B) + \text{zp}_B
+   \]
+
+2. **Integer Matrix Multiplication:**
+   \[
+   C_{\text{acc}} = \sum_k (A_q - \text{zp}_A) \cdot (B_q - \text{zp}_B)
+   \]
+
+3. **Dequantization:**
+   \[
+   C_{\text{fp}} = \text{scale}_A \cdot \text{scale}_B \cdot C_{\text{acc}}
+   \]
+
+By performing all intermediate computation in the integer domain and returning a dequantized output, the module preserves inference accuracy while optimizing for hardware cost.
+
+Design Constraints:
+- Inputs: Floating-point matrices A (M×K), B (K×N), in IEEE-754 FP32 format.
+- Outputs: Floating-point matrix C (M×N), also in FP32.
+- Internal quantization uses Q15 fixed-point scale values and integer zero-points.
+- Internal accumulator uses INT32 for numerical safety.
+
+Performance Expectations:
+- Supports tiling via parameterizable VLEN and K.
+- Uses parallel MAC datapaths and pipelined quantization and accumulation.
+- Suitable for deployment in edge accelerators and embedded inference cores.
+
+Deliverables:
+- Verilog module implementing the above pipeline.
+- Python reference model that matches the flow exactly: float → quantize → GEMM → dequantize.
+- Structured testbench validating against JSON-based stimuli and golden output.
+- Output comparator script that checks against the golden reference with tolerance.
