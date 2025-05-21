@@ -1,0 +1,64 @@
+Design Name:
+- newton_raphson_poly_fixedpoint
+
+Module Name:
+- newton_raphson_poly_fixedpoint
+
+Inputs:
+- x_init [n-1:0]: The initial guess for the polynomial root in fixed-point format (n-bit unsigned, with m fractional bits).
+- coeff0 [n-1:0], coeff1 [n-1:0], coeff2 [n-1:0], coeff3 [n-1:0]: Polynomial coefficients for p(x)=a0 + a1*x + a2*x^2 + coeff3*x^3, provided in fixed-point format.
+- clk: Clock signal (drives the sequential operations).
+- rst: Reset signal (synchronously or asynchronously resets internal state registers).
+- start: Start signal that latches the input x_init and initiates a new computation.
+
+Outputs:
+- root [n-1:0]: The computed root of the polynomial (the value of x such that p(x)≈0), represented in fixed-point format.
+- ready: Status flag indicating that the iterative computation is complete and the root is valid.
+- valid: (Optional) A flag from the verification block indicating that the computed root meets additional user-defined specifications or criteria.
+
+Design Signature:
+module newton_raphson_poly_fixedpoint(
+    input clk,
+    input rst,
+    input start,
+    input [n-1:0] x_init,
+    input [n-1:0] coeff0,
+    input [n-1:0] coeff1,
+    input [n-1:0] coeff2,
+    input [n-1:0] coeff3,
+    output reg [n-1:0] root,
+    output reg ready,
+    output reg valid
+);
+
+Design Notes:
+- The module implements Newton-Raphson’s method to find a real root of the polynomial p(x)=0. The iterative recurrence is:
+      x_next = x - p(x) * inv_p_prime
+  where inv_p_prime is the fixed-point reciprocal of p'(x). For efficient hardware design, the reciprocal can be computed externally or via a dedicated block.
+
+- Polynomial evaluation is performed using Horner's method:
+      p(x) = coeff0 + coeff1*x + coeff2*x^2 + coeff3*x^3
+  Likewise, the derivative is computed as:
+      p'(x) = coeff1 + 2*coeff2*x + 3*coeff3*x^2
+
+- Fixed-point arithmetic is implemented with an n-bit format and m fractional bits (denoted as Qn.m). Extended precision for intermediate results is used to minimize overflow issues.
+
+- The design includes a finite state machine (FSM) with the following states:
+    - IDLE: Waits for the 'start' signal to latch x_init and initialize the computation.
+    - CALC: Iteratively computes p(x) and p'(x), applies the recurrence, and refines the root until convergence or a preset iteration count is reached.
+    - VERIFY: After a candidate root is obtained, a verification block checks whether |p(x)| is within a specified tolerance or meets other design criteria.
+    - DONE: Announces the final root by asserting the 'ready' flag, and sets the 'valid' flag according to the verification result. The design remains in DONE until an external reset is issued.
+
+- Verification Block:
+    - Once the iterative process converges in the CALC state, the candidate root is evaluated in the verification block.
+    - Criteria include ensuring |p(root)| is below a tolerance and any additional user-defined conditions.
+    - The result of these checks determines the setting of the valid flag.
+
+- Multiple Roots Consideration:
+    - Because Newton-Raphson’s method is local, the process will converge to the root nearest to the initial guess. Multiple valid roots require careful selection or additional logic to choose the desired one.
+
+- Parameterization:
+    - The design supports varying bit-widths and even different polynomial degrees, making it easier to integrate into a range of systems.
+
+Updated Revision Note:
+Below are the updated files. In this version, modifications include the use of "<<" (left-shift) operators instead of "<<<" to secure correct scaling and arithmetic operations. Additionally, the Newton update has been refined by introducing a dedicated fixed-point division function using extended-width arithmetic, and the derivative calculation has been updated accordingly. These changes ensure that the iteration progresses correctly rather than stalling at the initial guess, yielding a more accurate Newton–Raphson update.

@@ -1,0 +1,27 @@
+Title:
+- Gradient Descent: Minimization of a Quadratic Function
+
+Objective:
+- To design and implement a hardware module that minimizes a quadratic function f(x) using the gradient descent algorithm. The module computes successive approximations of the optimum by updating x using the recurrence relation:
+    x_next = x - alpha * f'(x)
+  where the derivative f'(x) is computed as:
+    f'(x) = 2*a*x + b  
+  (Note: The constant term c in the quadratic function f(x)= a*x² + b*x + c is not used in the gradient computation.)
+
+Background:
+- Gradient descent is an iterative optimization algorithm used to find the minimum of a function. For a function f(x), its derivative f'(x) indicates the direction of the steepest ascent, so subtracting a scaled version of f'(x) allows the algorithm to move towards a local minimum.
+- In this design, both f(x) and its derivative are implemented using fixed‑point arithmetic. The use of fixed‑point representation (e.g., Qn.m notation) provides a balance between precision and hardware resource utilization.
+
+Design Constraints:
+- The module must support parameterized bit-widths (e.g., 16-bit, 32-bit) along with a configurable number of fractional bits (m) to adapt to different precision and range requirements.
+- The fixed-point arithmetic must account for scaling factors during multiplication, ensuring that intermediate calculations use an extended bit width (n+m bits) to avoid overflow.
+- The iterative update process is managed by a finite state machine (FSM) with states such as IDLE, CALC, and DONE. Convergence is either determined by achieving a sufficiently small change or by reaching a predefined maximum number of iterations.
+- The design must reliably handle reset conditions, starting the computation upon assertion of the start signal and remaining in the DONE state with the result latched and 'ready' asserted until an external reset is provided.
+
+Performance Expectation:
+- The module should efficiently balance convergence speed, hardware resource usage, and power consumption.
+- A sequential implementation may optimize for lower power and resource use at the cost of latency, while a more aggressive design might reduce the iteration count for faster convergence.
+- The final implementation should provide an accurate fixed-point approximation for the minimizer with minimal error.
+
+Deliverables:
+- A synthesizable HDL module (Verilog/VHDL) implementing the gradient descent update using fixed-point arithmetic for a quadratic function.

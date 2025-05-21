@@ -1,0 +1,52 @@
+Design Name:
+- gauss_seidel_2x2_solver
+
+Module Name:
+- gauss_seidel_2x2_solver
+
+Inputs:
+- a11, a12, a21, a22 [DATA_WIDTH-1:0]: Coefficients of the 2×2 system matrix A, represented in fixed-point format.
+- b1, b2 [DATA_WIDTH-1:0]: Right-hand side constants of the equations, represented in fixed-point format.
+- x1_init, x2_init [DATA_WIDTH-1:0]: Initial guesses for the solution vector components x1 and x2.
+- clk: Clock signal (used for sequential iterative refinement).
+- rst: Reset signal (synchronously or asynchronously clears internal registers).
+- start: Start signal that triggers the latching of the input coefficients, constants, and initial guesses to initiate a new Gauss-Seidel computation.
+
+Outputs:
+- x1, x2 [DATA_WIDTH-1:0]: The computed solution vector components for the system Ax = b, represented in fixed-point format.
+- ready: Status flag indicating the completion of the iterative solution process.
+
+Design Signature:
+module gauss_seidel_2x2_solver(
+    input clk,
+    input rst,
+    input start,
+    input [DATA_WIDTH-1:0] a11,
+    input [DATA_WIDTH-1:0] a12,
+    input [DATA_WIDTH-1:0] a21,
+    input [DATA_WIDTH-1:0] a22,
+    input [DATA_WIDTH-1:0] b1,
+    input [DATA_WIDTH-1:0] b2,
+    input [DATA_WIDTH-1:0] x1_init,
+    input [DATA_WIDTH-1:0] x2_init,
+    output reg [DATA_WIDTH-1:0] x1,
+    output reg [DATA_WIDTH-1:0] x2,
+    output reg ready
+);
+
+Design Notes:
+- Implements the Gauss-Seidel iterative method for solving a 2×2 linear system Ax = b.
+- The recurrence relations for the iterative solution are:
+    x1_next = (b1 - a12 * x2) * inv_a11;
+    x2_next = (b2 - a21 * x1_next) * inv_a22;
+- For fixed-point arithmetic:
+  - The module uses a parameterized fixed-point format (with DATA_WIDTH bits including fractional precision) to balance precision and hardware resource usage.
+  - The inverse values inv_a11 and inv_a22 are calculated using a reciprocal function implemented as:
+      reciprocal(a) = (1 << (2*FRAC)) / a,
+    ensuring proper fixed-point scaling.
+  - All intermediate arithmetic operations, particularly multiplications, are carried out using registers of size 2*DATA_WIDTH to preserve precision and reduce overflow risks.
+- A finite state machine (FSM) controls the iterative process with the following states:
+  - IDLE: Wait for a 'start' signal to latch the input values and initialize the iteration.
+  - CALC: Iteratively update the estimates of x1 and x2 based on the Gauss-Seidel recurrence. The process performs a fixed number of iterations (preset iteration limit) without using any convergence threshold.
+  - DONE: Output the final approximations, assert the 'ready' flag, and hold the outputs until a reset occurs.
+- Appropriate scaling and normalization are applied to accommodate fixed-point arithmetic while ensuring timely and stable iteration through the fixed iteration count.

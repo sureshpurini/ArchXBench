@@ -1,0 +1,50 @@
+Design Name:
+- gradient_descent_poly
+
+Module Name:
+- gradient_descent_poly
+
+Inputs:
+- x [n-1:0]: The initial input value (or current estimate) for which the function f(x) is to be minimized, represented in fixed‑point format (n-bit signed or unsigned depending on design requirements, with m fractional bits).
+- alpha [n-1:0]: The learning rate (step size) coefficient for the gradient descent update, represented in fixed‑point format.
+- a [n-1:0]: The coefficient "a" for the quadratic function f(x)= a*x² + b*x + c. This value is in fixed‑point format.
+- b [n-1:0]: The coefficient "b" for the quadratic function f(x)= a*x² + b*x + c. This value is in fixed‑point format.
+- clk: Clock signal (used for sequential implementation).
+- rst: Reset signal (synchronously or asynchronously clears internal registers).
+- start: Start signal that triggers the latching of the input x and initiates a new gradient descent computation.
+
+Outputs:
+- x_next [n-1:0]: The updated value after one or more iterations of the gradient descent algorithm, represented in fixed‑point format.
+- ready: Status flag indicating the completion of the gradient descent computation.
+
+Design Signature:
+module gradient_descent_poly(
+    input clk,
+    input rst,
+    input start,
+    input signed [n-1:0] x,
+    input signed [n-1:0] alpha,
+    input signed [n-1:0] a,
+    input signed [n-1:0] b,
+    output reg signed [n-1:0] x_next,
+    output reg ready
+);
+
+Design Notes:
+- Implements the gradient descent algorithm to minimize a quadratic function f(x) given by:
+    f(x) = a*x² + b*x + c  
+  where the constant term c does not affect the derivative.
+- The algorithm uses the derivative f'(x) computed as:
+    f'(x) = ((2 * a * x) >>> m) + b
+  Here, the multiplication (2 * a * x) is performed in fixed‑point arithmetic producing an intermediate result with an extended bit-width. The result is then shifted right by m bits (i.e., >>> m) to correctly scale it back to the Qn.m format before adding b.
+- The iterative update is given by the recurrence relation:
+    x_next = x - alpha * (f'(x))
+  where the product alpha * (f'(x)) is also computed in fixed‑point arithmetic and shifted right by m bits after multiplication to preserve precision and avoid overflow.
+- A finite state machine (FSM) manages the computation through states such as:
+  - IDLE: Waiting for the 'start' signal to latch the initial input x.
+  - CALC: Iteratively computing the derivative and updating x until a predefined iteration limit (MAX_ITER) is reached.
+  - DONE: Outputting the final result x_next and asserting the 'ready' flag.
+- The new x value is latched at every iteration until the convergence condition (or maximum iteration count) is met.
+- The module is parameterized for configurable bit-widths (e.g., 16-bit, 32-bit) and fractional lengths (m) to adapt to varied precision and range requirements.
+- The design meets standard clock timing, area, and power constraints, and it correctly handles reset conditions.
+- There is no automatic transition from the DONE state to the IDLE state. The module remains in the DONE state (with the result latched and 'ready' asserted) until it is reset externally (via rst) to initiate a new computation.

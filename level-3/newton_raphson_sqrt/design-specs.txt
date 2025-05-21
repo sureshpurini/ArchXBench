@@ -1,0 +1,38 @@
+Design Name:
+- sqrt_newton_raphson_fixedpoint
+
+Module Name:
+- sqrt_newton_raphson_fixedpoint
+
+Inputs:
+- X [n-1:0]: The input number for which the square root is to be calculated, represented in fixed-point format (n-bit unsigned, with `m` fractional bits).
+- clk: Clock signal (used for sequential implementation).
+- rst: Reset signal (synchronously or asynchronously clears internal registers).
+- start: Start signal that triggers the latching of the input X and initiates a new square root computation.
+
+Outputs:
+- sqrt_result [n-1:0]: The calculated square root of the input number, represented in fixed-point format (n-bit unsigned, with `m` fractional bits).
+- ready: Status flag indicating the completion of the square root computation.
+
+Design Signature:
+module sqrt_newton_raphson_fixedpoint(
+    input clk,
+    input rst,
+    input start,
+    input [n-1:0] X,
+    output reg [n-1:0] sqrt_result,
+    output reg ready
+);
+
+Design Notes:
+- Implements Newton-Raphson’s iterative method for square root calculation using the formula: yₙ₊₁ = (yₙ + (X / yₙ)) / 2, adapted for fixed-point arithmetic.
+- The input and output are represented in fixed-point format with `m` fractional bits (e.g., Qn.m notation), where n = integer bits + fractional bits.
+- Fixed-point arithmetic uses scaling and normalization. In particular, intermediate calculations such as the multiplication (X_reg << m) are performed using an extended bit width (n+m bits) to avoid overflow.
+- A finite state machine (FSM) controls the iterative process and typically has the following states:
+  - IDLE: Wait for a 'start' signal to latch the input and initialize the algorithm.
+  - CALC: Iteratively refine the square root approximation until convergence (or reaching a predefined iteration limit).
+  - DONE: Output the final approximation and assert the 'ready' flag.
+- The input X is only latched when the start signal is activated, ensuring that a new calculation is initiated only when explicitly requested.
+- There is no automatic transition from the DONE state to the IDLE state. The module remains in the DONE state, holding the result and asserting 'ready', until it is reset externally (via rst) to begin a new calculation.
+- The module is parameterized to support various bit-widths and fractional lengths for flexible integration into larger systems.
+- The design meets standard clock timing, area, and power requirements, and properly handles reset conditions.

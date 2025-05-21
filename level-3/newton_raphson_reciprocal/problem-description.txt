@@ -1,0 +1,26 @@
+Title:
+- Reciprocal Calculation using Newton-Raphson Method with Fixed-Point Arithmetic
+
+Objective:
+- The goal is to design and implement a module capable of calculating the reciprocal of an input number using Newton-Raphson's iterative method.
+- The module should accept and produce input and output values in fixed-point format, ensuring high precision and efficient hardware implementation.
+
+Background:
+- Newton-Raphson's method is a numerical technique for finding successively better approximations to the roots (or zeroes) of a real-valued function.
+- For reciprocal calculation, the method is applied to the function f(y) = 1 - X × y, where X is the input number and y is the reciprocal estimate.
+- The iterative formula is: yₙ₊₁ = yₙ × (2 - X × yₙ).
+- Fixed-point representation is a numerical format used in hardware designs to trade off precision and resource usage by representing numbers with a fixed number of fractional bits.
+
+Design Constraints:
+- The design should support configurable bit-widths (e.g., 16-bit, 32-bit) for the input number, with a parameterized number of fractional bits (`m`).
+- It must handle fixed-point arithmetic correctly, including appropriate scaling and normalization to ensure accurate results.
+- The implementation should include a control finite state machine (FSM) to manage the iterative processing steps, convergence checking, and output readiness.
+- Clocking assumptions, timing constraints, and reset behavior must be clearly defined and adhered to for proper integration into larger systems.
+
+Performance Expectation:
+- The design should balance between speed, area, and power consumption.
+- A sequential implementation may target a reduced gate count and lower power at the cost of increased latency, whereas a combinational approach should meet stringent timing requirements.
+- The module must produce correct and precise outputs while optimizing the number of iterations for convergence, with considerations for fixed-point precision and rounding.
+
+Deliverables:
+- A synthesizable HDL module (Verilog/VHDL) implementing the reciprocal calculation using Newton-Raphson's method with fixed-point arithmetic.

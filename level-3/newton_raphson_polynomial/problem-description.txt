@@ -1,0 +1,36 @@
+Title:
+- Newton-Raphson Polynomial Root Finding with Verification using Fixed-Point Arithmetic
+
+Objective:
+- Design and implement a hardware module capable of finding a real root of a polynomial p(x)=0 using the Newton-Raphson iterative method. Both the polynomial p(x) and its derivative p'(x) should be implemented using fixed-point arithmetic. In addition, the design should include a verification block to ensure that the computed root meets user-defined specifications or criteria.
+
+Background:
+- Newton-Raphson’s method is a numerical technique for rapidly converging on a solution of f(x)=0. For a polynomial p(x), the method employs the recurrence:
+      x_next = x - p(x) * inv_p_prime
+  where inv_p_prime is the precomputed fixed-point reciprocal of p'(x). The polynomial is defined as:
+      p(x) = a0 + a1*x + a2*x^2 + a3*x^3
+  and its derivative as:
+      p'(x) = a1 + 2*a2*x + 3*a3*x^2 
+- Fixed-point representation is used to strike a balance between precision and resource usage, with n-bit numbers and m fractional bits (Qn.m format). Evaluations are typically performed using Horner's method to minimize the number of multiplications.
+
+Design Constraints:
+- The design should support configurable bit-widths (e.g., 16-bit, 32-bit) and allow specifying the number of fractional bits (m) for fixed-point representation.
+- It must efficiently compute both p(x) and p'(x) using the given polynomial coefficients, with provisions for scaling and accumulation to preserve precision.
+- A finite state machine (FSM) should manage the latching of the input guess (x_init), perform the iterative computations, monitor convergence, and output the final root.
+- Proper handling of clock, reset, and start signals is required to ensure robust operation in a synchronous digital system.
+- The module can be parameterized to support a fixed polynomial degree or be adapted for different degrees based on application requirements.
+
+Verification and Additional Criteria:
+- In recognition of the fact that multiple roots may exist, the design integrates an additional verification block.
+- After the iterative computation converges, the verification block evaluates the candidate root by checking conditions such as:
+    * |p(root)| within a predefined tolerance (ensuring that the polynomial value at the candidate root is sufficiently close to zero).
+    * Any additional user-defined criteria that determine the suitability of the computed root.
+- Based on these checks, the module outputs a 'valid' flag, indicating whether the root meets all specified requirements.
+
+Performance Expectation:
+- The implementation should balance between speed, hardware resource usage, and power. A sequential (iterative) approach may reduce resource consumption at the cost of increased latency, while a combinational approach may meet stringent timing targets.
+- Accuracy of the computed root should be maintained within the limits imposed by the fixed-point arithmetic, with considerations for rounding and overflow.
+- The design should be synthesized to meet target clock frequencies and conform to design timing, area, and power specifications.
+
+Deliverables:
+- A synthesizable HDL module (Verilog/VHDL) implementing the Newton-Raphson method for polynomial root finding using fixed-point arithmetic, now enhanced with a verification block.

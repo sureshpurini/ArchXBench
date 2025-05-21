@@ -1,0 +1,26 @@
+Title:
+- Gauss-Seidel Solver for 2×2 Linear System
+
+Objective:
+- The goal is to design and implement a module capable of solving a 2×2 linear system (Ax = b) using the Gauss-Seidel iterative method.
+- The system coefficients (elements of the matrix A) and right-hand side constants (b) are provided in fixed-point format, and the solution vector (x1, x2) is computed with high precision using fixed-point arithmetic.
+
+Background:
+- The Gauss-Seidel method is an iterative technique for solving a system of linear equations. It improves the solution estimate with each iteration and is especially effective for systems where matrix A is diagonally dominant.
+- For a 2×2 system, the recurrence equations used for the iteration are as follows:
+    x1_next = (b1 - a12 * x2) * inv_a11;
+    x2_next = (b2 - a21 * x1_next) * inv_a22;
+- Here, inv_a11 and inv_a22 are the precomputed multiplicative inverses of a11 and a22, respectively. These inverses allow the method to bypass the need for division, which is more hardware expensive.
+- Fixed-point representation (e.g., Q format) is chosen to balance between precision and resource utilization in hardware design.
+
+Design Constraints:
+- The design should support configurable bit-widths (specified by DATA_WIDTH) for representing the coefficients, constants, and solution estimates.
+- The iterative process must be implemented with a finite state machine (FSM) controlling the update process, convergence checking, and output readiness.
+- The design must carefully perform fixed-point arithmetic, employing scaling and normalization techniques to ensure correct operation.
+- The module should handle reset conditions appropriately and only update the internal state when a start signal is asserted.
+- The system should ensure convergence to the correct solution within a preset number of iterations or based on an error threshold.
+
+Performance Expectation:
+- The design should meet constraints on clock timing, area, and power, making it suitable for integration into larger digital systems.
+- A sequential implementation may be used to optimize area and power, with an acceptable trade-off in latency.
+- The module must produce correct, reliable, and precise outputs for a wide range of input scenarios including scenarios with challenging convergence characteristics.
