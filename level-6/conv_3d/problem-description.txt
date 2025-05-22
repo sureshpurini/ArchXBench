@@ -1,0 +1,22 @@
+Title: 3D Convolution — Streaming Accelerator for Spatiotemporal Filtering
+
+Objective:
+Design a pipelined hardware accelerator for performing 3D convolution on a stream of 3D image or video data. The convolution must apply a 3D kernel over a 3D input volume (e.g., height × width × time or depth), producing a filtered output volume. This benchmark stresses spatial and temporal data buffering, window generation, and MAC compute reuse.
+
+Background:
+3D convolutions are essential in computer vision, video understanding, volumetric medical imaging (CT/MRI), and spatiotemporal deep learning. A 3D convolution involves scanning a 3D kernel across a 3D input volume and computing a sum of elementwise products at each valid position. Unlike 2D convolution, 3D convolution has one more axis (e.g., time or depth), significantly increasing the data reuse complexity.
+
+Design Constraints:
+- Inputs: a stream of 3D data values (e.g., voxel grid or video frames).
+- Kernel size: typically 3×3×3 or 5×5×5, parameterizable.
+- Padding and stride handling may be included or assumed fixed.
+- All computations must be pipelined; 1 output voxel per cycle after filling.
+- Intermediate buffering must support 3D stencil window formation.
+
+Performance Expectation:
+After pipeline fill, the design must produce one valid output per cycle. Efficient reuse of 3D data slices (via shift registers or FIFO arrays) is key to minimizing bandwidth and maximizing throughput.
+
+Deliverables:
+- Parameterized Verilog/HLS implementation with streaming I/O.
+- Separate line/frame/volume buffers for 3D sliding window generation.
+- Testbench with synthetic 3D volumes and golden reference outputs.

@@ -1,0 +1,63 @@
+Design Name: conv3d_streaming_accelerator
+Module Name: conv3d
+
+Inputs:
+- clk                         // Clock signal
+- rst                         // Active-high reset
+- voxel_in[DATA_W-1:0]        // Input 3D voxel stream (flattened)
+- valid_in                    // Input valid signal
+- kernel[K3*K2*K1*DATA_W-1:0] // Flattened 3D kernel coefficients
+- last_in                     // End-of-volume marker
+
+Outputs:
+- voxel_out[DATA_W+LOG_KW-1:0] // Output voxel after convolution
+- valid_out                   // Output valid signal
+- done                        // End-of-volume signal
+
+Parameters:
+- K1, K2, K3      // Kernel depth × height × width
+- D, H, W         // Input volume dimensions (Depth, Height, Width)
+- DATA_W          // Bit-width of input/output voxels
+
+Design Signature:
+
+module conv3d #(
+    parameter K1 = 3,  // Kernel depth
+    parameter K2 = 3,  // Kernel height
+    parameter K3 = 3,  // Kernel width
+    parameter D = 8,   // Input volume depth
+    parameter H = 64,  // Input height
+    parameter W = 64,  // Input width
+    parameter DATA_W = 8
+) (
+    input clk,
+    input rst,
+    input [DATA_W-1:0] voxel_in,
+    input valid_in,
+    input [K1*K2*K3*DATA_W-1:0] kernel,
+    input last_in,
+    output [DATA_W+LOG_KW-1:0] voxel_out,
+    output valid_out,
+    output done
+);
+
+Design Notes:
+- The input data must be buffered in 3D using:
+    • Line buffers (for rows),
+    • Frame buffers (for slices),
+    • Depth buffers (for temporal storage).
+
+- Window formation:
+    • Form a 3D sliding window of size K1×K2×K3 from the buffered data.
+    • Multiply each voxel in the window with the corresponding kernel weight.
+
+- MAC Array:
+    • Use a single pipelined 3D MAC tree or parallel units per voxel.
+    • Intermediate results may be accumulated using wide registers.
+
+- Stride = 1; padding = valid; optionally parameterized.
+- Final output may be scaled, clamped, or truncated to fit output width.
+
+Optional Extensions:
+- Stride/padding control
+- Pipelined multi-channel 3D conv (e.g., input/output feature maps)
