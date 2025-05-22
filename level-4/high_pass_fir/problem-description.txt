@@ -1,0 +1,22 @@
+Title: High-Pass FIR Filter — Streaming DSP Pipeline
+
+Objective:
+Design a parameterizable streaming hardware accelerator that performs high-pass FIR filtering on serial input data, eliminating low-frequency or DC components. Like the low-pass core, it must output one sample per cycle after pipeline fill.
+
+Background:
+High-pass filters are widely used for AC coupling in sensor interfaces and audio processing. An FIR HPF can be derived from a low-pass prototype via spectral inversion, leading to coefficients with zero DC gain.
+
+Design Constraints:
+- Input: serial data stream (one sample/clock).
+- Filter length: odd, 15 – 127 taps.
+- Arithmetic: fixed-point (configurable width) with optional floating-point mode.
+- Throughput: 1 sample/clock after latency period.
+- Edge handling: implicit zero-extension.
+- Coefficient source: ROM, RAM, or spectral-invert generator.
+
+Performance Expectation:
+Identical to low-pass: steady-state 1 sample/clock with latency `TAP_CNT-1` + MAC depth.
+
+Deliverables:
+- Verilog (or HLS) implementation of highpass_fir.
+- Self-checking testbench with impulse, ramp, and sinusoid inputs verifying DC rejection.

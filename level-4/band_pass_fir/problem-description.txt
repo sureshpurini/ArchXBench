@@ -1,0 +1,22 @@
+Title: Band-Pass FIR Filter — Streaming DSP Pipeline
+
+Objective:
+Design a parameterizable streaming hardware accelerator that performs band-pass FIR filtering, passing a selectable frequency band while attenuating frequencies outside the pass-band. Throughput must be one sample per clock once the pipeline is filled.
+
+Background:
+Band-pass filters isolate channels in software-defined radios, biomedical signal acquisition, and speech processing. A band-pass FIR can be realized by subtracting two low-pass responses or by directly windowing a sinc difference, yielding linear phase and fixed group delay.
+
+Design Constraints:
+- Input: serial data stream (one sample/clock).
+- Filter length: odd, 31 – 255 taps (longer length yields narrower transition band).
+- Arithmetic: fixed-point (configurable width) with optional floating-point mode.
+- Throughput: 1 sample/clock after latency period.
+- Edge handling: implicit zero-extension (zero-padding).
+- Coefficients: ROM-based or run-time-loadable for agile center frequency.
+
+Performance Expectation:
+After `(TAP_CNT-1)` cycles plus MAC depth, the filter produces one valid output per clock. Resource usage scales with tap count and datapath width.
+
+Deliverables:
+- Verilog implementation of `bandpass_fir`.
+- Self-checking testbench covering impulse, multi-tone, and swept-sine inputs to verify pass-band shape.
