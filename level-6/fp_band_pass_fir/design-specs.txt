@@ -1,0 +1,34 @@
+Design Name: bandpass_fir_streaming
+Module Name: bandpass_fir
+
+Inputs:
+- clk                         // Clock signal
+- rst                         // Synchronous reset (active-high)
+- valid_in                    // Input-sample valid
+- data_in[DATA_W-1:0]         // Serial input sample stream
+
+Outputs:
+- valid_out                   // Output-sample valid
+- data_out[DATA_W+GAIN_W-1:0] // Filtered sample (extended width)
+
+Parameters:
+- DATA_W   = 16              // Bit width of input sample
+- TAP_CNT  = 31              // Odd number of FIR taps (31–255)
+- GAIN_W   = 4               // Bit growth to avoid overflow
+- COEFFS  [0:TAP_CNT-1]      // Band-pass FIR coefficients
+
+Design Signature:
+
+```verilog
+module bandpass_fir #(
+    parameter DATA_W  = 16,
+    parameter TAP_CNT = 31,
+    parameter GAIN_W  = 4
+) (
+    input                       clk,
+    input                       rst,
+    input                       valid_in,
+    input      [DATA_W-1:0]     data_in,
+    output                      valid_out,
+    output     [DATA_W+GAIN_W-1:0] data_out
+);

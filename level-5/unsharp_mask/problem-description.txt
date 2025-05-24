@@ -1,0 +1,30 @@
+Title: Unsharp Mask — Image Processing Pipeline with Stencil and Pointwise Stages
+
+Objective:
+Design a streaming image processing pipeline that implements the Unsharp Mask operation. The algorithm enhances image details by subtracting a blurred version of the image from the original and amplifying the difference before adding it back. The pipeline must be decomposed into stencil (neighborhood-based) and pointwise (per-pixel) operations, suitable for mapping to hardware accelerators such as line buffers or systolic arrays.
+
+Background:
+Unsharp Mask is widely used in image enhancement. The core idea is:
+1. Blur the image (typically with a Gaussian kernel).
+2. Subtract the blurred image from the original to compute the high-frequency components.
+3. Amplify the difference by a gain factor.
+4. Add it back to the original image.
+
+This naturally separates into:
+- **Stencil Stage**: Apply a 2D convolution filter (e.g., Gaussian blur).
+- **Pointwise Stages**: Compute differences, apply gain, and reconstruct the sharpened output.
+
+Design Constraints:
+- Input: streaming 2D grayscale image pixels.
+- The blur kernel should be fixed (e.g., 3×3 Gaussian) or parameterizable.
+- All arithmetic must be pipelined and support per-pixel throughput.
+- Intermediate buffers (e.g., line buffers or FIFO-based) may be used between stages.
+
+Performance Expectation:
+The design should achieve streaming throughput (1 pixel per cycle after pipeline fill) and demonstrate low-latency spatial computation. It must clearly delineate between local and global operations.
+
+Deliverables:
+- Verilog or HLS-style implementation with streaming interfaces.
+- Configurable parameters: image size, kernel coefficients, gain factor.
+- Testbench that verifies edge enhancement on synthetic image patterns.
+- Optional: test with real grayscale images or image viewer integration.

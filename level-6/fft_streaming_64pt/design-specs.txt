@@ -1,0 +1,56 @@
+Design Name: streaming_fft_64
+Module Name: fft64_streaming
+
+Inputs:
+- clk                       // System clock
+- rst                       // Active-high synchronous reset
+- real_in[DATA_W-1:0]       // Input real part of complex sample
+- imag_in[DATA_W-1:0]       // Input imaginary part
+- valid_in                  // Input valid signal
+- last_in                   // Marks end of FFT frame
+
+Outputs:
+- real_out[DATA_W+GROWTH-1:0] // Output real part
+- imag_out[DATA_W+GROWTH-1:0] // Output imaginary part
+- valid_out                 // Output valid
+- last_out                  // Marks end of FFT frame
+- done                      // Signal indicating FFT result is ready
+
+Parameters:
+- DATA_W = 16               // Bit-width of input real/imag data
+- POINTS = 64               // FFT size
+- GROWTH = 4                // Bit-width growth to prevent overflow
+- STAGES = log₂(POINTS)     // Number of FFT stages
+
+Design Signature:
+
+module fft64_streaming #(
+    parameter DATA_W = 16,
+    parameter POINTS = 64,
+    parameter GROWTH = 4
+) (
+    input clk,
+    input rst,
+    input [DATA_W-1:0] real_in,
+    input [DATA_W-1:0] imag_in,
+    input valid_in,
+    input last_in,
+    output [DATA_W+GROWTH-1:0] real_out,
+    output [DATA_W+GROWTH-1:0] imag_out,
+    output valid_out,
+    output last_out,
+    output done
+);
+
+Design Notes:
+- Internal pipeline consists of STAGES stages, each performing radix-2 butterflies.
+- Use twiddle factor ROM or CORDIC to generate complex exponentials.
+- Use either streaming register arrays or SRAM blocks for delay buffers.
+- Pipeline control must handle sample synchronization (valid/last propagation).
+- Output must maintain correct ordering (bit-reversed output may need reordering buffer).
+- Support both real-valued input (with conjugate symmetry) and complex input.
+
+Optional Extensions:
+- Support for real-input FFT optimization.
+- Floating-point support via parameterized arithmetic modules.
+- AXI4-Stream wrapper for integration with SoC interconnects.

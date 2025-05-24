@@ -1,0 +1,31 @@
+Title: Harris Corner Detection — Streaming Pipeline for Feature Extraction
+
+Objective:
+Design a hardware-accelerated pipeline for the Harris Corner Detection algorithm, a key feature extraction technique in computer vision. The design should process a grayscale image stream and output a corner response map, highlighting regions with significant intensity changes in both directions.
+
+Background:
+Harris corner detection is used to identify interest points (corners) in an image based on gradient intensity changes. It involves several processing stages:
+
+1. Compute image gradients in X and Y directions (stencil).
+2. Compute products of gradients and apply Gaussian smoothing (stencil).
+3. Compute the Harris response based on determinant and trace of the matrix:
+   \[
+   R = \text{det}(M) - k \cdot \text{trace}(M)^2
+   \]
+   where \( M = \begin{bmatrix} I_x^2 & I_x I_y \\ I_x I_y & I_y^2 \end{bmatrix} \)
+4. Apply thresholding to identify corner pixels (pointwise decision logic).
+
+Design Constraints:
+- Use streaming image input.
+- Separate the design into clearly pipelined stages.
+- Implement Gaussian smoothing with a 3×3 stencil filter.
+- Use fixed-point arithmetic where possible.
+- Support configurable Harris sensitivity constant \(k\) and threshold.
+
+Performance Expectation:
+Design must process 1 pixel per cycle (after pipeline fill). Emphasis is on regular stencil access, arithmetic throughput, and efficient memory reuse.
+
+Deliverables:
+- Verilog or HLS-style module descriptions.
+- Testbench with synthetic corner patterns and thresholded output.
+- Optional visualization of corner map for validation.

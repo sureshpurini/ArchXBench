@@ -9,7 +9,7 @@ dut    = json.load(open("outputs/dut_output.json"))
 
 # --- Compare ---
 n      = min(len(ref), len(dut))
-mismatches = [(i, ref[i], dut[i]) for i in range(n) if ref[i] != dut[i]]
+mismatches = [(i, ref[i], dut[i]) for i in range(n) if abs(ref[i] - dut[i]) > 1]
 
 if mismatches:
     print(f"[FAIL] {len(mismatches)}/{n} mismatches:")

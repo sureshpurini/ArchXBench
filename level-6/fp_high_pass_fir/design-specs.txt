@@ -1,0 +1,43 @@
+Design Name: highpass_fir_streaming
+Module Name: highpass_fir
+
+Inputs:
+- clk                         // Clock signal
+- rst                         // Synchronous reset (active-high)
+- valid_in                    // Input-sample valid
+- data_in[DATA_W-1:0]         // Serial input sample stream
+
+Outputs:
+- valid_out                   // Output-sample valid
+- data_out[DATA_W+GAIN_W-1:0] // Filtered sample (extended width)
+
+Parameters:
+- DATA_W   = 16                       // Bit width of input sample
+- TAP_CNT  = 31                       // Odd number of FIR taps (15–127)
+- GAIN_W   = 4                        // Bit growth to avoid overflow
+- COEFFS[TAP_CNT]                     // High-pass FIR coefficients
+
+Design Signature:
+
+module highpass_fir #(
+    parameter DATA_W  = 16,
+    parameter TAP_CNT = 31,
+    parameter GAIN_W  = 4
+) (
+    input                       clk,
+    input                       rst,
+    input                       valid_in,
+    input      [DATA_W-1:0]     data_in,
+    output                      valid_out,
+    output     [DATA_W+GAIN_W-1:0] data_out
+);
+
+Design Notes:
+- Implements a **spectral inversion FIR**; coefficients satisfy Σh[n] = 0.
+- Shift-register plus MAC identical to lowpass_fir; only coefficient set differs.
+- Optional **DC-blocking mode** (first-order HPF) selectable via mode pin.
+- Same saturation / rounding options as low-pass design.
+
+Optional Features:
+- Dynamic reconfiguration between multiple HPF bands.
+- Test-pulse injection port for on-chip self-calibration.

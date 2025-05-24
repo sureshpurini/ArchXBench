@@ -1,0 +1,23 @@
+Title: 16-point Iterative Fixed-Point Radix-2 FFT and IFFT
+
+Objective:
+Design a hardware module that computes the 16-point Discrete Fourier Transform (DFT) and its inverse using an **iterative radix-2 butterfly structure** and **fixed-point arithmetic**. The implementation must reuse butterfly stages across multiple iterations to minimize hardware and memory resources, and support both forward FFT and IFFT modes.
+
+Background:
+The radix-2 FFT algorithm recursively divides an N-point DFT into smaller sub-problems of size N/2. An **iterative architecture** reuses the same computation units across log₂(N) stages, greatly reducing area. Fixed-point arithmetic is preferred in resource-constrained DSP cores. The IFFT is computed similarly, with slight differences in twiddle factors and output scaling.
+
+Design Constraints:
+- Support fixed-size N = 16 (parameterizable for reuse).
+- Use radix-2 decimation-in-time (DIT) butterfly structure.
+- Use fixed-point signed inputs and twiddle coefficients.
+- Implement using iterative control FSM (not pipelined).
+- Output should be scaled appropriately to avoid overflow.
+- Support IFFT mode by using complex conjugated twiddle factors and output normalization.
+
+Performance Expectation:
+Latency is proportional to log₂(N) × (N / 2) butterflies. Iterative design trades off throughput for area. Resource-efficient design should reuse butterfly unit and twiddle ROM.
+
+Deliverables:
+- Verilog or HLS implementation of iterative radix-2 FFT/IFFT.
+- Fixed-point coefficient LUT with scaling support.
+- Testbench comparing against reference Python/NumPy output.

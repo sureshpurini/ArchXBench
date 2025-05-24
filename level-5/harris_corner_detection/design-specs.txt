@@ -1,0 +1,56 @@
+Design Name: harris_corner_detector
+Module Name: harris_corner
+
+Inputs:
+- clk                      // Clock input
+- rst                      // Active-high reset
+- pixel_in[PIXEL_W-1:0]    // Input grayscale pixel stream
+- valid_in                 // Pixel valid signal
+- threshold[RESP_W-1:0]    // Harris response threshold
+- k_param[K_W-1:0]         // Harris corner sensitivity constant
+
+Outputs:
+- is_corner                // 1 if pixel is corner, 0 otherwise
+- valid_out                // Output valid signal
+
+Design Signature:
+
+module harris_corner #(
+    parameter IMG_WIDTH = 128,
+    parameter IMG_HEIGHT = 128,
+    parameter PIXEL_W = 8,
+    parameter GRAD_W = 16,
+    parameter RESP_W = 32,
+    parameter K_W = 8
+) (
+    input clk,
+    input rst,
+    input [PIXEL_W-1:0] pixel_in,
+    input valid_in,
+    input [RESP_W-1:0] threshold,
+    input [K_W-1:0] k_param,
+    output is_corner,
+    output valid_out
+);
+
+Design Notes:
+- **Stage 1 (Stencil)**: Compute gradients I_x and I_y using Sobel operators:
+    - Gx = [-1 0 +1; -2 0 +2; -1 0 +1]
+    - Gy = [-1 -2 -1; 0 0 0; +1 +2 +1]
+
+- **Stage 2 (Stencil)**: Compute I_x², I_y², and I_x·I_y with Gaussian blur.
+
+- **Stage 3 (Pointwise Arithmetic)**: Compute determinant and trace of M:
+    \[
+    \text{det} = I_x^2 \cdot I_y^2 - (I_x I_y)^2, \quad \text{trace} = I_x^2 + I_y^2
+    \]
+    \[
+    R = \text{det} - k \cdot \text{trace}^2
+    \]
+
+- **Stage 4 (Pointwise Decision)**: Output 1 if R > threshold, else 0.
+
+- All stages should be pipelined with streaming interfaces.
+- Fixed-point arithmetic recommended to minimize resource usage.
+- Line buffers and stencil windows required for gradient and smoothing stages.
+- Optional output: full R value (corner strength), not just binary mask.

@@ -1,0 +1,24 @@
+Title: Pipelined 64-point Streaming FFT for Real-Time Signal Processing
+
+Objective:
+Design a pipelined streaming architecture to compute the 64-point Fast Fourier Transform (FFT) of a real-time input signal. The design must accept one complex sample per clock cycle, internally compute the FFT in a streaming, pipelined fashion, and emit one output sample per cycle after pipeline fill.
+
+Background:
+The FFT is a foundational algorithm in digital signal processing (DSP), used to transform time-domain signals into their frequency-domain representation. In a streaming architecture, the FFT must be computed in real-time, with minimal latency and constant throughput. A pipelined radix-2 or radix-4 FFT architecture supports this by decomposing the FFT stages into sequential butterfly computations.
+
+Design Constraints:
+- Use a radix-2 or radix-4 pipelined FFT architecture.
+- FFT size is fixed at 64 points (but should be parameterizable).
+- Inputs and outputs are complex-valued (real and imaginary components).
+- Input arrives as a continuous stream: 1 complex sample/cycle.
+- Output must follow the input after a latency of N (e.g., log₂(64) * stage_latency).
+- Use fixed-point or floating-point arithmetic (configurable).
+
+Performance Expectation:
+Once the pipeline is filled, throughput must be one sample per cycle. Latency is proportional to the FFT stage depth. The design must be optimized for minimal logic delay per stage and support continuous operation.
+
+Deliverables:
+- RTL implementation (Verilog or HLS) of the FFT pipeline.
+- Configurable FFT size, word width, and precision mode.
+- Testbench that validates FFT correctness on standard inputs.
+- Optional: interface with AXI-stream for integration into larger pipelines.

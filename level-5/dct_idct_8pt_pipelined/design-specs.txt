@@ -1,0 +1,60 @@
+Design Name: pipelined_dct1d_8_fixed
+Module Name: dct1d_8_pipeline
+
+Inputs:
+- clk                           // Clock signal
+- rst                           // Active-high reset
+- sample_in[DATA_W-1:0]         // Input fixed-point sample
+- valid_in                      // Input valid signal
+- mode                          // 0: DCT, 1: IDCT
+- index[2:0]                    // Input index (0–7)
+
+Outputs:
+- coeff_out[OUT_W-1:0]          // Output fixed-point DCT/IDCT coefficient
+- valid_out                     // Output valid signal
+- index_out[2:0]                // Output index (0–7)
+
+Parameters:
+- DATA_W = 12                   // Input sample width
+- COEFF_W = 16                  // Cosine coefficient width
+- OUT_W = 18                    // Output width (with growth)
+
+Design Signature:
+
+module dct1d_8_pipeline #(
+    parameter DATA_W = 12,
+    parameter COEFF_W = 16,
+    parameter OUT_W = 18
+) (
+    input clk,
+    input rst,
+    input [DATA_W-1:0] sample_in,
+    input valid_in,
+    input mode, // 0 = DCT, 1 = IDCT
+    input [2:0] index,
+    output [OUT_W-1:0] coeff_out,
+    output valid_out,
+    output [2:0] index_out
+);
+
+Design Notes:
+- The DCT is computed as:
+  \[
+  X_k = \sum_{n=0}^{7} x_n \cdot \cos\left[\frac{\pi}{8}(n + 0.5)k\right]
+  \]
+  for \(k = 0..7\), with appropriate normalization.
+
+- Pipeline implementation:
+  • Use precomputed cosine coefficient ROM or generate with shift-add approximations.
+  • Multiply-accumulate structure (MAC array) or matrix-multiply core.
+  • Shared datapath for DCT and IDCT with sign/mirror logic and scaling.
+
+- Optional:
+  • Use AAN algorithm for low-multiplier DCT.
+  • Scale down results for IDCT (divide by 8).
+  • Clamp final output to avoid overflow.
+
+Use Cases:
+- Row/column transform in JPEG encoder/decoder
+- Audio compression or frequency-domain feature extraction
+- Extension to 2D DCT via 2-pass row + column composition

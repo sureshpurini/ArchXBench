@@ -1,0 +1,50 @@
+Design Name: fft16_fixed_iterative
+Module Name: fft16_iterative
+
+Inputs:
+- clk                          // Clock input
+- rst                          // Synchronous reset
+- start                        // Pulse to begin FFT or IFFT
+- mode                         // 0: FFT, 1: IFFT
+- data_real_in[15:0][DATA_W-1:0] // Real parts of input
+- data_imag_in[15:0][DATA_W-1:0] // Imaginary parts of input
+
+Outputs:
+- data_real_out[15:0][DATA_W+GAIN_W-1:0] // Real part of output
+- data_imag_out[15:0][DATA_W+GAIN_W-1:0] // Imag part of output
+- done                         // High when computation is complete
+
+Parameters:
+- N = 16                       // FFT size
+- DATA_W = 12                  // Bit-width of input
+- COEFF_W = 16                 // Twiddle coefficient bit-width
+- GAIN_W = 4                   // Bit-growth in output
+
+Design Signature:
+
+module fft16_iterative #(
+    parameter N = 16,
+    parameter DATA_W = 12,
+    parameter COEFF_W = 16,
+    parameter GAIN_W = 4
+) (
+    input clk,
+    input rst,
+    input start,
+    input mode, // 0: FFT, 1: IFFT
+    input signed [DATA_W-1:0] data_real_in [0:N-1],
+    input signed [DATA_W-1:0] data_imag_in [0:N-1],
+    output signed [DATA_W+GAIN_W-1:0] data_real_out [0:N-1],
+    output signed [DATA_W+GAIN_W-1:0] data_imag_out [0:N-1],
+    output done
+);
+
+Design Notes:
+- Use a butterfly unit:
+  • Accepts two complex inputs and a twiddle factor.
+  • Computes sum/difference and applies complex rotation.
+- Use a finite-state controller to:
+  • Iterate over log₂(N) stages
+  • Index twiddle factors and pairs to be processed
+- Twiddle factors stored in ROM (cos/sin for FFT; conjugated for IFFT)
+- Optional:

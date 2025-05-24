@@ -32,6 +32,16 @@ if w_dut*h_dut != n_dut:
     print(f"[ERROR] Cannot reshape {n_dut} samples into square image")
     sys.exit(1)
 
+n      = min(len(ref), len(dut))
+mismatches = [(i, ref[i], dut[i]) for i in range(n) if abs(ref[i] - dut[i]) > 1]
+
+if mismatches:
+    print(f"[FAIL] {len(mismatches)}/{n} mismatches:")
+    for i,r,d in mismatches[:10]:
+        print(f"  idx={i}: ref={r}  dut={d}")
+else:
+    print(f"[PASS] All {n} samples match")
+
 # --- Reshape to 2D images ---
 inp_img = np.array(inputs).reshape((h, w))
 ref_img = np.array(ref).reshape((h, w))

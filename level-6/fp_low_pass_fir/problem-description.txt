@@ -1,0 +1,22 @@
+Title: Low-Pass FIR Filter — Streaming DSP Pipeline
+
+Objective:
+Design a parameterizable streaming hardware accelerator that performs low-pass finite-impulse-response (FIR) filtering on serial input data. The engine must sustain one sample per clock after the tap pipeline is filled, supporting fixed or run-time-programmable coefficients.
+
+Background:
+Low-pass filters are essential for noise reduction and anti-aliasing in digital communications and audio. A linear-phase FIR implemented with a symmetric tap set enables efficient multiplier reuse and predictable group delay.
+
+Design Constraints:
+- Input: serial data stream (one sample/clock).
+- Filter length: odd, 15 – 127 taps.
+- Arithmetic: fixed-point (configurable width) with optional floating-point mode.
+- Throughput: 1 sample/clock once pipeline is full.
+- Edge handling: implicit zero-extension beyond data boundaries.
+- Coefficient storage: ROM or RAM; run-time reload optional.
+
+Performance Expectation:
+After an initial latency of `TAP_CNT-1` cycles plus internal MAC depth, the core delivers one filtered sample each clock at full throughput.
+
+Deliverables:
+- Verilog (or HLS) implementation of lowpass_fir.
+- Parameterizable symmetric tap engine and testbench with impulse/step/noise stimuli.

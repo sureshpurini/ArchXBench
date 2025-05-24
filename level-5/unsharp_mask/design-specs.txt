@@ -1,0 +1,45 @@
+Design Name: unsharp_mask_pipeline
+Module Name: unsharp_mask
+
+Inputs:
+- clk                     // Clock signal
+- rst                     // Active-high reset
+- pixel_in[PIXEL_W-1:0]   // Input grayscale pixel stream
+- valid_in                // Pixel valid signal
+- gain[GAIN_W-1:0]        // Gain factor for sharpening
+
+Outputs:
+- pixel_out[PIXEL_W-1:0]  // Output sharpened pixel stream
+- valid_out               // Output valid signal
+
+Design Signature:
+
+module unsharp_mask #(
+    parameter IMG_WIDTH = 256,
+    parameter IMG_HEIGHT = 256,
+    parameter PIXEL_W = 8,
+    parameter GAIN_W = 8
+) (
+    input clk,
+    input rst,
+    input [PIXEL_W-1:0] pixel_in,
+    input valid_in,
+    input [GAIN_W-1:0] gain,
+    output [PIXEL_W-1:0] pixel_out,
+    output valid_out
+);
+
+Design Notes:
+- **Stage 1 (Stencil)**: Gaussian blur using 3×3 kernel via line-buffer-based convolution.
+- **Stage 2 (Pointwise Subtraction)**: Compute high-frequency image = original − blurred.
+- **Stage 3 (Pointwise Scaling)**: Multiply high-frequency component by gain.
+- **Stage 4 (Reconstruction)**: Add scaled high-frequency signal back to original.
+
+- All stages should be pipelined with handshaking (valid/in_ready-style or streaming FIFO).
+- Pixel values should be clamped or saturated to 8-bit range [0, 255].
+- Assume zero-padding
+
+- Optional extensions:
+    • Tunable Gaussian coefficients.
+    • Window sizes >3×3 (5×5, 7×7).
+    • Extendable to multi-channel (RGB) with replicated pipelines.

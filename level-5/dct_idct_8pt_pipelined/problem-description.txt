@@ -1,0 +1,23 @@
+Title: Pipelined 8-point 1D Fixed-Point DCT and IDCT for Image Compression
+
+Objective:
+Design a pipelined hardware unit to compute the 8-point 1D Discrete Cosine Transform (DCT) and Inverse DCT (IDCT) using fixed-point arithmetic. The module must support one sample per cycle throughput and operate in a fully pipelined manner, making it suitable for real-time image and video compression applications such as JPEG or MPEG.
+
+Background:
+DCT transforms a spatial-domain signal (e.g., image pixels) into frequency-domain coefficients, concentrating energy in lower-order components — ideal for lossy compression. IDCT reconstructs the signal from its frequency components. The DCT/IDCT transform is separable and can be used row-wise and column-wise in 2D blocks (e.g., 8×8 image tiles).
+
+Design Constraints:
+- Input: stream of 8 signed fixed-point samples (e.g., pixel intensity differences).
+- Output: 8 signed DCT coefficients (or reconstructed samples for IDCT).
+- Use fixed-point math with sufficient bit width to avoid overflow.
+- Implement cosine matrix multiplication or AAN algorithm for efficiency.
+- Must support pipelined streaming: one input and one output every cycle after latency.
+- Mode-selectable operation (DCT or IDCT) via control signal.
+
+Performance Expectation:
+Once the pipeline is filled, it should accept and produce 1 value per clock. Latency depends on pipeline stages (typically 6–10 cycles). All internal paths must be bit-accurate and prevent overflow using scaling or saturation.
+
+Deliverables:
+- Verilog or HLS implementation of pipelined 8-point 1D DCT/IDCT.
+- Fixed-point cosine matrix or shift-add approximations.
+- Testbench with image rows, cosine wave, impulse, and reconstruction tests.
