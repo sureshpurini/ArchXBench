@@ -1,0 +1,52 @@
+Design Name: aes128_encryption_pipeline
+Module Name: aes128_pipeline
+
+Inputs:
+- clk                    // System clock
+- rst                    // Active-high synchronous reset
+- start                  // Pulse to launch a new encryption
+- mode = 1'b0            // Encryption mode
+- valid_in               // Input handshake
+- data_in[127:0]         // 128-bit plaintext block
+- key_in[127:0]          // 128-bit cipher key
+
+Outputs:
+- valid_out              // Output handshake
+- data_out[127:0]        // 128-bit ciphertext block
+- done                   // High when this block’s encryption is complete
+
+Parameters:
+- PIPELINED  = 1         // 0 = single-cycle, 1 = fully pipelined
+- UNROLL     = 1         // Round-unrolling factor
+- INLINE_KEY_EXP = 1     // 0 = external key schedule, 1 = inline
+
+Design Signature:
+
+module aes128_pipeline #(
+    parameter PIPELINED      = 1,
+    parameter UNROLL         = 1,
+    parameter INLINE_KEY_EXP = 1
+) (
+    input              clk,
+    input              rst,
+    input              start,
+    input              mode,         // fixed to 1'b0 for encryption
+    input      [127:0] data_in,
+    input      [127:0] key_in,
+    input              valid_in,
+    output reg [127:0] data_out,
+    output reg         valid_out,
+    output reg         done
+);
+
+Design Notes:
+- Implements all AES-128 encryption rounds in a deeply pipelined fashion.
+- Inline key-expansion feeds round keys into each pipeline stage.
+- SubBytes implemented via S-box look-up tables.
+- MixColumns uses combinational GF(2⁸) multipliers.
+- AddRoundKey at each stage with XOR trees.
+
+Optional Features:
+- Parameterizable unrolling (UNROLL > 1 to process multiple rounds per stage).
+- Support for CTR mode via internal counter increment.
+- Clock-enable for low-power stall.

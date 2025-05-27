@@ -1,0 +1,23 @@
+Title: AES-128 Decryption Pipeline Accelerator
+
+Objective:
+Design a fully-pipelined hardware accelerator that performs AES-128 block decryption at a throughput of one 128-bit block per clock after pipeline fill. Must integrate inverse key-expansion and execute the ten inverse rounds (InvShiftRows, InvSubBytes, AddRoundKey, InvMixColumns).
+
+Background:
+AES decryption reverses the encryption process to recover plaintext. Hardware support for decryption is critical in secure storage controllers, encrypted network endpoints, and protocol offload engines.
+
+Design Constraints:
+- Input: 128-bit ciphertext and 128-bit key, supplied when `start` and `valid_in` are asserted.
+- Mode: decryption only (fixed at mode=1).
+- Latency: pipeline depth determined by inline key schedule inversion.
+- Throughput: one decrypted block per cycle once the pipeline is full.
+- Key Expansion: inline inverse key schedule must be pipelined.
+- Control: handshake via `valid_in`/`valid_out` and a `done` flag.
+
+Performance Expectation:
+After an initial inverse-round latency, the core must accept a new ciphertext each cycle and produce plaintext each cycle.
+
+Deliverables:
+- Verilog module `aes128_pipeline` (decryption mode).
+- Self-checking testbench `tb_aes128_decrypt.v` reading `inputs/ciphertexts.hex` and `inputs/keys.hex`.
+- Reference stimulus files and expected plaintexts in JSON.

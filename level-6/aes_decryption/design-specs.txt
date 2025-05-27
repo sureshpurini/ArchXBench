@@ -1,0 +1,51 @@
+Design Name: aes128_decryption_pipeline
+Module Name: aes128_pipeline
+
+Inputs:
+- clk                    // System clock
+- rst                    // Active-high synchronous reset
+- start                  // Pulse to launch a new decryption
+- mode = 1'b1            // Decryption mode
+- valid_in               // Input handshake
+- data_in[127:0]         // 128-bit ciphertext block
+- key_in[127:0]          // 128-bit cipher key
+
+Outputs:
+- valid_out              // Output handshake
+- data_out[127:0]        // 128-bit recovered plaintext
+- done                   // High when this block’s decryption is complete
+
+Parameters:
+- PIPELINED  = 1         // 0 = single-cycle, 1 = fully pipelined
+- UNROLL     = 1         // Round-unrolling factor
+- INLINE_KEY_EXP = 1     // 0 = external key schedule, 1 = inline inverse schedule
+
+Design Signature:
+
+module aes128_pipeline #(
+    parameter PIPELINED      = 1,
+    parameter UNROLL         = 1,
+    parameter INLINE_KEY_EXP = 1
+) (
+    input              clk,
+    input              rst,
+    input              start,
+    input              mode,         // fixed to 1'b1 for decryption
+    input      [127:0] data_in,
+    input      [127:0] key_in,
+    input              valid_in,
+    output reg [127:0] data_out,
+    output reg         valid_out,
+    output reg         done
+);
+
+Design Notes:
+- Performs inverse SubBytes via S-box inversion tables.
+- InvShiftRows and InvMixColumns in combinational stages.
+- Inline generation of round keys in reverse order.
+- AddRoundKey positioned ahead of each inverse-mix stage.
+
+Optional Features:
+- Dynamic switch between encryption/decryption via `mode` pin.
+- Support for ECB, CBC, or CTR modes with minimal control logic.
+- Power-gating of idle pipeline stages.

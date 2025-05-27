@@ -1,0 +1,23 @@
+Title: AES-128 Encryption Pipeline Accelerator
+
+Objective:
+Design a fully-pipelined hardware accelerator that performs AES-128 block encryption at a throughput of one 128-bit block per clock after pipeline fill. The engine must integrate key-expansion and execute all ten standard AES rounds (SubBytes, ShiftRows, MixColumns, AddRoundKey) without external microcode.
+
+Background:
+AES-128 is the U.S. government’s Advanced Encryption Standard, widely used in secure communications, storage encryption, and VPNs. A hardware pipeline can deliver line-rate encryption for high-speed network links or on-chip security engines.
+
+Design Constraints:
+- Input: 128-bit plaintext and 128-bit key, supplied when `start` and `valid_in` are asserted.
+- Mode: encryption only (fixed at mode=0).
+- Latency: pipeline depth determined by unrolling and key-expansion in hardware.
+- Throughput: one encrypted block per cycle once the pipeline is full.
+- Key Expansion: inline and fully pipelined; no external pre-expansion.
+- Control: a single‐bit `start`, and handshake via `valid_in`/`valid_out`; a `done` flag marks block completion.
+
+Performance Expectation:
+After an initial latency of at most 10 rounds × stage depth, the core must accept a new plaintext each cycle and produce a ciphertext each cycle.
+
+Deliverables:
+- Verilog module `aes128_pipeline` (encryption mode).
+- Self-checking testbench `tb_aes128_encrypt.v` using `inputs/plaintexts.hex` and `inputs/keys.hex`.
+- Reference stimulus files and expected ciphertexts in JSON.
