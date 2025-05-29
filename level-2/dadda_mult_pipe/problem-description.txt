@@ -1,0 +1,20 @@
+Title: Pipelined Dadda Multiplier
+
+Objective:
+Design a **pipelined Dadda multiplier** to compute the product of two `N`-bit operands. The design must generate all partial products in parallel, reduce them using **Dadda's strategy** of column height-limited reduction with carry-save adders (CSAs), and complete the operation with a **final carry-propagate adder (CPA)**. Pipeline registers should be placed between the reduction stages to ensure throughput of one result per cycle.
+
+Background:
+Dadda’s method performs partial product reduction in a bottom-up manner. Compared to Wallace Tree, Dadda reduces fewer rows per stage, minimizing the number of adders and offering a more area-optimized solution. Pipelining this structure is critical for maintaining high throughput in applications like **DSPs, ALUs**, and **AI accelerators**.
+
+Design Constraints:
+- Support parameterized operand width (e.g., 16 or 32 bits).
+- Partial products generated combinationally.
+- Dadda column height strategy used for CSA tree generation.
+- Final carry-propagate adder (e.g., RCA or CLA) for summing final 2 rows.
+- Pipeline registers inserted between reduction stages and final adder.
+- Latency determined by number of pipeline stages; throughput = 1 result/cycle after fill.
+
+Deliverables:
+- Verilog or HLS implementation of the pipelined Dadda multiplier.
+- Parameterized design for different bit widths.
+- Testbench with randomly generated inputs and golden output comparison.

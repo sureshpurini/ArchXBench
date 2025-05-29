@@ -1,0 +1,34 @@
+Design Name:
+- pipelined_rca_32bit
+
+Module Name:
+- pipelined_rca_32bit
+
+Inputs:
+- clk: Clock signal for synchronizing the pipelined operations.
+- rst: Reset signal to clear internal registers and initialize the pipeline.
+- A [31:0]: The first 32-bit operand for the addition.
+- B [31:0]: The second 32-bit operand for the addition.
+- cin: 1-bit carry-in input to initiate the addition.
+
+Outputs:
+- sum [31:0]: The 32-bit result of the addition.
+- cout: 1-bit carry-out signal from the most significant stage, indicating an overflow or carry-out.
+
+Design Signature:
+module pipelined_rca_32bit(
+    input clk,
+    input rst,
+    input [31:0] A,
+    input [31:0] B,
+    input cin,
+    output reg [31:0] sum,
+    output reg cout
+);
+
+Design Notes:
+- The adder is divided into four pipeline stages, each responsible for processing 8 bits of the overall 32-bit addition.
+- Each stage computes a partial sum and produces a carry-out that serves as the carry-in for the subsequent stage.
+- Pipeline registers will be inserted between stages to hold intermediate sums and carry values, creating a latency of 4 clock cycles from the initial input to the final output.
+- The design should handle proper reset behavior to ensure that the pipeline registers are initialized to known states.
+- Emphasis should be placed on balancing the delay across the four stages to meet high-frequency timing requirements while minimizing ripple delay within each 8-bit segment.

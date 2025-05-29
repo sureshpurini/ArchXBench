@@ -1,0 +1,34 @@
+Design Name:
+- pipelined_cla_32bit
+
+Module Name:
+- pipelined_cla_32bit
+
+Inputs:
+- clk: Clock signal for synchronizing pipeline stages.
+- rst: Reset signal to initialize pipeline registers and internal logic.
+- A [31:0]: The first 32-bit operand for the addition.
+- B [31:0]: The second 32-bit operand for the addition.
+- cin: 1-bit carry-in input to initiate the addition operation.
+
+Outputs:
+- sum [31:0]: The 32-bit result of the addition operation.
+- cout: 1-bit carry-out signal from the final stage, indicating an overflow or final carry.
+
+Design Signature:
+module pipelined_cla_32bit(
+    input clk,
+    input rst,
+    input [31:0] A,
+    input [31:0] B,
+    input cin,
+    output reg [31:0] sum,
+    output reg cout
+);
+
+Design Notes:
+- The adder is divided into four pipeline stages, with each stage responsible for processing 8 bits of the overall 32-bit addition.
+- Each stage computes its partial sum along with propagate (P) and generate (G) signals that are used in the carry lookahead logic to determine the carry for the subsequent stage.
+- Pipeline registers are introduced between stages to store intermediate sums and carry signals, resulting in a fixed latency of 4 clock cycles from input to final sum output.
+- The CLA logic is structured hierarchically, enabling parallel computation of carry signals to minimize delay.
+- The design should ensure balanced stage delays, proper reset initialization, and optimized timing paths to support high-frequency operation.

@@ -1,0 +1,21 @@
+Title: Pipelined Wallace Tree Multiplier
+
+Objective:
+Design a **pipelined Wallace Tree multiplier** for two `N`-bit operands. The multiplier must support unsigned (and optionally signed) integer multiplication. The design should generate all partial products in parallel and use a tree of carry-save adders (CSAs) to reduce them to two final operands, followed by a final carry-propagate adder. Pipelining must be applied across CSA and final addition stages for high-throughput operation.
+
+Background:
+The Wallace Tree multiplier reduces the latency of multiplication by exploiting the associativity of addition. It minimizes the depth of addition using a tree structure rather than sequential accumulation. When pipelined, the architecture delivers one multiplication result per clock cycle after fill latency.
+
+Design Constraints:
+- Operand width: parameterizable (e.g., 16, 32 bits)
+- Fully combinational partial product generation
+- Carry-save adder tree for reduction (using full and half adders)
+- Final carry-propagate adder to compute the result
+- Pipelined registers between CSA levels for throughput
+- Latency depends on number of reduction stages + final CPA
+- Throughput = 1 result/cycle after pipeline fill
+
+Deliverables:
+- Verilog or HLS implementation of pipelined Wallace Tree multiplier
+- Parameter for operand width and pipeline register insertion
+- Testbench comparing against RTL `*` operator with random vectors
