@@ -89,10 +89,7 @@ module tb_fft_16pt_iterative;
     $display("Loaded IMAG:");
     for (i = 0; i < N; i = i + 1)
       $display("  [%0d] = %0d", i, data_imag_in[i]);
-  // … then your existing FFT drive/dump logic follows …  
 
-
-    // Feed stimulus into DUT inputs
     for (i = 0; i < N; i = i + 1) begin
       data_real_in[i] = stim_mem[i];
       data_imag_in[i] = stim_mem[N + i];
@@ -127,11 +124,6 @@ module tb_fft_16pt_iterative;
     $fclose(out_f);
 
     $display("[INFO] DUT output written to outputs/dut_output.json");
-
-    // (Optional) continue with golden‐comparison and IFFT below...
-    // ----------------------------------------------------------
-    // Load golden outputs, check FFT & IFFT, etc.
-    // ----------------------------------------------------------
 
     $finish;
   end
