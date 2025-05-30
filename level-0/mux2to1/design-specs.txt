@@ -1,26 +1,26 @@
 Design Name: mux_2to1
 Module Name:
-- mux2to1
+- mux_2to1
 
 Inputs:
-- a      // 1-bit input
-- b      // 1-bit input
+- in0      // 1-bit input
+- in1      // 1-bit input
 - sel    // 1-bit select signal
 
 Outputs:
-- y      // 1-bit output (selected value)
+- out      // 1-bit output (selected value)
 
 Design Signature:
 
 // 2-to-1 Multiplexer
-module mux2to1 (
-    input  a,
-    input  b,
+module mux_2to1 (
+    input  in0,
+    input  in1,
     input  sel,
-    output y
+    output out
 );
 
 Design Notes:
 - The 2-to-1 MUX should be implemented using basic logic gates:
-    y = (a & ~sel) | (b & sel)
+    y = (in0 & ~sel) | (in1 & sel)
 - Avoid using behavioral constructs; use gate-level or continuous assignments.
