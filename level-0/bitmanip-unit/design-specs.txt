@@ -16,8 +16,8 @@ Inputs:
 - mask_val [N-1:0]: For the mask operation, this signal provides the bit mask to be applied to the input data.
 
 Outputs:
-- out [n-1:0]: The output resulting from the selected bit manipulation operation.
-- out2 [n-1:0]: (Used in unpack mode) The secondary output providing additional data when the input word is split into two fields.
+- out [N-1:0]: The output resulting from the selected bit manipulation operation.
+- out2 [N-1:0]: (Used in unpack mode) The secondary output providing additional data when the input word is split into two fields.
 
 Design Signature:
 module bit_manip_unit(
