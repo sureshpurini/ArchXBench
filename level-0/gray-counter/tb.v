@@ -1,10 +1,10 @@
 `timescale 1ns/1ps
-module tb_gray_counter_4bit;
+module tb_gray_counter8;
     reg clk, rst;
-    wire [3:0] gray_count;
+    wire [7:0] count;
     integer pass_count = 0, fail_count = 0;
     
-    gray_counter_4bit dut (.clk(clk), .rst(rst), .gray_count(gray_count));
+    gray_counter8 dut (.clk(clk), .rst(rst), .count(count));
     
     // Clock generation
     initial begin
@@ -13,43 +13,48 @@ module tb_gray_counter_4bit;
     end
     
     function automatic int count_ones;
-        input [3:0] val;
-        count_ones = val[0] + val[1] + val[2] + val[3];
+        input [7:0] val;
+        begin
+            count_ones = 0;
+            for (int i = 0; i < 8; i = i + 1)
+                count_ones = count_ones + val[i];
+        end
     endfunction
     
     task check_gray_property;
-        input [3:0] prev;
+        input [7:0] prev;
         begin
             @(negedge clk);
-            if (count_ones(prev ^ gray_count) <= 1) pass_count++;
+            if (count_ones(prev ^ count) <= 1) pass_count++;
             else begin
-                $display("[FAIL] Gray violation: %b → %b", prev, gray_count);
+                $display("[FAIL] Gray violation: %b → %b", prev, count);
                 fail_count++;
             end
         end
     endtask
     
     initial begin
-        $display("=== Testing 4-bit Gray Code Counter ===");
+        $display("=== Testing 8-bit Gray Code Counter ===");
         
         // Test reset
         rst = 1; #20;
-        if (gray_count === 4'b0000) pass_count++;
+        if (count === 8'b0000_0000) pass_count++;
         else begin
-            $display("[FAIL] Reset: Expected 0000, Got %b", gray_count);
+            $display("[FAIL] Reset: Expected 00000000, Got %b", count);
             fail_count++;
         end
         rst = 0;
         
-        // Verify Gray code property for 16 cycles
-        repeat(16) begin
-            check_gray_property(gray_count);
+        // Verify Gray code property for 32 cycles (partial test)
+        repeat(32) begin
+            reg [7:0] prev_count = count;
             @(posedge clk);
+            check_gray_property(prev_count);
         end
         
         $display("\n=== Test Summary ===");
         $display("Passed: %0d, Failed: %0d", pass_count, fail_count);
-        $display("{\"module\": \"gray_counter_4bit\", \"passed\": %0d, \"failed\": %0d}", pass_count, fail_count);
+        $display("{\"module\": \"gray_counter8\", \"passed\": %0d, \"failed\": %0d}", pass_count, fail_count);
         
         if (fail_count > 0) $finish(1);
         $finish;
