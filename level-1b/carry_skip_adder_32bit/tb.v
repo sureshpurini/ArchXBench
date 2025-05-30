@@ -84,7 +84,7 @@ module carry_skip_adder_32bit_tb;
         // Wrap up
         @(negedge clk);
         #1;
-        $display("\n[INFO] Test Summary: Pass = %0d, Fail = %0d",
+        $display("\n[INFO] Test Summary: Pass = %0d, Failed = %0d",
                  pass_count, fail_count);
         $finish;
     end
