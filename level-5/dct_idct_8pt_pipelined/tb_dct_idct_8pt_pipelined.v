@@ -87,7 +87,7 @@ module tb_dct1d_8_pipeline;
     end
 
     // write golden_dct.json
-    file_dct = $fopen("outputs/golden_dct.json","w");
+    file_dct = $fopen("outputs/dut_output.json","w");
     $fwrite(file_dct,"[\n");
     for (i = 0; i < N; i = i + 1) begin
       $fwrite(file_dct, "  %0d", dct_buf[i]);

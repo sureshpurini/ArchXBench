@@ -37,7 +37,9 @@ module tb_bandpass_fir;
 
     // Read stimuli.json
     infile = $fopen("inputs/stimuli.json","r");
-    if (infile == 0) $fatal("[FAIL] Cannot open inputs/stimuli.json");
+    if (infile == 0) begin
+      $display("[FAIL] Cannot open inputs/stimuli.json");
+      $finish
     idx = 0;
     while (!$feof(infile)) begin
       code = $fscanf(infile, "%d", samples[idx]);

@@ -56,14 +56,17 @@ module tb_fft64_streaming;
     // read stimulus file: each line "real imag"
     infile = $fopen("inputs/stimuli.json","r");
     if (infile == 0) begin
-      $display("[FAIL] Cannot open inputs/fft64_stimuli.json");
+      $display("[FAIL] Cannot open inputs/stimuli_hex.json");
       $finish;
     end
     idx = 0;
     while (!$feof(infile) && idx < POINTS) begin
       code = $fscanf(infile, "%d %d\n", real_samples[idx], imag_samples[idx]);
-      if (code == 2) idx = idx + 1;
-      else            $fgetc(infile);
+      if (code == 2) begin
+        idx = idx + 1;
+      end else begin
+        code = $fgetc(infile);
+      end
     end
     $fclose(infile);
 
