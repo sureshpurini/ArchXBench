@@ -1,0 +1,73 @@
+Title: Pipelined Floating-Point Multiplier — High-Throughput IEEE-754 Unit
+
+Objective:
+Design a pipelined hardware unit that performs 32-bit IEEE-754 single-precision floating-point multiplication. The unit must support streaming inputs and deliver one output result per clock cycle after pipeline fill, while maintaining numerical correctness and compliance with the IEEE-754 standard.
+
+Background:
+Floating-point multiplication is a fundamental operation in digital signal processing, graphics, scientific computing, and neural network inference. Unlike addition, multiplication does not require operand alignment but must handle exponent arithmetic, normalization, rounding, and special cases.
+
+Design Constraints:
+- Operands and results must use the IEEE-754 single-precision format (1 sign bit, 8 exponent bits, 23 fraction bits).
+- Support full pipeline: one result per cycle after latency.
+- Support detection and propagation of NaNs, infinities, zeros, and denormals.
+- Comply with round-to-nearest-even mode for final output.
+- Use fused datapath to reduce latency when possible.
+
+Performance Expectation:
+Pipeline latency of ~4–6 stages depending on architecture. Throughput of 1 result per cycle. Critical path is in significand multiplication and normalization. Must achieve consistent timing and behavior across inputs.
+
+Deliverables:
+- Verilog or HLS RTL of pipelined FP multiplier.
+- Parameterizable pipeline depth and bit width.
+
+Important points:
+
+Stage 1 – Input Unpacking:
+- Sign: a[MSB] ^ b[MSB].
+- Mantissa: Normal = {1’b1, frac}, Subnormal = {1’b0, frac}.
+- Special Detection: Zero = (exp_frac == 0), Infinity = (exp == MAX && frac == 0), NaN = (exp == MAX && frac != 0).
+
+Stage 2 – Exponent Calculation:
+- Both Subnormal: exp = MIN_EXP + MIN_EXP – BIAS.
+- A Subnormal:    exp = MIN_EXP + exp_b – BIAS.
+- B Subnormal:    exp = exp_a + MIN_EXP – BIAS.
+- Both Normal:    exp = exp_a + exp_b – BIAS.
+
+Stage 3 – Normalization:
+- If product[MSB_PROD] == 1:  
+  mantissa = product[MSB_PROD : MSB_PROD–MANT_BITS],  
+  exp      = exp + 1.
+- Otherwise:  
+  mantissa = product[MSB_PROD–1 : MSB_PROD–1–MANT_BITS],  
+  exp      = exp.
+
+Stage 5 – Special Cases (Priority Order):
+1. NaN:      result = CANONICAL_NAN  
+2. Infinity: result = {sign, MAX_EXP, ZERO_MANTISSA}  
+3. Zero:     result = {sign, ZERO_EXP_MANT}  
+4. Overflow (exp ≥ MAX_EXP): return signed infinity  
+5. Normal   (exp ≥ MIN_EXP): result = {sign, exp, mantissa}  
+6. Underflow (exp < MIN_EXP): flush to zero = {sign, ZERO_EXP_MANT}
+
+Special-Case Rules:
+- NaN × Anything      = NaN  
+- 0 × ∞               = NaN  
+- ∞ × 0               = NaN  
+- 0 × X               = Signed Zero  
+- ∞ × Non-Zero        = Signed Infinity
+
+Reset Behavior:
+- All pipeline valid signals reset to RESET_VALUE.  
+- All registers are cleared on rst.  
+- valid_out starts at RESET_VALUE.
+
+Critical Constants:
+- EXP_WIDTH, MANT_WIDTH, TOTAL_WIDTH  
+- BIAS           = 2^(EXP_WIDTH–1) – 1  
+- MAX_EXP        = 2^EXP_WIDTH – 1  
+- MIN_EXP        = 1  
+- MSB            = TOTAL_WIDTH – 1  
+- CANONICAL_NAN  = {1’b0, MAX_EXP, 1’b1, ZERO_FRAC}  
+- ZERO_EXP_MANT  = All zeros except sign
+
+

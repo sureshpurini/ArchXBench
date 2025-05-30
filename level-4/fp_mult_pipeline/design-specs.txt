@@ -1,0 +1,42 @@
+Design Name: pipelined_fp_multiplier
+Module Name: fp_mult_pipeline
+
+Inputs:
+- clk                          // Clock signal
+- rst                          // Synchronous reset
+- a[31:0]                      // IEEE-754 single-precision operand A
+- b[31:0]                      // IEEE-754 single-precision operand B
+- valid_in                     // Input valid signal
+
+Outputs:
+- result[31:0]                 // IEEE-754 result of a × b
+- valid_out                    // Output valid (aligned with pipeline latency)
+
+Parameters:
+- LATENCY = 5                 // Number of pipeline stages
+
+Design Signature:
+
+module fp_mult_pipeline #(
+    parameter LATENCY = 5
+) (
+    input clk,
+    input rst,
+    input [31:0] a,
+    input [31:0] b,
+    input valid_in,
+    output [31:0] result,
+    output valid_out
+);
+
+Design Notes:
+- Stage 1: Unpack A and B → sign, exponent, mantissa (with implicit 1).
+- Stage 2: Multiply mantissas (24×24 → 48-bit), add exponents.
+- Stage 3: Normalize result and compute result exponent.
+- Stage 4: Round (round-to-nearest-even), detect overflow/underflow.
+- Stage 5: Pack result into IEEE-754 format.
+
+Optional Extensions:
+- Configurable rounding mode (trunc, toward zero, etc.)
+- Integration into a fused multiply-add (FMA) unit
+- Support for half and double precision via parameterization
