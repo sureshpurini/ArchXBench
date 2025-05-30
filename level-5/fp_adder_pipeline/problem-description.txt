@@ -1,0 +1,22 @@
+Title: Pipelined Floating-Point Adder — High-Throughput Arithmetic Unit
+
+Objective:
+Design a pipelined hardware unit that performs single-precision (IEEE-754 32-bit) floating-point addition and subtraction. The unit should accept one input pair per cycle and produce a result after a fixed latency. It must handle special cases such as denormals, infinities, NaNs, and signed zeros as per the IEEE-754 standard.
+
+Background:
+Floating-point addition is a fundamental operation in scientific computing, graphics, machine learning, and DSP. A pipelined version is essential in high-performance FPUs and SIMD datapaths. A correct implementation requires alignment, normalization, rounding, and handling edge cases.
+
+Design Constraints:
+- Use IEEE-754 32-bit single-precision format (1 sign bit, 8 exponent bits, 23 fraction bits).
+- Must support pipelined input/output: one result per clock after latency.
+- Result must be correctly rounded (round-to-nearest-even).
+- Must handle overflows, underflows, denormals, NaNs, ±0, and infinities.
+- Support both addition and subtraction via control signal.
+
+Performance Expectation:
+Fixed pipeline latency (e.g., 4–6 stages), with throughput of 1 operation per cycle after fill. All operations should complete with full IEEE-754 compliance and consistent timing.
+
+Deliverables:
+- RTL (Verilog or HLS) implementation of the pipelined floating-point adder.
+- Parameterizable pipeline depth.
+- Testbench verifying IEEE-754 conformance across edge cases.
