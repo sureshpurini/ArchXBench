@@ -9,6 +9,9 @@ Binary encoders are combinational circuits that reduce multiple input lines to a
 Design Constraints:
 - The binary encoder assumes only one input is high at a time.
 - The design should be purely combinational.
+- When the input vector has no bits set or more than one bit set, the encoder must drive its outputs to 0
+- Any X or Z on any input bit must propagate through so that the corresponding output bits become X
+
 
 Performance Expectation:
 The binary encoder is a minimal-delay, low-area component due to its simple logic structure.
