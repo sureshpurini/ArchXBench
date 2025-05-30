@@ -1,0 +1,41 @@
+Design Name:
+- aes128_single_round
+
+Module Name:
+- aes128_single_round
+
+Inputs:
+- clk: Clock signal used for synchronizing FSM state transitions and data register updates.
+- rst: Reset signal to initialize the FSM to IDLE state and clear all internal registers.
+- state_in [127:0]: The 128-bit input state (arranged as a 4x4 byte matrix) representing the current data block to be processed.
+- round_key [127:0]: The 128-bit round key used in the AddRound-Key operation.
+- start: Control signal to initiate the AES round operation, transitioning the FSM from IDLE to SUBBYTES state.
+
+Outputs:
+- state_out [127:0]: The 128-bit output state after processing through SubBytes, ShiftRows, MixColumns, and AddRound-Key, available when FSM reaches DONE state.
+- done: Status signal indicating the completion of the encryption round, asserted when FSM is in DONE state.
+
+Design Signature:
+module aes128_single_round(
+    input clk,
+    input rst,
+    input [127:0] state_in,
+    input [127:0] round_key,
+    input start,
+    output reg [127:0] state_out,
+    output reg done
+);
+
+Design Notes:
+- The module implements a 6-state FSM with states: IDLE, SUBBYTES, SHIFTROWS, MIXCOLUMNS, ADDROUND, and DONE.
+- Each AES operation is performed in a separate FSM state using combinational logic within the datapath:
+  1. SubBytes: Apply S-box substitution to each byte using a complete 256-entry lookup table implemented as a case statement.
+  2. ShiftRows: Perform cyclic left shifts on rows (row 0: no shift, row 1: 1 byte, row 2: 2 bytes, row 3: 3 bytes).
+  3. MixColumns: Transform each column using GF(2^8) matrix multiplication with helper functions for mul2 and mul3 operations.
+  4. AddRound-Key: Perform bitwise XOR between the transformed state and the provided round key.
+- Internal data storage uses a round_reg register to hold intermediate results between FSM states.
+- The design includes helper functions: xtime, mul2, mul3 for GF(2^8) arithmetic operations required in MixColumns.
+- State transitions occur automatically in sequence once started, with the FSM returning to IDLE after DONE state.
+- The final result is latched into state_out when the FSM transitions to DONE state.
+- Reset behavior initializes all registers to zero and sets the FSM to IDLE state.
+- The implementation uses byte-level processing with temporary arrays (b[], tmp[]) for efficient data manipulation during transformations.

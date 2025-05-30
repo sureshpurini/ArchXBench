@@ -22,4 +22,4 @@ Performance Expectation:
 - The multiplier must produce correct and precise outputs while optimizing the number of operations through efficient partial product reduction.
 
 Deliverables:
-- A synthesizable HDL module (Verilog/VHDL) implementing the Booth multiplier.
+- A synthesizable HDL module (Verilog) implementing the Booth multiplier.

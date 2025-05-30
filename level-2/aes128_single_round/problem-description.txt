@@ -1,0 +1,27 @@
+Title:
+- Single-Round AES-128 Encryption (SubBytes, ShiftRows, MixColumns, AddRound-Key)
+
+Objective:
+- The goal is to design and implement a module that performs a single round of AES-128 encryption using a sequential finite state machine (FSM) approach.
+- The module should execute the four core operations—SubBytes, ShiftRows, MixColumns, and AddRound-Key—on a 128-bit state in sequential order, transforming the input data according to the AES round function.
+
+Background:
+- AES (Advanced Encryption Standard) is a critical symmetric encryption algorithm used globally for securing sensitive data.
+- A typical AES-128 encryption process involves multiple rounds, where each round increases the security through a series of transformations that enhance confusion and diffusion.
+- Implementing a single round with sequential operation is vital for understanding the step-by-step transformation process and is often used in educational contexts and resource-constrained environments where area optimization is prioritized over throughput.
+
+Design Constraints:
+- The design must conform to AES-128 round specifications, executing the operations in the exact sequence: SubBytes, ShiftRows, MixColumns, and finally AddRound-Key.
+- Operations are performed on a 128-bit block arranged as a 4x4 byte matrix, processed sequentially using an FSM controller.
+- The module must be implemented as a sequential circuit with distinct states for each AES operation (IDLE, SUBBYTES, SHIFTROWS, MIXCOLUMNS, ADDROUND, DONE).
+- The design should include proper handshaking with start and done signals for controlled operation initiation and completion indication.
+- All AES transformations must be implemented using combinational logic within the FSM datapath, including a complete S-box lookup table and GF(2^8) arithmetic functions.
+
+Performance Expectation:
+- The design prioritizes correctness and area efficiency over throughput, taking multiple clock cycles to complete one round of AES encryption.
+- The sequential approach allows for better resource sharing and reduced combinational logic complexity compared to fully parallel implementations.
+- The implementation should maintain security properties while providing a clear, step-by-step execution of AES operations that can be easily verified and debugged.
+- Latency is expected to be 6 clock cycles (IDLE→SUBBYTES→SHIFTROWS→MIXCOLUMNS→ADDROUND→DONE→IDLE) for one complete round operation.
+
+Deliverables:
+- A synthesizable HDL module (Verilog/VHDL) implementing a sequential single AES-128 encryption round with FSM control.

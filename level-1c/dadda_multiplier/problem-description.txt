@@ -35,5 +35,4 @@ Implementation Schedule:
 5. Stage 5: Final reduction from 2 to 1 row (1 HA + 13 FAs)
 
 Deliverables:
-- Verilog implementation of 8-bit Dadda multiplier 
-- Comprehensive testbench covering corner cases and random values 
+- Verilog implementation of 8-bit Dadda multiplier (dadda_mult.v)

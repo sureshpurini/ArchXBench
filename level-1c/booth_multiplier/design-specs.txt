@@ -1,52 +1,75 @@
-Design Name: shift_add_mult_parallel
-Module Name: shift_add_mult
+Design Name: booth_multiplier
+Module Name: booth_multiplier
 
 Inputs:
 - clk                           // Clock signal
-- rst                           // Synchronous reset
-- start                         // Start multiplication
-- A[WIDTH-1:0]                  // Operand A (multiplicand)
-- B[WIDTH-1:0]                  // Operand B (multiplier)
-- valid_in                      // Input valid
-- signed_mode                   // 0: unsigned, 1: signed multiplication
+- rst                           // Synchronous reset (active high)
+- start                         // Start multiplication (pulse to initiate)
+- A[N-1:0]                      // Operand A (multiplicand) - signed
+- B[N-1:0]                      // Operand B (multiplier) - signed
 
 Outputs:
-- result[2*WIDTH-1:0]           // Output product
-- valid_out                     // Output valid
-- done                          // Multiplication complete
-- busy                          // Multiplier is processing
+- product[2*N-1:0]              // Output product - signed
+- ready                         // Multiplication complete (active high when result is valid)
 
 Parameters:
-- WIDTH = 16                    // Operand width (8, 16, 32, etc.)
-- PARALLEL_OPS = 4              // Number of parallel shift-add operations per cycle (1, 2, 4, 8, etc.)
-- SIGNED = 1                    // Enable signed operation by default
+- N = 8                         // Operand width (configurable: 8, 16, 32, etc.)
 
 Derived Parameters:
-- NUM_CYCLES = WIDTH/PARALLEL_OPS  // Number of cycles required for multiplication
-- ACCUMULATOR_WIDTH = 2*WIDTH      // Width of the accumulator
+- PRODUCT_WIDTH = 2*N           // Width of the product result
+- COUNTER_WIDTH = $clog2(N+1)   // Width of the iteration counter
 
 Design Signature:
 
-module shift_add_mult #(
-    parameter WIDTH = 16,
-    parameter PARALLEL_OPS = 4,
-    parameter SIGNED = 1
+module booth_multiplier #(
+    parameter N = 8
 ) (
     input clk,
     input rst,
     input start,
-    input valid_in,
-    input [WIDTH-1:0] A,
-    input [WIDTH-1:0] B,
-    input signed_mode,
-    output reg [2*WIDTH-1:0] result,
-    output reg valid_out,
-    output reg done,
-    output reg busy
+    input signed [N-1:0] A,
+    input signed [N-1:0] B,
+    output reg signed [2*N-1:0] product,
+    output reg ready
 );
 
-Design Notes:
-- PARALLEL_OPS must be a power of 2 and divide WIDTH evenly
-- Higher PARALLEL_OPS values increase area but reduce latency
-- PARALLEL_OPS = 1 gives serial operation (minimum area)
-- PARALLEL_OPS = WIDTH gives fully parallel operation (minimum latency)
+Algorithm Overview:
+- Implements Booth's multiplication algorithm for signed binary numbers
+- Uses Booth recoding to reduce the number of partial products
+- Examines pairs of multiplier bits (including an implicit bit-1 = 0)
+- Performs add, subtract, or no operation based on Booth encoding:
+  * 00 or 11: No operation (shift only)
+  * 01: Add multiplicand
+  * 10: Subtract multiplicand
+
+Internal Registers/Signals:
+- accumulator[2*N:0]            // Extended accumulator (A + Q + Q-1)
+- multiplicand[N-1:0]           // Copy of input A
+- multiplier[N-1:0]             // Copy of input B
+- counter[COUNTER_WIDTH-1:0]    // Iteration counter
+- state                         // FSM state (IDLE, MULTIPLY, DONE)
+
+State Machine:
+- IDLE: Wait for start signal, load operands
+- MULTIPLY: Execute Booth algorithm iterations
+- DONE: Assert ready signal, output result
+
+Timing Behavior:
+- Sequential implementation with configurable latency
+- Requires N+1 clock cycles for N-bit multiplication
+- start signal should be pulsed for one clock cycle
+- ready signal asserted when multiplication is complete
+- New multiplication can begin when ready is asserted
+
+Reset Behavior:
+- Synchronous reset clears all internal registers
+- product output reset to 0
+- ready signal reset to 0 (not ready)
+- State machine returns to IDLE state
+
+Design Constraints:
+- Supports signed two's complement arithmetic
+- Handles all edge cases including overflow conditions
+- Configurable bit-width through parameter N
+- Must handle maximum negative values correctly (-2^(N-1))
+- Product width is 2*N bits to accommodate full precision

@@ -1,0 +1,54 @@
+Title: 4x4 Systolic Array Matrix Multiplier
+
+Objective:
+Design a hardware module that performs 4×4 matrix multiplication using a **systolic array architecture**. The implementation requires creating both a Processing Element (PE) module and a top-level systolic array module. The design implements a grid of Processing Elements (PEs) that compute matrix multiplication through synchronized data flow, where matrix elements flow through the array in a pipelined manner to achieve high throughput computation.
+
+Background:
+Systolic arrays are specialized parallel computing architectures where data flows rhythmically through a network of simple processing elements. For matrix multiplication C = A × B, matrix A flows from west to east while matrix B flows from north to south through a 2D grid of PEs. Each PE performs multiply-accumulate operations and forwards data to neighboring PEs. Key features:
+- 16 Processing Elements arranged in a 4×4 grid
+- Each PE accumulates partial products for one element of the result matrix
+- Synchronized data flow with systolic timing ensures correct computation
+- Pipeline architecture allows overlapping of multiple matrix multiplications
+
+Design Constraints:
+- Fixed 4×4 matrix size with 32-bit signed integer elements
+- Matrix A input through west boundary (4 input ports: a_west0 to a_west3)
+- Matrix B input through north boundary (4 input ports: b_north0 to b_north3)
+- Systolic timing: elements must be fed with proper time delays
+- 64-bit accumulator width to prevent overflow during multiplication
+- Computation completes in 9 clock cycles (2×n-1 where n=4)
+- Reset capability to initialize all PEs and start new computation
+
+Key Components:
+- **Processing Element (PE)**: Basic computational unit performing multiply-accumulate
+  - Inputs: north_in (32-bit), west_in (32-bit), clk, rst
+  - Outputs: south_out (32-bit), east_out (32-bit), result (64-bit)
+  - Operation: result += north_in × west_in; forward inputs to neighbors
+- **Systolic Array**: 4×4 grid of interconnected PEs
+- **Control Logic**: Cycle counter to generate 'done' signal after 9 cycles
+
+Performance Characteristics:
+- Latency: 9 clock cycles for single 4×4 multiplication
+- Throughput: 1 matrix multiplication per 9 cycles (steady state)
+- Parallelism: 16 concurrent multiply-accumulate operations per cycle
+- Data width: 32-bit inputs, 64-bit outputs to handle overflow
+
+Data Flow Pattern:
+- Matrix A elements fed row-wise from west with systolic delays
+- Matrix B elements fed column-wise from north with systolic delays
+- Each PE receives one A element and one B element per cycle
+- Results accumulate in each PE representing one element of matrix C
+- Proper timing ensures each PE computes C[i][j] = Σ(A[i][k] × B[k][j])
+
+Implementation Requirements:
+- Synchronous design with single clock domain
+- Proper reset handling to initialize all accumulator values
+- Wire routing between adjacent PEs for data forwarding
+- Control logic to track computation progress and signal completion
+- 64-bit result outputs to accommodate full precision products
+
+Deliverables:
+- Verilog implementation of Processing Element (PE)
+- Verilog implementation of 4×4 Systolic Array Matrix Multiplier
+- Control logic with cycle counting and done signal generation
+- Proper interconnection of all 16 PEs with correct data flow routing

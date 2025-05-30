@@ -1,0 +1,65 @@
+Sub-Module: pe (Processing Element)
+
+Processing Element (PE) Design Signature:
+
+module pe(north_in, west_in, clk, rst, south_out, east_out, result);
+    input [31:0] north_in, west_in;
+    output reg [31:0] south_out, east_out;
+    input clk, rst;
+    output reg [63:0] result;
+
+Design Name: systolic_matrix_mult
+Module Name: systolic_matrix_mult
+
+Inputs:
+- clk                           // Clock signal
+- rst                           // Synchronous reset
+- a_west0[31:0]                 // West input for row 0 (Matrix A)
+- a_west1[31:0]                 // West input for row 1 (Matrix A)
+- a_west2[31:0]                 // West input for row 2 (Matrix A)
+- a_west3[31:0]                 // West input for row 3 (Matrix A)
+- b_north0[31:0]                // North input for column 0 (Matrix B)
+- b_north1[31:0]                // North input for column 1 (Matrix B)
+- b_north2[31:0]                // North input for column 2 (Matrix B)
+- b_north3[31:0]                // North input for column 3 (Matrix B)
+
+Outputs:
+- done                          // Computation complete flag
+- result0[63:0]                 // C[0][0] - Row 0, Column 0
+- result1[63:0]                 // C[0][1] - Row 0, Column 1
+- result2[63:0]                 // C[0][2] - Row 0, Column 2
+- result3[63:0]                 // C[0][3] - Row 0, Column 3
+- result4[63:0]                 // C[1][0] - Row 1, Column 0
+- result5[63:0]                 // C[1][1] - Row 1, Column 1
+- result6[63:0]                 // C[1][2] - Row 1, Column 2
+- result7[63:0]                 // C[1][3] - Row 1, Column 3
+- result8[63:0]                 // C[2][0] - Row 2, Column 0
+- result9[63:0]                 // C[2][1] - Row 2, Column 1
+- result10[63:0]                // C[2][2] - Row 2, Column 2
+- result11[63:0]                // C[2][3] - Row 2, Column 3
+- result12[63:0]                // C[3][0] - Row 3, Column 0
+- result13[63:0]                // C[3][1] - Row 3, Column 1
+- result14[63:0]                // C[3][2] - Row 3, Column 2
+- result15[63:0]                // C[3][3] - Row 3, Column 3
+
+Parameters:
+- None (Fixed 4x4 array)
+
+Systolic Array Design Signature:
+
+module systolic_matrix_mult(a_west0, a_west1, a_west2, a_west3,
+                           b_north0, b_north1, b_north2, b_north3,
+                           clk, rst, done,
+                           result0, result1, result2, result3,
+                           result4, result5, result6, result7,
+                           result8, result9, result10, result11,
+                           result12, result13, result14, result15);
+    
+    input [31:0] a_west0, a_west1, a_west2, a_west3,
+                 b_north0, b_north1, b_north2, b_north3;
+    output reg done;
+    input clk, rst;
+    output [63:0] result0, result1, result2, result3,
+                  result4, result5, result6, result7,
+                  result8, result9, result10, result11,
+                  result12, result13, result14, result15;

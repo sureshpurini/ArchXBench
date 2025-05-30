@@ -42,3 +42,5 @@ Implementation Requirements:
 
 Deliverables:
 - Verilog implementation of the configurable parallel shift-and-add multiplier
+- Support for PARALLEL_OPS = {1, 2, 4, 8, ...} up to WIDTH
+- FSM-based controller with variable cycle count based on PARALLEL_OPS
