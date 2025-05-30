@@ -77,7 +77,7 @@ module tb_cla_8bit;
         #5;
         // Display final summary
         $display("-------------------------------------------------");
-        $display("Test Summary: PASS = %0d, FAIL = %0d", pass_count, fail_count);
+        $display("Test Summary: PASS = %0d, FAILED = %0d", pass_count, fail_count);
         $finish;
     end
 
