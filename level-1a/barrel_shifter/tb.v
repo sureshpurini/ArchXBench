@@ -1,23 +1,23 @@
 `timescale 1ns/1ps
 module tb_barrel_shifter;
-    parameter N = 16;
-    parameter M = $clog2(N);
+    parameter n = 16;
+    parameter m = $clog2(n);
 
-    reg  [N-1:0] data;
-    reg  [M-1:0] shamt;
+    reg  [n-1:0] data;
+    reg  [m-1:0] shamt;
     reg          dir;
     reg          arith;
-    wire [N-1:0] out;
+    wire [n-1:0] out;
 
-    // Local variable to hold the expected result (matching N bits)
-    reg [N-1:0] expected;
+    // Local variable to hold the expected result (matching n bits)
+    reg [n-1:0] expected;
     
     integer pass_count = 0;
     integer fail_count = 0;
     integer i;
 
     // Instantiate the DUT (Device Under Test)
-    barrel_shifter #(.N(N), .M(M)) dut (
+    barrel_shifter #(.n(n), .m(m)) dut (
         .data(data),
         .shamt(shamt),
         .dir(dir),
@@ -85,7 +85,7 @@ module tb_barrel_shifter;
             end
             else begin
                 // Remaining test cases: generate random inputs.
-                // $random yields a 32-bit value, but assignment to [N-1:0] truncates to 16 bits.
+                // $random yields a 32-bit value, but assignment to [n-1:0] truncates to 16 bits.
                 data  = $random;
                 shamt = $random % 16;  // force shamt into the range 0 to 15
                 dir   = $random % 2;
@@ -101,7 +101,7 @@ module tb_barrel_shifter;
                 expected = data << shamt;
             end else begin
                 if (arith)
-                    // For arithmetic right shift, use $signed; note the cast to N bits.
+                    // For arithmetic right shift, use $signed; note the cast to n bits.
                     expected = $signed(data) >>> shamt;
                 else
                     expected = data >> shamt;
