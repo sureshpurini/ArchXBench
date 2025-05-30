@@ -8,7 +8,7 @@ Outputs:
 - byte_out[7:0]                // AES S-Box substituted output
 
 Parameters:
-- IMPL = "LUT"                 // "LUT" or "LOGIC" for implementation mode
+- IMPL = "LUT"                 // "LUT" for implementation mode
 
 Design Signature:
 
