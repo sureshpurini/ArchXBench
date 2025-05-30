@@ -1,23 +1,21 @@
-Title: S-Box Implementation using Lookup Table and Logic Optimization
+Title: S-Box Implementation using Lookup Table
 
 Objective:
-Design a hardware module that performs the **AES SubBytes operation** by mapping an 8-bit input to an 8-bit output through a fixed nonlinear transformation known as the **S-Box**. This benchmark includes two implementation approaches:
-1. **Lookup Table (LUT)** based using a ROM or case statement
-2. **Logic Optimization** using composite field arithmetic for compact and secure implementation
+Design a hardware module that performs the **AES SubBytes operation** by mapping an 8-bit input to an 8-bit output through a fixed nonlinear transformation known as the **S-Box**. Benchmark implementation:
+**Lookup Table (LUT)** based using a ROM or case statement
+
 
 Background:
-The AES S-Box is derived from the multiplicative inverse in GF(2⁸), followed by an affine transformation. It introduces non-linearity into AES and is one of the most security-critical operations in the cipher. A LUT-based approach is fast but area-intensive. Logic-based methods (e.g., Canright's method) use algebraic transformations to reduce gate count and improve side-channel resistance.
+The AES S-Box is derived from the multiplicative inverse in GF(2⁸), followed by an affine transformation. It introduces non-linearity into AES and is one of the most security-critical operations in the cipher. A LUT-based approach is fast but area-intensive. 
 
 Design Constraints:
 - Input: 8-bit byte (0x00 to 0xFF)
 - Output: 8-bit substitution value from fixed S-Box table
 - LUT must support constant-time access (array, case, or ROM)
-- Logic-based version must match S-Box mapping exactly
 - Synthesis-friendly and timing-aware
 
 Performance Expectation:
 LUT version: 1-cycle combinational delay  
-Logic-optimized version: may use 2–3 cycles or pipelined stages, but reduced area
 
 Deliverables:
 - Verilog implementation of S-Box:
