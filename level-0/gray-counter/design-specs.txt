@@ -12,9 +12,9 @@ Outputs:
 Design Signature:
 
 module gray_counter8(
-    input clk,
-    input rst,
-    output [7:0] count
+    input wire clk,
+    input wire rst,
+    output wire [7:0] count
 );
 
 Design Notes:
@@ -24,3 +24,4 @@ Design Notes:
   gray = binary ^ (binary >> 1)
 
 - Ensure glitch-free Gray code sequence and reliable reset behavior.
+- Only one bit should change between consecutive Gray code values.
