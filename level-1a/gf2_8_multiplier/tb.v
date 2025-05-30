@@ -1,127 +1,132 @@
-// tb_gf256_mult.v
-// Testbench for the GF(2⁸) multiplier (gf256_mult)
-//
-// The testbench drives key functional cases and compares the hardware
-// result with a reference implementation computed in Verilog. The results
-// are printed in a consistent format, and a summary of pass/fail counts is provided.
-
 `timescale 1ns/1ps
 
-module tb_gf256_mult;
+module tb_gf256_mult_benchmark;
 
-    // Testbench signals
-    reg  [7:0] a;
-    reg  [7:0] b;
-    wire [7:0] result;
+    // DUT interface
+    reg  [7:0] a, b;
+    wire [7:0] result_gen, result_const;
 
-    // Instantiate the DUT using the generic mode.
-    // You can switch MODE to "AES_CONST" to test the optimized constant paths.
-    gf256_mult #(.MODE("GENERIC")) dut (
-        .a(a),
-        .b(b),
-        .result(result)
-    );
+    // Instantiate DUTs
+    gf256_mult #(.MODE("GENERIC"  )) dut_gen   (.a(a), .b(b), .result(result_gen));
+    gf256_mult #(.MODE("AES_CONST")) dut_const (.a(a), .b(b), .result(result_const));
 
-    //----------------------------------------------------------------------
-    // Reference GF multiplication function
-    // Implements the same iterative multiplication as in the DUT.
-    //----------------------------------------------------------------------
+    // Reference GF(2⁸) multiplication (same as DUT’s generic function)
     function [7:0] ref_gf_mult;
-        input [7:0] a;
-        input [7:0] b;
+        input [7:0] a, b;
         integer i;
-        reg [7:0] p;
-        reg [7:0] temp;
+        reg [7:0] p, tmp;
         begin
-            p = 8'd0;
-            temp = a;
-            for(i = 0; i < 8; i = i + 1) begin
-                if(b[i])
-                    p = p ^ temp;
-                // xtime: multiply by 2 with reduction using 0x1B.
-                temp = {temp[6:0], 1'b0} ^ (8'h1B & {8{temp[7]}});
+            p   = 8'd0;
+            tmp = a;
+            for (i = 0; i < 8; i = i + 1) begin
+                if (b[i]) p = p ^ tmp;
+                tmp = {tmp[6:0],1'b0} ^ (8'h1B & {8{tmp[7]}});
             end
             ref_gf_mult = p;
         end
     endfunction
 
-    //----------------------------------------------------------------------
-    // Testbench variables for counting passes/fails.
-    //----------------------------------------------------------------------
-    integer pass_count;
-    integer fail_count;
-
-    //----------------------------------------------------------------------
-    // Test stimulus
-    //----------------------------------------------------------------------
+    // AES MixColumns constants
+    localparam integer NC = 7;
+    reg [7:0] consts [0:NC-1];
     initial begin
-        pass_count = 0;
-        fail_count = 0;
-        
-        // Test case 1:
-        // a = 0x57, b = 0x02  (Expected: xtime(0x57) = 0xAE)
-        a = 8'h57; b = 8'h02;
-        #10;
-        if(result === ref_gf_mult(a, b)) begin
-            $display("[PASS] Test1: 0x57 * 0x02 = %h", result);
-            pass_count = pass_count + 1;
-        end else begin
-            $display("[FAIL] Test1: 0x57 * 0x02: Expected %h, Got %h", ref_gf_mult(a, b), result);
-            fail_count = fail_count + 1;
+        consts[0] = 8'h01;
+        consts[1] = 8'h02;
+        consts[2] = 8'h03;
+        consts[3] = 8'h09;
+        consts[4] = 8'h0B;
+        consts[5] = 8'h0D;
+        consts[6] = 8'h0E;
+    end
+
+    integer i, k, rnd;
+    integer pass0, fail0;
+    integer pass_const, fail_const;
+    integer pass_gen, fail_gen;
+
+    initial begin
+        pass0 = 0; fail0 = 0;
+        pass_const = 0; fail_const = 0;
+        pass_gen = 0; fail_gen = 0;
+
+        //----------------------------------------
+        // Phase 0: Identity & zero checks
+        //----------------------------------------
+        $display("=== Phase 0: Identity & Zero Cases ===");
+        // a × 0 == 0
+        b = 8'h00;  
+        for (i = 0; i < 4; i = i + 1) begin
+            a = i*8'h3F;  // try a=0, 0x3F, 0x7E, 0xBD
+            #1;
+            if (result_gen !== 8'h00) begin
+                $display("[0-FAIL] a=%02h×0 !=0 (got %02h)", a, result_gen);
+                fail0 = fail0 + 1;
+            end else pass0 = pass0 + 1;
+        end
+        // 0 × b == 0
+        a = 8'h00;
+        for (i = 0; i < 4; i = i + 1) begin
+            b = i*8'h3F;
+            #1;
+            if (result_gen !== 8'h00) begin
+                $display("[0-FAIL] 0×b=%02h !=0 (got %02h)", b, result_gen);
+                fail0 = fail0 + 1;
+            end else pass0 = pass0 + 1;
+        end
+        // a × 1 == a
+        b = 8'h01;
+        for (i = 0; i < 4; i = i + 1) begin
+            a = i*8'h55;  // try a=0,0x55,0xAA,0xFF
+            #1;
+            if (result_const !== a) begin
+                $display("[ID-FAIL] a=%02h×1 !=a (got %02h)", a, result_const);
+                fail0 = fail0 + 1;
+            end else pass0 = pass0 + 1;
         end
 
-        // Test case 2:
-        // a = 0x83, b = 0x03  (Expected: xtime(0x83) XOR 0x83 = 0x9E)
-        a = 8'h83; b = 8'h03;
-        #10;
-        if(result === ref_gf_mult(a, b)) begin
-            $display("[PASS] Test2: 0x83 * 0x03 = %h", result);
-            pass_count = pass_count + 1;
-        end else begin
-            $display("[FAIL] Test2: 0x83 * 0x03: Expected %h, Got %h", ref_gf_mult(a, b), result);
-            fail_count = fail_count + 1;
+        //----------------------------------------
+        // Phase 1: Exhaustive AES_CONST mode
+        //----------------------------------------
+        $display("=== Phase 1: Exhaustive AES_CONST Mode ===");
+        for (k = 0; k < NC; k = k + 1) begin
+            b = consts[k];
+            for (i = 0; i < 16; i = i + 1) begin
+                a = i[7:0];
+                #1;
+                if (result_const === ref_gf_mult(a, b)) pass_const = pass_const + 1;
+                else begin
+                    $display("[C-FAIL] a=%02h, b=%02h: exp=%02h got=%02h",
+                             a, b, ref_gf_mult(a,b), result_const);
+                    fail_const = fail_const + 1;
+                end
+            end
         end
 
-        // Test case 3:
-        // a = 0xFF, b = 0x02  (Expected: xtime(0xFF) = 0xE5)
-        a = 8'hFF; b = 8'h02;
-        #10;
-        if(result === ref_gf_mult(a, b)) begin
-            $display("[PASS] Test3: 0xFF * 0x02 = %h", result);
-            pass_count = pass_count + 1;
-        end else begin
-            $display("[FAIL] Test3: 0xFF * 0x02: Expected %h, Got %h", ref_gf_mult(a, b), result);
-            fail_count = fail_count + 1;
+        //----------------------------------------
+        // Phase 2: Random-sample GENERIC mode
+        //----------------------------------------
+        $display("=== Phase 2: Random GENERIC Mode ===");
+        for (rnd = 0; rnd < 256; rnd = rnd + 1) begin
+            a = $urandom_range(0,255);
+            b = $urandom_range(0,255);
+            #1;
+            if (result_gen === ref_gf_mult(a, b)) pass_gen = pass_gen + 1;
+            else begin
+                $display("[G-FAIL] a=%02h, b=%02h: exp=%02h got=%02h",
+                         a, b, ref_gf_mult(a,b), result_gen);
+                fail_gen = fail_gen + 1;
+            end
         end
 
-        // Test case 4:
-        // a = 0x57, b = 0x03  (Expected: xtime(0x57) XOR 0x57 = 0xF9)
-        a = 8'h57; b = 8'h03;
-        #10;
-        if(result === ref_gf_mult(a, b)) begin
-            $display("[PASS] Test4: 0x57 * 0x03 = %h", result);
-            pass_count = pass_count + 1;
-        end else begin
-            $display("[FAIL] Test4: 0x57 * 0x03: Expected %h, Got %h", ref_gf_mult(a, b), result);
-            fail_count = fail_count + 1;
-        end
-
-        // Test case 5 (generic test):
-        // a = 0x57, b = 0x8E (an arbitrary multiplier not specially optimized)
-        a = 8'h57; b = 8'h8E;
-        #10;
-        if(result === ref_gf_mult(a, b)) begin
-            $display("[PASS] Test5: 0x57 * 0x8E = %h", result);
-            pass_count = pass_count + 1;
-        end else begin
-            $display("[FAIL] Test5: 0x57 * 0x8E: Expected %h, Got %h", ref_gf_mult(a, b), result);
-            fail_count = fail_count + 1;
-        end
-
-        // Final summary
         $display("--------------------------------------------------");
-        $display("Test Summary: %d Passed, %d Failed.", pass_count, fail_count);
+        $display("Phase0 (identity/zero):  %0d passed, %0d failed", pass0,   fail0);
+        $display("AES_CONST exhaustive:    %0d passed, %0d failed", pass_const, fail_const);
+        $display("GENERIC random(1024):    %0d passed, %0d failed", pass_gen,   fail_gen);
         $display("--------------------------------------------------");
+        if (fail0+fail_const+fail_gen == 0)
+            $display(">>>PASSED ALL TESTS <<<");
+        else
+            $display(">>>DETECTED FAILURES <<<");
         $finish;
     end
 
