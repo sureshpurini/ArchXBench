@@ -5,15 +5,15 @@ Module Name:
 - bit_manip_unit
 
 Inputs:
-- data [n-1:0]: The primary input data word to be manipulated.
-- data2 [n-1:0]: A secondary input used for operations such as pack (combining two data words).
+- data [N-1:0]: The primary input data word to be manipulated.
+- data2 [N-1:0]: A secondary input used for operations such as pack (combining two data words).
 - op_code [1:0]: Operation selection signal that specifies the desired function:
     - 00: Rotate
     - 01: Mask
     - 10: Pack
     - 11: Unpack
-- shift_amt [m-1:0]: For the rotate operation, this signal specifies the number of positions by which the data should be rotated.
-- mask_val [n-1:0]: For the mask operation, this signal provides the bit mask to be applied to the input data.
+- shift_amt [M-1:0]: For the rotate operation, this signal specifies the number of positions by which the data should be rotated.
+- mask_val [N-1:0]: For the mask operation, this signal provides the bit mask to be applied to the input data.
 
 Outputs:
 - out [n-1:0]: The output resulting from the selected bit manipulation operation.
@@ -21,17 +21,17 @@ Outputs:
 
 Design Signature:
 module bit_manip_unit(
-    input [n-1:0] data,
-    input [n-1:0] data2,
+    input [N-1:0] data,
+    input [N-1:0] data2,
     input [1:0] op_code,     // 00: rotate, 01: mask, 10: pack, 11: unpack
-    input [m-1:0] shift_amt, // For rotate operation
-    input [n-1:0] mask_val,  // For mask operation
-    output reg [n-1:0] out,
-    output reg [n-1:0] out2 // Valid only when performing unpack
+    input [M-1:0] shift_amt, // For rotate operation
+    input [N-1:0] mask_val,  // For mask operation
+    output reg [N-1:0] out,
+    output reg [N-1:0] out2 // Valid only when performing unpack
 );
 
 Design Notes:
-- The module should be fully parameterized to allow adjustment of the main data width (n) and the required bit-width for rotation control (m).
+- The module should be fully parameterized to allow adjustment of the main data width (N) and the required bit-width for rotation control (M).
 - For the rotate operation, implement a mechanism to support both left and right rotations (if desired) based on additional control bits or design conventions.
 - The masking function should perform a bitwise AND between the input data and the mask_val.
 - The pack operation is expected to combine the lower portions of 'data' and 'data2' into a single word; design the input widths or packing scheme to ensure proper placement of each field.
