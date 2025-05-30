@@ -3,24 +3,24 @@ Module Name:
 - demux_1to2
 
 Inputs:
-- din     // 1-bit data input
+- in      // 1-bit data input
 - sel     // 1-bit select input
 
 Outputs:
-- out0    // Output active when sel = 0
-- out1    // Output active when sel = 1
+- out0    // 1-bit output: active when sel = 0
+- out1    // 1-bit output: active when sel = 1
 
 Design Signature:
 
 // 1-to-2 Demultiplexer
 module demux_1to2 (
-    input  din,
+    input  in,
     input  sel,
     output out0,
     output out1
 );
 
 Design Notes:
-- out0 = din AND NOT(sel)
-- out1 = din AND sel
-- Maintain structural design (no behavioral case/select constructs).
+- out0 = in AND NOT(sel)
+- out1 = in AND sel
+- Build structurally using basic gates (e.g. one inverter and two AND gates); do **not** use behavioral `assign` or `case` constructs.
