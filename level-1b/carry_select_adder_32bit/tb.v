@@ -97,7 +97,7 @@ module tb_carry_select_adder_32bit;
         end
 
         // Final summary
-        $display("\n=== Benchmark Complete: Pass = %0d, Fail = %0d ===\n", pass_count, fail_count);
+        $display("\n=== Benchmark Complete: Pass = %0d, Failed = %0d ===\n", pass_count, fail_count);
         $finish;
     end
 
