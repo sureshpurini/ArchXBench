@@ -1,17 +1,29 @@
-Design Name: decoder2to4
+Design Name: decoder_2to4
 Module Name:
-- decoder2to4
+- decoder_2to4
 
 Inputs:
-- in[1:0]  // 2-bit binary input
-- en       // Enable signal
+- in       // 2-bit binary input bus (in[1:0])
+- enable   // 1-bit enable signal
 
 Outputs:
-- out[3:0] // One-hot output
+- out      // 4-bit one-hot output bus (out[3:0])
 
 Design Signature:
-module decoder_2to4(input [1:0] in, input en, output [3:0] out);
+
+// 2-to-4 Decoder with enable
+module decoder_2to4 (
+    input  [1:0] in,
+    input        enable,
+    output [3:0] out
+);
 
 Design Notes:
-- Use AND gates and NOT gates to decode.
-- Avoid behavioral code; implement structurally for clarity.
+- When `enable = 1`, `out` is a one-hot encoding of `in`:
+    • `out[0] = ~in[1] & ~in[0] & enable`  
+    • `out[1] = ~in[1] &  in[0] & enable`  
+    • `out[2] =  in[1] & ~in[0] & enable`  
+    • `out[3] =  in[1] &  in[0] & enable`  
+- When `enable = 0`, all bits of `out` must be `0`.  
+- Implement **structurally** using NOT and AND gate instances; do **not** use behavioral constructs (`assign`, `case`, `always`, etc.).  
+- Use clear, named port mappings and instance labels for readability.  
