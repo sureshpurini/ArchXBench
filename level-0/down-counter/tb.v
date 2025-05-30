@@ -1,12 +1,12 @@
 `timescale 1ns/1ps
-module tb_loadable_down_counter_8bit;
+module tb_down_counter8;
     reg clk, rst, load, enable;
     reg [7:0] data_in;
     wire [7:0] count;
     wire tc;
     integer pass_count = 0, fail_count = 0;
     
-    loadable_down_counter_8bit dut (
+    down_counter8 dut (
         .clk(clk), .rst(rst),
         .load(load), .enable(enable),
         .data_in(data_in), .count(count), .tc(tc)
@@ -55,7 +55,7 @@ module tb_loadable_down_counter_8bit;
         
         $display("\n=== Test Summary ===");
         $display("Passed: %0d, Failed: %0d", pass_count, fail_count);
-        $display("{\"module\": \"loadable_down_counter_8bit\", \"passed\": %0d, \"failed\": %0d}", pass_count, fail_count);
+        $display("{\"module\": \"down_counter8\", \"passed\": %0d, \"failed\": %0d}", pass_count, fail_count);
         
         if (fail_count > 0) $finish(1);
         $finish;
