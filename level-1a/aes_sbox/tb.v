@@ -169,7 +169,7 @@ module tb_aes_sbox;
       end
     end
 
-    $display("TEST SUMMARY: %0d PASS, %0d FAIL", pass_count, fail_count);
+    $display("TEST SUMMARY: %0d PASS, %0d FAILED", pass_count, fail_count);
     $finish;
   end
 
