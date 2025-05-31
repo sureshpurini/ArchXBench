@@ -23,5 +23,3 @@ Performance Expectation:
 
 Deliverables:
 - A synthesizable HDL module (Verilog/VHDL) implementing the four-stage pipelined 32-bit ripple carry adder.
-- A complete testbench covering a range of input scenarios to verify correctness and timing.
-- Simulation and synthesis reports, including metrics on timing, area, and power consumption.

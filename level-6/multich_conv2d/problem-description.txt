@@ -26,4 +26,3 @@ Deliverables:
 - Parameterized Verilog module with streaming I/O
 - Python reference implementation for verification
 - JSON-based stimuli/output and comparison script
-- Testbench with stimulus injection and DUT output capture

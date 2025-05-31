@@ -17,6 +17,5 @@ Performance Expectation:
 Fixed pipeline latency (e.g., 4–6 stages), with throughput of 1 operation per cycle after fill. All operations should complete with full IEEE-754 compliance and consistent timing.
 
 Deliverables:
-- RTL (Verilog or HLS) implementation of the pipelined floating-point adder.
+- Verilog implementation of the pipelined floating-point adder.
 - Parameterizable pipeline depth.
-- Testbench verifying IEEE-754 conformance across edge cases.

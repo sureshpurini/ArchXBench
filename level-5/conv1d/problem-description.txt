@@ -18,6 +18,5 @@ Performance Expectation:
 After an initial latency of `(KERNEL_SIZE-1)` cycles, the accelerator must present one filtered sample every clock. Latency and resource usage scale with kernel size and datapath width.
 
 Deliverables:
-- Verilog (or HLS) implementation of the conv1d module.
+- Verilog implementation of the conv1d module.
 - Separate, reusable shift-register window generator if practical.
-- Self-checking testbench with synthetic inputs (impulse, step, sine, pseudorandom noise).

@@ -15,6 +15,5 @@ Design Constraints:
 - Latency determined by number of pipeline stages; throughput = 1 result/cycle after fill.
 
 Deliverables:
-- Verilog or HLS implementation of the pipelined Dadda multiplier.
+- Verilog of the pipelined Dadda multiplier.
 - Parameterized design for different bit widths.
-- Testbench with randomly generated inputs and golden output comparison.

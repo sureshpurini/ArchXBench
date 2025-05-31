@@ -16,6 +16,5 @@ Design Constraints:
 - Throughput = 1 result/cycle after pipeline fill
 
 Deliverables:
-- Verilog or HLS implementation of pipelined Wallace Tree multiplier
+- Verilog implementation of pipelined Wallace Tree multiplier
 - Parameter for operand width and pipeline register insertion
-- Testbench comparing against RTL `*` operator with random vectors

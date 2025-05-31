@@ -17,6 +17,5 @@ Performance Expectation:
 After pipeline fill, the design must produce one valid output per cycle. Efficient reuse of 3D data slices (via shift registers or FIFO arrays) is key to minimizing bandwidth and maximizing throughput.
 
 Deliverables:
-- Parameterized Verilog/HLS implementation with streaming I/O.
+- Parameterized Verilog implementation with streaming I/O.
 - Separate line/frame/volume buffers for 3D sliding window generation.
-- Testbench with synthetic 3D volumes and golden reference outputs.

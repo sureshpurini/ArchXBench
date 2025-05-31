@@ -20,5 +20,4 @@ Once the pipeline is filled, throughput must be one sample per cycle. Latency is
 Deliverables:
 - RTL implementation (Verilog or HLS) of the FFT pipeline.
 - Configurable FFT size, word width, and precision mode.
-- Testbench that validates FFT correctness on standard inputs.
 - Optional: interface with AXI-stream for integration into larger pipelines.

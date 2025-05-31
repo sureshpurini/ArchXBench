@@ -26,5 +26,4 @@ The design should achieve streaming throughput (1 pixel per cycle after pipeline
 Deliverables:
 - Verilog or HLS-style implementation with streaming interfaces.
 - Configurable parameters: image size, kernel coefficients, gain factor.
-- Testbench that verifies edge enhancement on synthetic image patterns.
 - Optional: test with real grayscale images or image viewer integration.

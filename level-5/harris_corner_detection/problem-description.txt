@@ -27,5 +27,4 @@ Design must process 1 pixel per cycle (after pipeline fill). Emphasis is on regu
 
 Deliverables:
 - Verilog or HLS-style module descriptions.
-- Testbench with synthetic corner patterns and thresholded output.
 - Optional visualization of corner map for validation.

@@ -19,4 +19,4 @@ After an initial latency of `TAP_CNT-1` cycles plus internal MAC depth, the core
 
 Deliverables:
 - Verilog (or HLS) implementation of lowpass_fir.
-- Parameterizable symmetric tap engine and testbench with impulse/step/noise stimuli.
+- Parameterizable symmetric tap engine with impulse/step/noise stimuli.

@@ -23,5 +23,3 @@ Performance Expectation:
 
 Deliverables:
 - A synthesizable HDL module (Verilog/VHDL) implementing the floating point multiplier.
-- A comprehensive testbench that exercises all operational scenarios, including corner cases such as overflow, underflow, and edge-case operands.
-- Detailed simulation and synthesis reports showcasing metrics like timing, area, and power consumption.

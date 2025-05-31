@@ -21,4 +21,3 @@ Once the first `(KERNEL_SIZE-1)/2` lines and `(KERNEL_SIZE-1)/2` columns have be
 Deliverables:
 - Verilog (or HLS) implementation of the conv2d module, including line-buffer generator.
 - Parameterizable dot-product datapath supporting runtime coefficient loading.
-- Self-checking testbench with synthetic images (impulse, checkerboard, gradient, noise).
