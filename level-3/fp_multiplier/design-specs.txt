@@ -1,0 +1,35 @@
+Design Name:
+- floating_point_multiplier
+
+Module Name:
+- floating_point_multiplier
+
+Inputs:
+- clk: Clock signal for synchronizing operations (required for pipelined/sequential designs).
+- rst: Reset signal to initialize or synchronize internal states.
+- a [WIDTH-1:0]: The first floating point operand in the defined format (e.g., IEEE 754 format), where WIDTH parameterizes the overall bit-width.
+- b [WIDTH-1:0]: The second floating point operand in the same floating point format.
+- rnd_mode [2:0]: (Optional) Rounding mode control signal specifying the rounding strategy (e.g., round to nearest, round toward zero, etc.).
+
+Outputs:
+- product [WIDTH-1:0]: The computed floating point result of the multiplication.
+- exception_flags [2:0]: Flags indicating any exceptional conditions encountered during computation (e.g., overflow, underflow, invalid operation).
+
+Design Signature:
+module floating_point_multiplier(
+    input clk,
+    input rst,
+    input [WIDTH-1:0] a,
+    input [WIDTH-1:0] b,
+    input [2:0] rnd_mode, // Optional: specifies the rounding mode
+    output reg [WIDTH-1:0] product,
+    output reg [2:0] exception_flags
+);
+
+Design Notes:
+- Implement exponent handling by adding the exponents of the two operands and then subtracting the bias to adjust the result.
+- Multiply the significands (mantissas) of the operands, taking care to manage any bit growth and provide sufficient precision for normalization.
+- Integrate a normalization stage that shifts the result as required, adjusts the exponent accordingly, and applies the selected rounding mode.
+- Include exception handling logic to detect and signal overflow, underflow, invalid operations, and any other specified conditions.
+- Consider pipelining critical stages (multiplication, normalization, rounding) to achieve high throughput without compromising timing in deep sub-micron technologies.
+- Ensure that the design is fully parameterized (e.g., EXP_WIDTH, MANT_WIDTH, and WIDTH) for flexibility in supporting different floating point standards.

@@ -1,0 +1,26 @@
+Title:
+- Floating Point Adder
+
+Objective:
+- The goal is to design and implement a floating point adder module capable of performing arithmetic addition on two floating point numbers.
+- The module should correctly handle exponent alignment, significand addition, normalization, rounding, and exception conditions in accordance with IEEE 754 or other specified standards.
+
+Background:
+- A floating point adder is a critical component in the Floating Point Unit (FPU) of modern processors and digital systems.
+- Floating point arithmetic is widely used in scientific computing, digital signal processing, and other high-performance applications where precision and dynamic range are essential.
+- An efficient floating point adder ensures high computational throughput while managing complexities like rounding and handling special values (zero, infinity, NaN).
+
+Design Constraints:
+- The design should be parameterizable to support different floating point formats (e.g., single-precision or double-precision) by adjusting exponent and significand widths.
+- It must correctly process special cases such as zeros, infinities, and NaNs.
+- The implementation may be designed as either a combinational circuit for low-latency operation or a pipelined/sequential circuit to optimize resource usage and timing.
+- Rounding modes and exception flags should be supported as per the requirements of standard floating point arithmetic.
+
+Performance Expectation:
+- The design should strike a balance between speed, area, and power consumption, ensuring efficient operation for continuous floating point computations.
+- High throughput and low latency are desired, with appropriate handling of critical path delays and resource utilization.
+- Power efficiency should be maintained through optimized logic design, especially in the handling of normalization and rounding steps.
+
+Deliverables:
+- A synthesizable HDL module (in Verilog/VHDL) implementing the floating point adder.
+

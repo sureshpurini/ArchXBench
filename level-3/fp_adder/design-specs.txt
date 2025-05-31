@@ -1,0 +1,35 @@
+Design Name:
+- floating_point_adder
+
+Module Name:
+- floating_point_adder
+
+Inputs:
+- clk: Clock signal for synchronizing operations (if a sequential or pipelined design is used).
+- rst: Reset signal to initialize the internal state of the module.
+- a [WIDTH-1:0]: The first floating point operand in a standardized format (e.g., IEEE 754).
+- b [WIDTH-1:0]: The second floating point operand in the same floating point format.
+- rnd_mode [2:0]: (Optional) Rounding mode control signal specifying the rounding strategy (e.g., round to nearest, round toward zero, etc.).
+
+Outputs:
+- sum [WIDTH-1:0]: The computed floating point result of the addition.
+- exception_flags [2:0]: Flags indicating any exceptional events during computation (e.g., overflow, underflow, invalid operation).
+
+Design Signature:
+module floating_point_adder(
+    input clk,
+    input rst,
+    input [WIDTH-1:0] a,
+    input [WIDTH-1:0] b,
+    input [2:0] rnd_mode, // Optional: controls rounding mode
+    output reg [WIDTH-1:0] sum,
+    output reg [2:0] exception_flags
+);
+
+Design Notes:
+- The design should implement the standard procedure for floating point addition, including separation of the sign, exponent, and significand.
+- Key stages include exponent alignment, significand addition, normalization, rounding, and exception detection.
+- The module must properly support special cases such as zero, infinity, and NaN, adhering to floating point standards.
+- Consider a pipelined structure or multi-stage combinational approach to optimize timing while balancing throughput and resource consumption.
+- Parameterize the design (e.g., EXP_WIDTH, MANT_WIDTH, and overall WIDTH) to allow flexibility in supporting multiple floating point formats.
+- Ensure comprehensive exception handling and flag generation to facilitate integration with larger arithmetic units.

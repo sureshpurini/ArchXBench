@@ -1,0 +1,27 @@
+Title:
+- Floating Point Multiplier
+
+Objective:
+- The goal is to design and implement a floating point multiplier module capable of performing arithmetic multiplication on two floating point numbers.
+- The module should correctly handle exponent addition (with bias adjustment), significand multiplication, normalization, rounding, and the detection of special cases (such as zeros, infinities, and NaNs) according to the IEEE 754 standard or a specified format.
+
+Background:
+- Floating point multipliers are a core component of Floating Point Units (FPUs) in modern processors and digital systems.
+- They enable rapid execution of multiplication operations involving real numbers, which is critical in applications such as scientific computing, graphics processing, and digital signal processing.
+- Achieving a balance between high precision and fast operation is essential, as these multipliers often operate in performance-critical paths of a system.
+
+Design Constraints:
+- The design should be parameterizable to accommodate different floating point formats (e.g., single-precision, double-precision) by adjusting exponent and significand widths.
+- It must correctly process all special cases according to the targeted floating point standard, including proper handling for NaNs, infinities, and denormalized numbers.
+- The implementation may be purely combinational for ultra-low latency or pipelined/sequential to optimize area and meet timing constraints.
+- Considerations include clocking (for sequential designs), power consumption, and the ability to integrate with broader FPU architectures.
+
+Performance Expectation:
+- The design should meet a targeted trade-off between speed and hardware resource usage.
+- High throughput is desired, with careful attention to optimizing the critical paths such as normalization and rounding.
+- The design should maintain precision and correct exception signaling while fitting within the power and area budget specified by the overall system requirements.
+
+Deliverables:
+- A synthesizable HDL module (Verilog/VHDL) implementing the floating point multiplier.
+- A comprehensive testbench that exercises all operational scenarios, including corner cases such as overflow, underflow, and edge-case operands.
+- Detailed simulation and synthesis reports showcasing metrics like timing, area, and power consumption.
