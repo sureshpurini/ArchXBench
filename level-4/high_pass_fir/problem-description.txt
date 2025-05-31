@@ -19,4 +19,3 @@ Identical to low-pass: steady-state 1 sample/clock with latency `TAP_CNT-1` + MA
 
 Deliverables:
 - Verilog (or HLS) implementation of highpass_fir.
-- Self-checking testbench with impulse, ramp, and sinusoid inputs verifying DC rejection.

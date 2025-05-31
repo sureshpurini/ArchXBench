@@ -16,7 +16,7 @@ module tb_highpass_fir;
   integer j;
 
   // Instantiate DUT
-  highpass_fir #(
+  fp_highpass_fir #(
     .TAP_CNT(TAP_CNT)
   ) dut (
     .clk       (clk),

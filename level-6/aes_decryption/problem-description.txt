@@ -19,5 +19,3 @@ After an initial inverse-round latency, the core must accept a new ciphertext ea
 
 Deliverables:
 - Verilog module `aes128_pipeline` (decryption mode).
-- Self-checking testbench `tb_aes128_decrypt.v` reading `inputs/ciphertexts.hex` and `inputs/keys.hex`.
-- Reference stimulus files and expected plaintexts in JSON.

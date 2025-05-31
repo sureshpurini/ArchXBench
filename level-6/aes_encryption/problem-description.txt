@@ -19,5 +19,3 @@ After an initial latency of at most 10 rounds × stage depth, the core must acce
 
 Deliverables:
 - Verilog module `aes128_pipeline` (encryption mode).
-- Self-checking testbench `tb_aes128_encrypt.v` using `inputs/plaintexts.hex` and `inputs/keys.hex`.
-- Reference stimulus files and expected ciphertexts in JSON.

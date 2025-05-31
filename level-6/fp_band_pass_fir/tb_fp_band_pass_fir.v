@@ -16,7 +16,7 @@ module tb_bandpass_fir;
   integer j;
 
   // Instantiate DUT
-  bandpass_fir #(
+  fp_bandpass_fir #(
     .TAP_CNT(TAP_CNT)
   ) dut (
     .clk       (clk),

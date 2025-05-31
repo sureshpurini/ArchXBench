@@ -1,22 +1,22 @@
-Title: High-Pass FIR Filter — Streaming DSP Pipeline
+Title: Floating‐Point High‐Pass FIR Filter — Streaming DSP Pipeline
 
 Objective:
-Design a parameterizable streaming hardware accelerator that performs high-pass FIR filtering on serial input data, eliminating low-frequency or DC components. Like the low-pass core, it must output one sample per cycle after pipeline fill.
+Design a parameterizable streaming hardware accelerator that performs high‐pass FIR filtering on a stream of 32‐bit IEEE‐754 single‐precision floats (hex‐encoded). After initial latency, the core must produce one high‐pass‐filtered sample per cycle.
 
 Background:
-High-pass filters are widely used for AC coupling in sensor interfaces and audio processing. An FIR HPF can be derived from a low-pass prototype via spectral inversion, leading to coefficients with zero DC gain.
+A high‐pass FIR filter is derived via spectral inversion of a low‐pass prototype, canceling DC and low‐frequency content. Floating‐point implementation avoids quantization issues for audio and biomedical signals.
 
 Design Constraints:
-- Input: serial data stream (one sample/clock).
-- Filter length: odd, 15 – 127 taps.
-- Arithmetic: fixed-point (configurable width) with optional floating-point mode.
-- Throughput: 1 sample/clock after latency period.
-- Edge handling: implicit zero-extension.
-- Coefficient source: ROM, RAM, or spectral-invert generator.
+- Input: 32‐bit IEEE‐754 floats (hex) at one sample/clock, with valid_in handshake.
+- Filter length: odd taps, configurable from 15 to 127.
+- Coefficients: 32‐bit floats for high‐pass response, preloaded or loaded at runtime.
+- Throughput: 1 sample/clock after (TAP_CNT−1) + MAC pipeline depths.
+- Edge handling: implicit zero‐extension.
+- Arithmetic: pipelined IEEE‐754 multiplier and adder trees.
+- Handshaking: valid_in/valid_out, no back‐pressure.
 
 Performance Expectation:
-Identical to low-pass: steady-state 1 sample/clock with latency `TAP_CNT-1` + MAC depth.
+After pipeline fill (TAP_CNT−1 cycles + internal pipeline delays), produce one floating‐point high‐pass sample each cycle.
 
 Deliverables:
-- Verilog (or HLS) implementation of highpass_fir.
-- Self-checking testbench with impulse, ramp, and sinusoid inputs verifying DC rejection.
+- Verilog module `fp_highpass_fir`.

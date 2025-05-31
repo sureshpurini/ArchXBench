@@ -12,7 +12,7 @@ module tb_lowpass_fir_fp;
   wire [31:0] data_out;
 
   // instantiate your floating-point LPF
-  lowpass_fir_fp #(.TAP_CNT(TAP_CNT)) dut (
+  fp_lowpass_fir #(.TAP_CNT(TAP_CNT)) dut (
     .clk       (clk),
     .rst       (rst),
     .valid_in  (valid_in),

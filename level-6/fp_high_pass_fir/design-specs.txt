@@ -1,43 +1,45 @@
-Design Name: highpass_fir_streaming
-Module Name: highpass_fir
+Design Name: fp_highpass_fir_streaming
+Module Name: fp_highpass_fir
 
 Inputs:
-- clk                         // Clock signal
-- rst                         // Synchronous reset (active-high)
-- valid_in                    // Input-sample valid
-- data_in[DATA_W-1:0]         // Serial input sample stream
+- clk                          // System clock
+- rst                          // Active‐high synchronous reset
+- valid_in                     // Input handshake
+- data_in[31:0]                // 32‐bit IEEE‐754 float (hex)
+- coeffs_mem[0:TAP_CNT−1]      // Preloaded high‐pass FIR coefficients (32‐bit floats)
 
 Outputs:
-- valid_out                   // Output-sample valid
-- data_out[DATA_W+GAIN_W-1:0] // Filtered sample (extended width)
+- valid_out                    // Output handshake
+- data_out[31:0]               // 32‐bit IEEE‐754 float result (hex)
 
 Parameters:
-- DATA_W   = 16                       // Bit width of input sample
-- TAP_CNT  = 31                       // Odd number of FIR taps (15–127)
-- GAIN_W   = 4                        // Bit growth to avoid overflow
-- COEFFS[TAP_CNT]                     // High-pass FIR coefficients
+- TAP_CNT = 31                 // Odd number of taps (15–127)
+- PIPE_DEPTH = <integer>       // Pipeline depth for each multiplier/adder
 
 Design Signature:
 
-module highpass_fir #(
-    parameter DATA_W  = 16,
-    parameter TAP_CNT = 31,
-    parameter GAIN_W  = 4
+module fp_highpass_fir #(
+    parameter TAP_CNT    = 31,
+    parameter PIPE_DEPTH = 2
 ) (
-    input                       clk,
-    input                       rst,
-    input                       valid_in,
-    input      [DATA_W-1:0]     data_in,
-    output                      valid_out,
-    output     [DATA_W+GAIN_W-1:0] data_out
+    input                   clk,
+    input                   rst,
+    input                   valid_in,
+    input   [31:0]          data_in,         // IEEE‐754 float, hex
+    output                  valid_out,
+    output  [31:0]          data_out         // IEEE‐754 float, hex
 );
 
 Design Notes:
-- Implements a **spectral inversion FIR**; coefficients satisfy Σh[n] = 0.
-- Shift-register plus MAC identical to lowpass_fir; only coefficient set differs.
-- Optional **DC-blocking mode** (first-order HPF) selectable via mode pin.
-- Same saturation / rounding options as low-pass design.
+- Uses a tapped delay line of length TAP_CNT to hold most recent samples.
+- Multiply each stored sample by its corresponding high‐pass coefficient.
+- Sum all products in a pipelined IEEE‐754 adder tree to form one high‐pass output.
+- Zero‐extend (input +0.0) for initial TAP_CNT−1 cycles after reset.
+- valid_out asserted when enough samples have been fed into pipeline.
+- Coefficient symmetry can reduce hardware by summing sample pairs before multiplication.
+- All data (samples and coefficients) handled as 32‐bit IEEE‐754 floats; inputs/outputs passed as hex strings.
 
 Optional Features:
-- Dynamic reconfiguration between multiple HPF bands.
-- Test-pulse injection port for on-chip self-calibration.
+- Runtime coefficient update via a load interface.
+- Parameterizable internal pipeline stages to trade latency vs. clock frequency.
+- Floating‐point rounding mode selection (round‐to‐nearest, etc.) via parameter.

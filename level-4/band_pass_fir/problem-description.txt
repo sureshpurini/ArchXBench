@@ -19,4 +19,3 @@ After `(TAP_CNT-1)` cycles plus MAC depth, the filter produces one valid output 
 
 Deliverables:
 - Verilog implementation of `bandpass_fir`.
-- Self-checking testbench covering impulse, multi-tone, and swept-sine inputs to verify pass-band shape.

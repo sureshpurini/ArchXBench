@@ -1,44 +1,46 @@
-Design Name: lowpass_fir_streaming
-Module Name: lowpass_fir
+Design Name: fp_lowpass_fir_streaming
+Module Name: fp_lowpass_fir
 
 Inputs:
-- clk                         // Clock signal
-- rst                         // Synchronous reset (active-high)
-- valid_in                    // Input-sample valid
-- data_in[DATA_W-1:0]         // Serial input sample stream
+- clk                          // System clock
+- rst                          // Active‐high synchronous reset
+- valid_in                     // Input handshake
+- data_in[31:0]                // 32‐bit IEEE‐754 float, hex‐encoded word
+- coeffs_mem[0:TAP_CNT−1]      // Preloaded coefficient memory (32‐bit IEEE‐754 floats)
+  (Loaded via separate initialization mechanism or ROM)
 
 Outputs:
-- valid_out                   // Output-sample valid
-- data_out[DATA_W+GAIN_W-1:0] // Filtered sample (extended width)
+- valid_out                    // Output handshake
+- data_out[31:0]               // 32‐bit IEEE‐754 float result, hex‐encoded word
 
 Parameters:
-- DATA_W   = 16                       // Bit width of input sample
-- TAP_CNT  = 31                       // Odd number of FIR taps (15–127)
-- GAIN_W   = 4                        // Bit growth to avoid overflow
-- COEFFS[TAP_CNT]                     // Low-pass FIR coefficients
+- TAP_CNT = 31                 // Odd number of taps (15–127)
+- PIPE_DEPTH = <integer>       // Pipeline depth for each multiply and accumulate stage
 
 Design Signature:
 
-module lowpass_fir #(
-    parameter DATA_W  = 16,
-    parameter TAP_CNT = 31,
-    parameter GAIN_W  = 4
+module fp_lowpass_fir_streaming #(
+    parameter TAP_CNT    = 31,
+    parameter PIPE_DEPTH = 2   // e.g., two‐stage pipelined multiplier/add
 ) (
-    input                       clk,
-    input                       rst,
-    input                       valid_in,
-    input      [DATA_W-1:0]     data_in,
-    output                      valid_out,
-    output     [DATA_W+GAIN_W-1:0] data_out
+    input                   clk,
+    input                   rst,
+    input                   valid_in,
+    input   [31:0]          data_in,         // IEEE‐754 float, hex
+    output                  valid_out,
+    output  [31:0]          data_out         // IEEE‐754 float, hex
 );
 
 Design Notes:
-- Implements a **linear-phase symmetric FIR**; taps are mirrored to halve multiplier count.
-- Uses a **shift-register tap chain** plus parallel MAC; pipeline depth is parameterizable.
-- Coefficients may be hard-coded for a specific cut-off or loaded at run-time.
-- Supports optional **saturation / rounding** on the output path.
+- Implements a shift‐register of length TAP_CNT to store the most recent TAP_CNT input samples.
+- For each tap index i, multiply sample[i] × coeffs_mem[i] using a pipelined IEEE‐754 multiplier.
+- Accumulate all TAP_CNT products via a pipelined tree of IEEE‐754 adders.
+- Zero‐extend (treat missing samples as +0.0) for the first (TAP_CNT−1) cycles after reset.
+- Coefficients are symmetric for linear-phase; optionally halve multipliers by summing symmetric sample pairs first, then multiply by coefficient.
+- valid_out is asserted each cycle once input pipeline is full (after TAP_CNT−1 cycles).
+- Data formatting: inputs and outputs remain in hex‐string form. The testbench must convert hex ↔ float to verify.
 
 Optional Features:
-- Run-time decimation mode (down-sample by 2/4).
-- Coefficient reload port with handshake.
-- Clock-enable input for power gating.
+- Support coefficient load port to change cut‐off at runtime.
+- Parameterizable pipeline stages to trade off area vs. latency.
+- Clock‐enable port to pause filtering when no new data arrives.

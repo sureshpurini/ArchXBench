@@ -20,4 +20,3 @@ Latency is proportional to log₂(N) × (N / 2) butterflies. Iterative design tr
 Deliverables:
 - Verilog or HLS implementation of iterative radix-2 FFT/IFFT.
 - Fixed-point coefficient LUT with scaling support.
-- Testbench comparing against reference Python/NumPy output.

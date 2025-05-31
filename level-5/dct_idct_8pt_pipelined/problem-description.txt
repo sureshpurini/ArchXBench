@@ -20,4 +20,3 @@ Once the pipeline is filled, it should accept and produce 1 value per clock. Lat
 Deliverables:
 - Verilog or HLS implementation of pipelined 8-point 1D DCT/IDCT.
 - Fixed-point cosine matrix or shift-add approximations.
-- Testbench with image rows, cosine wave, impulse, and reconstruction tests.

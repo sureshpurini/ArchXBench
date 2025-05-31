@@ -1,22 +1,22 @@
-Title: Band-Pass FIR Filter — Streaming DSP Pipeline
+Title: Floating‐Point Band‐Pass FIR Filter — Streaming DSP Pipeline
 
 Objective:
-Design a parameterizable streaming hardware accelerator that performs band-pass FIR filtering, passing a selectable frequency band while attenuating frequencies outside the pass-band. Throughput must be one sample per clock once the pipeline is filled.
+Design a parameterizable streaming hardware accelerator that performs band‐pass FIR filtering on a stream of 32‐bit IEEE‐754 single‐precision floats (hex‐encoded). Must pass a selectable frequency band and attenuate outside frequencies. After the pipeline fill, produce one output per clock.
 
 Background:
-Band-pass filters isolate channels in software-defined radios, biomedical signal acquisition, and speech processing. A band-pass FIR can be realized by subtracting two low-pass responses or by directly windowing a sinc difference, yielding linear phase and fixed group delay.
+Band‐pass FIR filters are employed in communications, biomedical instruments, and audio equalization to isolate a specific frequency band. Floating‐point realization simplifies coefficient design and ensures wide dynamic range.
 
 Design Constraints:
-- Input: serial data stream (one sample/clock).
-- Filter length: odd, 31 – 255 taps (longer length yields narrower transition band).
-- Arithmetic: fixed-point (configurable width) with optional floating-point mode.
-- Throughput: 1 sample/clock after latency period.
-- Edge handling: implicit zero-extension (zero-padding).
-- Coefficients: ROM-based or run-time-loadable for agile center frequency.
+- Input: 32‐bit IEEE‐754 floats (hex) one sample/clock, with valid_in handshake.
+- Filter length: odd taps, configurable from 31 to 255.
+- Coefficients: 32‐bit floats for a band‐pass design (e.g., windowed sinc difference of two low‐pass prototypes), preloaded or loaded at runtime.
+- Throughput: 1 sample/clock after (TAP_CNT−1) + MAC pipeline depths.
+- Edge handling: implicit zero‐extension.
+- Arithmetic: pipelined IEEE‐754 multipliers and adders.
+- Handshaking: valid_in/valid_out, no back‐pressure assumed.
 
 Performance Expectation:
-After `(TAP_CNT-1)` cycles plus MAC depth, the filter produces one valid output per clock. Resource usage scales with tap count and datapath width.
+Once (TAP_CNT−1) + internal pipeline cycles have passed, accept a new floating‐point sample every cycle and produce one floating‐point filtered output every cycle.
 
 Deliverables:
-- Verilog implementation of `bandpass_fir`.
-- Self-checking testbench covering impulse, multi-tone, and swept-sine inputs to verify pass-band shape.
+- Verilog module `fp_bandpass_fir`.
