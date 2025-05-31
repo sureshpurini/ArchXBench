@@ -1,0 +1,59 @@
+Design Name: multich_conv2d
+Module Name: multich_conv2d
+
+Inputs:
+- clk
+- rst
+- pixel_in[DATA_W-1:0]                      // Streamed pixel value
+- valid_in
+- last_in
+- kernel[COUT*CIN*K*K*DATA_W-1:0]          // Packed kernel weights
+- bias[COUT*BIAS_W-1:0]                    // Bias per output channel
+
+Outputs:
+- pixel_out[OUT_W-1:0]
+- valid_out
+- done
+
+Parameters:
+- CIN = 3           // Number of input channels
+- COUT = 8          // Number of output channels
+- K = 3             // Kernel height = width
+- H = 64, W = 64    // Input spatial dimensions
+- DATA_W = 8        // Pixel value width
+- BIAS_W = 16       // Bias width
+- OUT_W = 16        // Output pixel width
+
+Design Signature:
+
+module multich_conv2d #(
+    parameter CIN = 3,
+    parameter COUT = 8,
+    parameter K = 3,
+    parameter H = 64,
+    parameter W = 64,
+    parameter DATA_W = 8,
+    parameter BIAS_W = 16,
+    parameter OUT_W = 16
+)(
+    input clk, rst,
+    input [DATA_W-1:0] pixel_in,
+    input valid_in,
+    input last_in,
+    input [COUT*CIN*K*K*DATA_W-1:0] kernel,
+    input [COUT*BIAS_W-1:0] bias,
+    output [OUT_W-1:0] pixel_out,
+    output valid_out,
+    output done
+);
+
+Design Notes:
+- Input is streamed channel-by-channel in raster-scan order.
+- Output pixel is valid after pipeline fill and includes bias.
+- MAC tree computes dot product of [Cin×K×K] input window with kernel slice.
+- Efficient buffering (e.g., line buffers per channel) must form channel-aligned windows.
+
+Optional Extensions:
+- Support for zero-padding or stride
+- Support for INT8/quantized paths
+- AXI-Stream interfaces for SoC integration

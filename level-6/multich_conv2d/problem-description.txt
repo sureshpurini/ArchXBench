@@ -1,0 +1,29 @@
+Title: Multichannel 2D Convolution — Channel-Aware Sliding Window Accelerator
+
+Objective:
+Design a pipelined hardware accelerator that performs multichannel 2D convolution over a streaming input image tensor of shape [Cin, H, W]. The design supports multiple output channels, each corresponding to a separate [Cin, K, K] kernel. The output tensor has shape [Cout, H−K+1, W−K+1].
+
+This benchmark reflects the core inner loop of modern convolutional neural networks (CNNs), optimized for hardware implementation using input reuse, kernel broadcasting, and channel-wise accumulation.
+
+Background:
+Multichannel 2D convolution is a fundamental operation in image-based deep learning. It processes an input with multiple channels (e.g., RGB or feature maps) using a bank of filters (kernels) that span all input channels. For each output pixel, the accelerator performs a dot product over a window from each channel, accumulates the results, and outputs the final value.
+
+Design Constraints:
+- Input shape: [Cin, H, W]
+- Kernel shape: [Cout, Cin, K, K]
+- Output shape: [Cout, H−K+1, W−K+1]
+- Inputs must be streamed (e.g., row-by-row)
+- One output per cycle after pipeline fill
+- Output should support optional ReLU or clamp
+
+Performance Expectation:
+- Efficient reuse of input window across channels and rows
+- Systolic or pipelined MAC array across Cin×K×K
+- Optional parallelism across Cout channels
+- Local line buffering and channel-wise window formation
+
+Deliverables:
+- Parameterized Verilog module with streaming I/O
+- Python reference implementation for verification
+- JSON-based stimuli/output and comparison script
+- Testbench with stimulus injection and DUT output capture
