@@ -1,3 +1,15 @@
+```
+@inproceedings{purini2025mlcad,
+  author       = {Suresh Purini and Siddhant Garg and Mudit Gaur and Sankalp Bhat and Arun Ravindran},
+  title        = {ArchXBench: A Complex Digital Systems Benchmark Suite for LLM Driven RTL Synthesis},
+  booktitle    = {Proceedings of the 7th ACM/IEEE International Symposium on Machine Learning for CAD (MLCAD)},
+  year         = {2025},
+  pages        = {pp.\,xx--yy},
+  month        = sep,
+  address      = {Santa Cruz, California, USA},
+  publisher    = {ACM and IEEE},
+}
+```
 # ArchXBench
 ```
                    _    __   ______                  _     
@@ -166,4 +178,5 @@ Full-feature accelerator IPs: AES encryption/decryption cores, 3D convolution, r
 | 6    | Floating Point Low Pass FIR Filter.                                           |
 | 7    | Quantized Matrix-Matrix Multiply Unit for ML Inference.                       |
 | 8    | AES-128 Encryption Core with 10 Rounds and Key Expansion.                     |
+
 | 9    | AES-128 Decryption Core with 10 Rounds and Key Expansion.                     |
